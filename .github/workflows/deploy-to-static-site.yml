@@ -19,4 +19,4 @@ jobs:
                   aws-region: eu-west-2
             - name: Sync files to S3 bucket
               run: |
-                  aws s3 sync / s3://tyler-static-site --delete
+                  aws s3 sync ${{ github.event.repository.name }} s3://tyler-static-site --delete
