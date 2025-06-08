@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>Can you name all of the Smash Bros. fighters?</title>
+
+        <!-- import the webpage's stylesheet -->
+        <link rel="stylesheet" href="style.css" />
+
+        <!-- import the webpage's javascript file -->
+        <script src="script.js" defer></script>
+    </head>
+    <body>
+        <div id="container">
+            <div id="ready">
+                <h1>Can you name all of the <i>Smash Bros.</i> fighters?</h1>
+                <button id="start">Start</button>
+            </div>
+            <div id="game" class="hidden">
+                <div id="progress">
+                    <span id="current"></span>/<span id="total"></span>
+                </div>
+                <img id="picture" />
+                <div id="guess">
+                    <input id="input" placeholder="Who's that fighter?" /><br />
+                    <button id="submit">Submit</button>
+                </div>
+            </div>
+            <div id="results" class="hidden">
+                <h1>
+                    You got <span id="totalCorrect"></span> out of
+                    <span id="numberOfFighters"></span> correct in
+                    <span id="minutes"></span> minutes and
+                    <span id="seconds"></span> seconds!
+                </h1>
+                <a href="/">Try again?</a>
+                <div class="row">
+                    <div>&nbsp;</div>
+                    <div>Your Answer</div>
+                    <div>Correct answer</div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

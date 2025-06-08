@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+  background: black;
+  color: white;
+  font-family: monospace;
+}
+
+#game {
+  margin: 50px auto;
+  width: 100vw;
+  max-width: 800px;
+}
+
+#info {
+  padding: 30px;
+}
+
+canvas {
+  cursor: none;
+  background: lightgrey;
+  border: 3px solid white;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3/2;
+}

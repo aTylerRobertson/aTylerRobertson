@@ -1,0 +1,70 @@
+/* a minimalist set of CSS resets */
+
+/* default to border-box */
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/* adjust typography defaults */
+body {
+  margin: 0;
+  font-family: sans-serif;
+  line-height: 1.5;
+}
+
+input {
+  max-width: 100%;
+  font-size: 1rem;
+}
+
+hr {
+  margin: 40px 20px;
+}
+
+#container {
+  position: relative;
+  margin: 10px auto;
+  max-width: 440px;
+  text-align: center;
+  padding: 10px;
+}
+
+#input {
+  text-align: center;
+  margin: 10px;
+}
+
+#canvas {
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid black;
+}
+
+#spells {
+  display: flex;
+  flex-direction: column;
+}
+
+.spell {
+  flex: 1;
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+  align-content: stretch;
+  min-height: 100px;
+}
+
+.spell > * {
+  flex: 1;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.spell > a {
+  flex: 0.2;
+}

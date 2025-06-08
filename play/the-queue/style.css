@@ -1,0 +1,17 @@
+body {
+  background-color: #FEA47F;
+}
+
+#wrapper {
+  width: 800px;
+  max-width: 100%;
+  position: relative;
+  margin: 10px auto;
+}
+
+canvas {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: 1px solid black;
+  position: relative;
+}

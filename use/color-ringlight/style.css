@@ -1,0 +1,23 @@
+body {
+  margin: 0;
+  background: black;
+  text-align: center;
+}
+
+svg {
+  width: 100vw;
+  max-height: 97vh;
+  fill: black;
+  stroke: #fefcfd;
+  stroke-width: 15px;
+}
+
+input {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+}
+
+#ringColor {
+  transform: translate(-100%);
+}
