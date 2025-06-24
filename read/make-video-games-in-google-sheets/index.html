@@ -163,46 +163,50 @@ For example, if we had cells A, B, and C, I could tell A to equal B+C, but not A
 
 <h3>5. The "display" screen</h3>
 
-This is the screen that you want your players to see, and the buttons you want them to interact with. To start, we'll designate a grid of the same size as before, leaving off the numbers, and put our buttons right up next to it:
+<p>This is the screen that you want your players to see, and the buttons you want them to interact with. To start, we'll designate a grid of the same size as before, leaving off the numbers, and put our buttons right up next to it:</p>
 
-![](https://cdn.zappy.app/fbae2d37f733cbf1c1b15f2eac6dcc45.png)
+<img src="https://cdn.zappy.app/fbae2d37f733cbf1c1b15f2eac6dcc45.png" />
 
-All of the formulas here are really simple, because they're just referencing our work from the last step. In this case, that's literally just checking to see if the corresponding square contains the player:
+<p>All of the formulas here are really simple, because they're just referencing our work from the last step. In this case, that's literally just checking to see if the corresponding square contains the player:</p>
 
-```
+<textarea readonly>
 =IF(B12=playerAppearance,playerAppearance,"")
-```
+</textarea>
 
-In more complex games like we'll see in Part 2, this second screen is where we'll do more complex Conditional Formatting, which is the other reason for having two "screen" sections. 
+<p>In more complex games like we'll see in Part 2, this second screen is where we'll do more complex Conditional Formatting, which is the other reason for having two "screen" sections.</p>
 
-For now, let's clean everything by adding a white border to the cells inside the screen, putting a thick border around it, and prettying up the buttons. You can do that by making the font size **100** and setting their text/background colors to _slight_ variations of each other:
+<p>For now, let's clean everything by adding a white border to the cells inside the screen, putting a thick border around it, and prettying up the buttons. You can do that by making the font size 100, and setting their text/background colors to slight variations of each other:</p>
 
-![](https://cdn.zappy.app/9f957db47698e69a30ad203f799657a5.gif)
+<img src="https://cdn.zappy.app/9f957db47698e69a30ad203f799657a5.gif" />
 
-Then, **hide** any rows or columns that you don't want your players to see, and you've got yourself a working game! Here's [a link to my finished example again](https://docs.google.com/spreadsheets/d/1N2hK2_qIh2AZZLRrmPW3os_87sXf7RiO80zESV7siHM/copy), so we can compare.
+<p>Then, hide any rows or columns that you don't want your players to see, and you've got yourself a working game! Here's <a href="https://docs.google.com/spreadsheets/d/1N2hK2_qIh2AZZLRrmPW3os_87sXf7RiO80zESV7siHM/copy">a link to my finished example again</a>, so we can compare.</p>
 
-To take this project further, revisit the screen we made in Step 4, and start thinking about what else you might want to appear on the screen:
+<p>To take this project further, revisit the screen we made in Step 4, and start thinking about what else you might want to appear on the screen:</p>
 
-* **Could there be obstacles for the player to get around?** How would you adjust the X and Y formulas to block their movement?
-* **Could there be enemies or other players on the screen?** What formula would you use to check whether _any_ actor is in a certain cell? (_Psst, it's QUERY._)
-* **Could the player collect something to gain points?** How would you tell if the player has the same X and Y value as something else?
+<ul>
+<li>Could there be obstacles for the player to get around? How would you adjust the X and Y formulas to block their movement?</li>
+<li>Could there be enemies or other players on the screen? What formula would you use to check whether any actor is in a certain cell?</li>
+<li>Could the player collect something to gain points?** How would you tell if the player has the same X and Y value as something else?</li>
+</ul>
 
-Here are some examples of games I've made using these ideas:
+<p>Here are some examples of games I've made using these ideas:</p>
 
-* [Sheethack](https://docs.google.com/spreadsheets/d/1MEgU4Uup7ylcQMteLdUk27QqCIewLOal52UGDwjkdKM/copy)
-* [Sheetkoban](https://docs.google.com/spreadsheets/d/1INkUBJtp8P9UtyctqEl_YqYQdGpKg2A1ZPhBm7LTh5Y/copy)
-* [Cyberfrog Twenty7-Eleven](https://docs.google.com/spreadsheets/d/1q1UQnz8Rv6xq856_iipkKVdX_708cnLPU8jIqz5xIkE/copy)
-* [Snake](https://docs.google.com/spreadsheets/d/1p6MKqqJcelUsk16vakjJMq_I7mnRopfvc0LyxEQh1aw/copy)
+<ul>
+<li><a href="https://docs.google.com/spreadsheets/d/1MEgU4Uup7ylcQMteLdUk27QqCIewLOal52UGDwjkdKM/copy">Sheethack</a></li>
+<li><a href="https://docs.google.com/spreadsheets/d/1INkUBJtp8P9UtyctqEl_YqYQdGpKg2A1ZPhBm7LTh5Y/copy">Sheetkoban</a></li>
+<li><a href="https://docs.google.com/spreadsheets/d/1q1UQnz8Rv6xq856_iipkKVdX_708cnLPU8jIqz5xIkE/copy">Cyberfrog Twenty7-Eleven</a></li>
+<li><a href="https://docs.google.com/spreadsheets/d/1p6MKqqJcelUsk16vakjJMq_I7mnRopfvc0LyxEQh1aw/copy">Snake</a></li>
+</ul>
 
-## Part 2: Making Board Games - _Coming soon!_ 
+<h2>Part 2: Making Board Games</h2>
 
-Another benefit of turning checkboxes into buttons is that, if we put them directly on the "screen", we can treat them like pieces on a game board. The major difference now is we're going use **checkboxes** to fill in the "screen" the user interacts with. We're also going to add functions in the **buttons** section so that we can track where the user is clicking on the board. That screen is going to look a bit weird for a while, and we'll really rely on the "backstage screen" to see where our pieces are, but we'll clean it all up with Conditional Formatting at the end. 
+<p>Another benefit of turning checkboxes into buttons is that, if we put them directly on the "screen", we can treat them like pieces on a game board.  We're also going to add functions in the <i>buttons</i> section so that we can track where the user is clicking on the board. That screen is going to look a bit weird for a while, and we'll really rely on the "backstage screen" to see where our pieces are, but we'll clean it all up with Conditional Formatting at the end.</p>
 
-[Here's a template with an 8x8 board that you can copy to get started!](https://docs.google.com/spreadsheets/d/1bYZVRHZmQ39AmnjswI8hI9phnEmYcRGWcJkGXPFbb5w/copy)
+<p><a href="https://docs.google.com/spreadsheets/d/1bYZVRHZmQ39AmnjswI8hI9phnEmYcRGWcJkGXPFbb5w/copy">Here's a template with an 8x8 board that you can copy to get started!</a></p>
 
-Any time I reference a cell in guide below, I'll be using that template as a reference, so you can play along!
+<p>Any time I reference a cell in guide below, I'll be using that template as a reference, so you can play along!</p>
 
-## Picking up the pieces
+<h2>Picking up the pieces</h2>
 
 In our **variables** section, let's write down information about all of the pieces, giving them each a:
 
