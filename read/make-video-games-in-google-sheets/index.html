@@ -33,489 +33,904 @@
     </head>
     <body>
         <main>
-            <h1>Make video games in Google Sheets using only built-in functions</h1>
+            <h1>
+                Make video games in Google Sheets using only built-in functions
+            </h1>
 
-<p>I started <a href="https://zapier.com/blog/making-spreadsheets-for-fun/">making games in Google Sheets</a> after accidentally discovering the "Iterative Calculation" feature built into every spreadsheet (<i>File > Spreadsheet Settings > Calculation</i>). It opened up the ability for cells in my spreadsheets to "see" themselves—which doesn't sound like a lot, but usually cells are only able to reference <i>other</i> cells.</p>
+            <p>
+                I started
+                <a href="https://zapier.com/blog/making-spreadsheets-for-fun/"
+                    >making games in Google Sheets</a
+                >
+                after accidentally discovering the "Iterative Calculation"
+                feature built into every spreadsheet (<i
+                    >File > Spreadsheet Settings > Calculation</i
+                >). It opened up the ability for cells in my spreadsheets to
+                "see" themselves—which doesn't sound like a lot, but usually
+                cells are only able to reference <i>other</i> cells.
+            </p>
 
-For example, if we had cells A, B, and C, I could tell A to equal B+C, but not A+B or A+C. Cell A, for all intents and purposes, <i>doesn't know its own value</i> unless we turn on Iterative Calculation. 
+            For example, if we had cells A, B, and C, I could tell A to equal
+            B+C, but not A+B or A+C. Cell A, for all intents and purposes,
+            <i>doesn't know its own value</i> unless we turn on Iterative
+            Calculation.
 
-<img src="https://cdn.zappy.app/64a245dd4e12ddf7b0c28d11ef808cba.png" />
+            <img
+                src="https://cdn.zappy.app/64a245dd4e12ddf7b0c28d11ef808cba.png"
+            />
 
-<p>With that setting enabled, we can set A to A+B, A+C, A+1, or any combination of functions involving itself. I could, for example, have a number go up or down by one any time I press a button (made out of a clever arrangement of checkboxes). And once you have that, you have a video game.</p>
+            <p>
+                With that setting enabled, we can set A to A+B, A+C, A+1, or any
+                combination of functions involving itself. I could, for example,
+                have a number go up or down by one any time I press a button
+                (made out of a clever arrangement of checkboxes). And once you
+                have that, you have a video game.
+            </p>
 
-<h2>But you can't <i>really</i> make a video game in Google Sheets, right?</h2>
+            <h2>
+                But you can't <i>really</i> make a video game in Google Sheets,
+                right?
+            </h2>
 
-<p>If you haven't thought much about making a video game before, the important thing to understand is that <i>they're not real</i>.</p>
+            <p>
+                If you haven't thought much about making a video game before,
+                the important thing to understand is that
+                <i>they're not real</i>.
+            </p>
 
-<p>That is, when you press the <i>jump</i> button, there's not a physical little man named Mario, hoisting himself over some Goombas inside your TV. Instead, there's a table of numbers and variables that keep of Mario's X (horizontal) and Y (vertical) position in the world, what speed he's going, how many coins he has, and a million other things. There's additional code that tells the TV how to represent those numbers in a way that's entertaining, but it's really those numbers calling the shots.</p>
+            <p>
+                That is, when you press the <i>jump</i> button, there's not a
+                physical little man named Mario, hoisting himself over some
+                Goombas inside your TV. Instead, there's a table of numbers and
+                variables that keep of Mario's X (horizontal) and Y (vertical)
+                position in the world, what speed he's going, how many coins he
+                has, and a million other things. There's additional code that
+                tells the TV how to represent those numbers in a way that's
+                entertaining, but it's really those numbers calling the shots.
+            </p>
 
-<p>You could say that, in a lot of ways, the brains of a videogame is just a spreadsheet. So <i>why not</i> use Google Sheets to make games?</p>
+            <p>
+                You could say that, in a lot of ways, the brains of a videogame
+                is just a spreadsheet. So <i>why not</i> use Google Sheets to
+                make games?
+            </p>
 
-<h2>A note before we start</h2>
+            <h2>A note before we start</h2>
 
-<p>When you Google "making games with Google Sheets", the top examples will all be very good pieces about using Google Apps Script. Apps Script is a super useful, ultra-powerful tool that lets you write JavaScript to affect your documents and spreadsheets in cool and dynamic ways. I'm a big fan of folks who use Apps Script, but personally I don't want to use it for this kind of project. This is for a few reasons:</p>
+            <p>
+                When you Google "making games with Google Sheets", the top
+                examples will all be very good pieces about using Google Apps
+                Script. Apps Script is a super useful, ultra-powerful tool that
+                lets you write JavaScript to affect your documents and
+                spreadsheets in cool and dynamic ways. I'm a big fan of folks
+                who use Apps Script, but personally I don't want to use it for
+                this kind of project. This is for a few reasons:
+            </p>
 
-<ol>
-<li>It requires granting Apps Script permission to access your spreadsheet, which can hinder share-ability</li>
-<li>I really like making things that I can explain to others</li>
-<li>Having contraints (like not using Apps Script) is just more fun</li>
-</ol>
+            <ol>
+                <li>
+                    It requires granting Apps Script permission to access your
+                    spreadsheet, which can hinder share-ability
+                </li>
+                <li>
+                    I really like making things that I can explain to others
+                </li>
+                <li>
+                    Having contraints (like not using Apps Script) is just more
+                    fun
+                </li>
+            </ol>
 
-<p>So, yes: building everything with only built-in Google Sheets functions and formulas is more difficult, and time-consuming, and the end product will most likely be less exciting. But the process is what makes it worthwhile.</p>
+            <p>
+                So, yes: building everything with only built-in Google Sheets
+                functions and formulas is more difficult, and time-consuming,
+                and the end product will most likely be less exciting. But the
+                process is what makes it worthwhile.
+            </p>
 
-<p>I'm still trying to find an accurate way to describe what keeps me coming back to that process. The best I have so far is that it's like putting together 10,000-piece jigsaw, but it's in 3D, and only you know what the end result looks like, and you're never quite sure if you have all the right pieces. The practice of making something fun and complex with strict constraints is like playing the best puzzle game, and you get to learn stuff along the way.</p>
+            <p>
+                I'm still trying to find an accurate way to describe what keeps
+                me coming back to that process. The best I have so far is that
+                it's like putting together 10,000-piece jigsaw, but it's in 3D,
+                and only you know what the end result looks like, and you're
+                never quite sure if you have all the right pieces. The practice
+                of making something fun and complex with strict constraints is
+                like playing the best puzzle game, and you get to learn stuff
+                along the way.
+            </p>
 
-<p>All of that to say, this is not the best way to make a game, obviously. It's also not the best way to use Google Sheets. But, if you come at it with an open mind and a bit of patience, I think it can be incredibly rewarding.</p>
+            <p>
+                All of that to say, this is not the best way to make a game,
+                obviously. It's also not the best way to use Google Sheets. But,
+                if you come at it with an open mind and a bit of patience, I
+                think it can be incredibly rewarding.
+            </p>
 
-<h2>The bones of a game</h2>
+            <h2>The bones of a game</h2>
 
-<p>Any time I start a new Google Sheets project now, I turn on Iterative Calculation with "Max. Number of Iterations" set to 1, and make all of the cells into squares. Here's a spreadsheet with those already set for you: <a href="https://docs.google.com/spreadsheets/d/1anhstx6mWU1W5aE7ZR87RKbx-krdowi2PLrPis9TWF0/copy">Copy my game template spreadsheet ✨</a></p>
+            <p>
+                Any time I start a new Google Sheets project now, I turn on
+                Iterative Calculation with "Max. Number of Iterations" set to 1,
+                and make all of the cells into squares. Here's a spreadsheet
+                with those already set for you:
+                <a
+                    href="https://docs.google.com/spreadsheets/d/1anhstx6mWU1W5aE7ZR87RKbx-krdowi2PLrPis9TWF0/copy"
+                    >Copy my game template spreadsheet ✨</a
+                >
+            </p>
 
-<p>The reason I set "Max. Number of Iterations" to 1 is that I typically only want each formula to check itself once. If you set that number to 2, and have a formula that adds 1 to the current cell, you'd actually be adding 2 to the cell instead. Sometimes that is what you want, though, so I encourage you to play around.</p>
+            <p>
+                The reason I set "Max. Number of Iterations" to 1 is that I
+                typically only want each formula to check itself once. If you
+                set that number to 2, and have a formula that adds 1 to the
+                current cell, you'd actually be adding 2 to the cell instead.
+                Sometimes that is what you want, though, so I encourage you to
+                play around.
+            </p>
 
-<img src="https://cdn.zappy.app/6aa19ad114a749c2dc02aa33ff3c0e61.png" />
+            <img
+                src="https://cdn.zappy.app/6aa19ad114a749c2dc02aa33ff3c0e61.png"
+            />
 
-<p>Once I have my blank canvas, I'll set aside at least a few rows each for the following sections, in this order:</p>
+            <p>
+                Once I have my blank canvas, I'll set aside at least a few rows
+                each for the following sections, in this order:
+            </p>
 
-<ol>
-<li>Static values that never change, or will only change manually</li>
-<li>Checking whether any [buttons](https://tyler.robertson.click/read/how-i-turn-google-sheets-checkboxes-into-buttons) have been pressed</li>
-<li>Information about the on-screen "actors", like the player character or their enemies</li>
-<li>A grid that represents the "screen", which references the positions of our actors</li>
-<li>The final "screen" that will be shown to the player, where we use images or conditional formatting to show them the actors, and provide buttons to press</li>
-</ol>
+            <ol>
+                <li>
+                    Static values that never change, or will only change
+                    manually
+                </li>
+                <li>
+                    Checking whether any
+                    [buttons](https://tyler.robertson.click/read/how-i-turn-google-sheets-checkboxes-into-buttons)
+                    have been pressed
+                </li>
+                <li>
+                    Information about the on-screen "actors", like the player
+                    character or their enemies
+                </li>
+                <li>
+                    A grid that represents the "screen", which references the
+                    positions of our actors
+                </li>
+                <li>
+                    The final "screen" that will be shown to the player, where
+                    we use images or conditional formatting to show them the
+                    actors, and provide buttons to press
+                </li>
+            </ol>
 
-<p>The order here is important because Google Sheets calculates each cell in order, going from <b>left to right</b> and <b>top to bottom</b>.</p>
+            <p>
+                The order here is important because Google Sheets calculates
+                each cell in order, going from <b>left to right</b> and
+                <b>top to bottom</b>.
+            </p>
 
-<p>You want the button calculations above your player's information, so that your player's information can reference whether a button has been pressed. Otherwise, they may not react to a button press until <i>after</i> the player has pressed something else. Likewise, you want the screen to go below your player information, otherwise the player may appear to be in the wrong spot.</p>
+            <p>
+                You want the button calculations above your player's
+                information, so that your player's information can reference
+                whether a button has been pressed. Otherwise, they may not react
+                to a button press until <i>after</i> the player has pressed
+                something else. Likewise, you want the screen to go below your
+                player information, otherwise the player may appear to be in the
+                wrong spot.
+            </p>
 
-<h2>The first steps</h2>
+            <h2>The first steps</h2>
 
-<p>Let's start with using buttons to move a character around a screen.</p>
+            <p>
+                Let's start with using buttons to move a character around a
+                screen.
+            </p>
 
-<img src="https://cdn.zappy.app/9f957db47698e69a30ad203f799657a5.gif" />
+            <img
+                src="https://cdn.zappy.app/9f957db47698e69a30ad203f799657a5.gif"
+            />
 
-<p>I'll go through each of the sections I outlined above, and <a href="https://docs.google.com/spreadsheets/d/1N2hK2_qIh2AZZLRrmPW3os_87sXf7RiO80zESV7siHM/edit?usp=sharing">you can copy the final result here</a>.
+            <p>
+                I'll go through each of the sections I outlined above, and
+                <a
+                    href="https://docs.google.com/spreadsheets/d/1N2hK2_qIh2AZZLRrmPW3os_87sXf7RiO80zESV7siHM/edit?usp=sharing"
+                    >you can copy the final result here</a
+                >.
+            </p>
 
-<h3>1. Static values</h3>
+            <h3>1. Static values</h3>
 
-<p>First we'll set the values that **never** change. For this game, we'll make that the player's starting X and Y positions, the width and height of our "screen", and how we want the player character to appear:</p>
+            <p>
+                First we'll set the values that **never** change. For this game,
+                we'll make that the player's starting X and Y positions, the
+                width and height of our "screen", and how we want the player
+                character to appear:
+            </p>
 
-<img src="https://cdn.zappy.app/1c1798101a537e99bafe73b659038c7a.png" />
+            <img
+                src="https://cdn.zappy.app/1c1798101a537e99bafe73b659038c7a.png"
+            />
 
-<p>Note I'm not worrying about which order these values go in, or using every available space. The important thing here is that these values go <b>above</b> the rest, so that they can always be referenced later on.</p>
+            <p>
+                Note I'm not worrying about which order these values go in, or
+                using every available space. The important thing here is that
+                these values go <b>above</b> the rest, so that they can always
+                be referenced later on.
+            </p>
 
-<p>If you're making a bigger game, this is a great spot for things like map layouts, item descriptions, or images that you'll want to load before the player starts the game.</p>
+            <p>
+                If you're making a bigger game, this is a great spot for things
+                like map layouts, item descriptions, or images that you'll want
+                to load before the player starts the game.
+            </p>
 
-<h3>2. Buttons</h3>
+            <h3>2. Buttons</h3>
 
-<p>When I talk about "buttons" here, I really just mean checkboxes. In this section, we're going to use formulas to check whether a given checkbox was the last thing to be clicked. I'll also add some checkboxes (<i>Insert</i> > <i>Checkbox</i> or <i>Tick box</i>) further below, which will get pushed down to the "screen" level in step 5.</p>
+            <p>
+                When I talk about "buttons" here, I really just mean checkboxes.
+                In this section, we're going to use formulas to check whether a
+                given checkbox was the last thing to be clicked. I'll also add
+                some checkboxes (<i>Insert</i> > <i>Checkbox</i> or
+                <i>Tick box</i>) further below, which will get pushed down to
+                the "screen" level in step 5.
+            </p>
 
-<img src="https://cdn.zappy.app/f50577b88e6f806a7bf7c65a327d79aa.png" />
+            <img
+                src="https://cdn.zappy.app/f50577b88e6f806a7bf7c65a327d79aa.png"
+            />
 
-<p>I always like to add a "reset" button to my games just in case the player gets stuck or something breaks. This is also a great time to set some named ranges (<i>Data</i> > <i>Named ranges</i>) which makes it easier to refer to our button presses and static values in the future. Remember, it's the <i>middle</i> true/false value that tells us whether the button was just pressed:</p>
+            <p>
+                I always like to add a "reset" button to my games just in case
+                the player gets stuck or something breaks. This is also a great
+                time to set some named ranges (<i>Data</i> >
+                <i>Named ranges</i>) which makes it easier to refer to our
+                button presses and static values in the future. Remember, it's
+                the <i>middle</i> true/false value that tells us whether the
+                button was just pressed:
+            </p>
 
-<img src="https://cdn.zappy.app/c682edef916b76898472f7dcd4ade73e.png" />
+            <img
+                src="https://cdn.zappy.app/c682edef916b76898472f7dcd4ade73e.png"
+            />
 
-<h3>3. Variables</h3>
+            <h3>3. Variables</h3>
 
-<p>In this section, we'll list everything that might change when the player presses a button. Since we're building a game with just one "actor", that just will be the player's X and Y positions. In each, we'll first check if the "reset" button has been pressed, and return to our static starting values if so. If a different button has been pressed, we'll adjust the value within our screen boundaries.</p>
+            <p>
+                In this section, we'll list everything that might change when
+                the player presses a button. Since we're building a game with
+                just one "actor", that just will be the player's X and Y
+                positions. In each, we'll first check if the "reset" button has
+                been pressed, and return to our static starting values if so. If
+                a different button has been pressed, we'll adjust the value
+                within our screen boundaries.
+            </p>
 
-<p>I've gone ahead and created named ranges called <b>x</b> and <b>y</b> to help keep track of these numbers, and make writing this formula a bit easier. Here's the formula for X:</p>
+            <p>
+                I've gone ahead and created named ranges called <b>x</b> and
+                <b>y</b> to help keep track of these numbers, and make writing
+                this formula a bit easier. Here's the formula for X:
+            </p>
 
-<textarea readonly>
+            <textarea readonly>
 =IF(reset,startingX,IF(AND(left,x&gt;1),x-1,IF(AND(right,x&lt;screenWidth),x+1,IF(x=0,startingX,x))))
-</textarea>
+</textarea
+            >
 
-<p>And the formula for Y:</p>
+            <p>And the formula for Y:</p>
 
-<textarea readonly>
+            <textarea readonly>
 =IF(reset,startingY,IF(AND(up,y&gt;1),y-1,IF(AND(down,y&lt;screenHeight),y+1,IF(y=0,startingY,y))))
-</textarea>
+</textarea
+            >
 
-<p>In each, we return to the starting point if the "reset" button was just clicked, or if the cell is currently set to 0. That's because when we first copy the spreadsheet, or make a change to the formula, it'll default to 0, which can sometimes send our player off the map unexpectedly.</p>
+            <p>
+                In each, we return to the starting point if the "reset" button
+                was just clicked, or if the cell is currently set to 0. That's
+                because when we first copy the spreadsheet, or make a change to
+                the formula, it'll default to 0, which can sometimes send our
+                player off the map unexpectedly.
+            </p>
 
-<p>If neither of those apply, we check to see if the player has clicked a directional button, and change the X and Y values by 1 in whichever direction. Going left reduces the X value while going right increases it, and going up reduces the Y value while going down increases it. (In reality, you could switch those around if you want, so that going left increases the X or whatever, but this is how most game-making apps think about it, so I'm sticking to convention.)</p>
+            <p>
+                If neither of those apply, we check to see if the player has
+                clicked a directional button, and change the X and Y values by 1
+                in whichever direction. Going left reduces the X value while
+                going right increases it, and going up reduces the Y value while
+                going down increases it. (In reality, you could switch those
+                around if you want, so that going left increases the X or
+                whatever, but this is how most game-making apps think about it,
+                so I'm sticking to convention.)
+            </p>
 
-<img src="https://cdn.zappy.app/74718d33cac4a18609aa42330ec0cf83.gif" />
+            <img
+                src="https://cdn.zappy.app/74718d33cac4a18609aa42330ec0cf83.gif"
+            />
 
-<h3>4. The "backstage" screen</h3>
+            <h3>4. The "backstage" screen</h3>
 
-<p>Now that we've got buttons that move numbers around, we'll want to start mapping those numbers to a two-dimensional space. To do this, we'll designate a grid that's equal to our screen height and width from Step 1, then number each row and column along the top and left borders.</p>
+            <p>
+                Now that we've got buttons that move numbers around, we'll want
+                to start mapping those numbers to a two-dimensional space. To do
+                this, we'll designate a grid that's equal to our screen height
+                and width from Step 1, then number each row and column along the
+                top and left borders.
+            </p>
 
-<img src="https://cdn.zappy.app/fa3a64b4ba887e0dd52ca4098a198297.png" />
+            <img
+                src="https://cdn.zappy.app/fa3a64b4ba887e0dd52ca4098a198297.png"
+            />
 
-<p>Each cell in this "screen" is going to have the same formula, so I will typically make changes to the top-left cell, then click-and-drag to apply it to all:</p>
+            <p>
+                Each cell in this "screen" is going to have the same formula, so
+                I will typically make changes to the top-left cell, then
+                click-and-drag to apply it to all:
+            </p>
 
-<img src="https://cdn.zappy.app/247c5854a58d2e9f2185dd3f321c453b.gif" />
+            <img
+                src="https://cdn.zappy.app/247c5854a58d2e9f2185dd3f321c453b.gif"
+            />
 
-<p>For this game, the formula we're adding is going to check whether the player's X and Y positions match each cell's row and column. If it does, show the "player appearance" value we set earlier. Otherwise, return a 0.</p>
+            <p>
+                For this game, the formula we're adding is going to check
+                whether the player's X and Y positions match each cell's row and
+                column. If it does, show the "player appearance" value we set
+                earlier. Otherwise, return a 0.
+            </p>
 
-<textarea readonly>
+            <textarea readonly>
 =IF(AND(x=B$11,y=$A12),playerAppearance,0)
-</textarea>
+</textarea
+            >
 
-<p>Notice where I added the <code>$</code> symbol? That keeps the row or column <b>static</b>, even as I copy the formula into other cells. That lets us click-and-drag the formula from one cell to the rest, without breaking anything.</p>
+            <p>
+                Notice where I added the <code>$</code> symbol? That keeps the
+                row or column <b>static</b>, even as I copy the formula into
+                other cells. That lets us click-and-drag the formula from one
+                cell to the rest, without breaking anything.
+            </p>
 
-<img src="https://cdn.zappy.app/4802b6c201551ef675fbc5f1d0e538c0.gif" />
+            <img
+                src="https://cdn.zappy.app/4802b6c201551ef675fbc5f1d0e538c0.gif"
+            />
 
-<p>Now you've got a screen for the player to move around! If you wanted to, you could stop here, format the grid to look pretty, and call it quits. However, I prefer to let this section stay ugly, so I'm not afraid to go back and change it later. To do that, we'll add a second "screen" in the next step:</p>
+            <p>
+                Now you've got a screen for the player to move around! If you
+                wanted to, you could stop here, format the grid to look pretty,
+                and call it quits. However, I prefer to let this section stay
+                ugly, so I'm not afraid to go back and change it later. To do
+                that, we'll add a second "screen" in the next step:
+            </p>
 
-<h3>5. The "display" screen</h3>
+            <h3>5. The "display" screen</h3>
 
-<p>This is the screen that you want your players to see, and the buttons you want them to interact with. To start, we'll designate a grid of the same size as before, leaving off the numbers, and put our buttons right up next to it:</p>
+            <p>
+                This is the screen that you want your players to see, and the
+                buttons you want them to interact with. To start, we'll
+                designate a grid of the same size as before, leaving off the
+                numbers, and put our buttons right up next to it:
+            </p>
 
-<img src="https://cdn.zappy.app/fbae2d37f733cbf1c1b15f2eac6dcc45.png" />
+            <img
+                src="https://cdn.zappy.app/fbae2d37f733cbf1c1b15f2eac6dcc45.png"
+            />
 
-<p>All of the formulas here are really simple, because they're just referencing our work from the last step. In this case, that's literally just checking to see if the corresponding square contains the player:</p>
+            <p>
+                All of the formulas here are really simple, because they're just
+                referencing our work from the last step. In this case, that's
+                literally just checking to see if the corresponding square
+                contains the player:
+            </p>
 
-<textarea readonly>
+            <textarea readonly>
 =IF(B12=playerAppearance,playerAppearance,"")
-</textarea>
+</textarea
+            >
 
-<p>In more complex games like we'll see in Part 2, this second screen is where we'll do more complex Conditional Formatting, which is the other reason for having two "screen" sections.</p>
+            <p>
+                In more complex games like we'll see in Part 2, this second
+                screen is where we'll do more complex Conditional Formatting,
+                which is the other reason for having two "screen" sections.
+            </p>
 
-<p>For now, let's clean everything by adding a white border to the cells inside the screen, putting a thick border around it, and prettying up the buttons. You can do that by making the font size 100, and setting their text/background colors to slight variations of each other:</p>
+            <p>
+                For now, let's clean everything by adding a white border to the
+                cells inside the screen, putting a thick border around it, and
+                prettying up the buttons. You can do that by making the font
+                size 100, and setting their text/background colors to slight
+                variations of each other:
+            </p>
 
-<img src="https://cdn.zappy.app/9f957db47698e69a30ad203f799657a5.gif" />
+            <img
+                src="https://cdn.zappy.app/9f957db47698e69a30ad203f799657a5.gif"
+            />
 
-<p>Then, hide any rows or columns that you don't want your players to see, and you've got yourself a working game! Here's <a href="https://docs.google.com/spreadsheets/d/1N2hK2_qIh2AZZLRrmPW3os_87sXf7RiO80zESV7siHM/copy">a link to my finished example again</a>, so we can compare.</p>
+            <p>
+                Then, hide any rows or columns that you don't want your players
+                to see, and you've got yourself a working game! Here's
+                <a
+                    href="https://docs.google.com/spreadsheets/d/1N2hK2_qIh2AZZLRrmPW3os_87sXf7RiO80zESV7siHM/copy"
+                    >a link to my finished example again</a
+                >, so we can compare.
+            </p>
 
-<p>To take this project further, revisit the screen we made in Step 4, and start thinking about what else you might want to appear on the screen:</p>
+            <p>
+                To take this project further, revisit the screen we made in Step
+                4, and start thinking about what else you might want to appear
+                on the screen:
+            </p>
 
-<ul>
-<li>Could there be obstacles for the player to get around? How would you adjust the X and Y formulas to block their movement?</li>
-<li>Could there be enemies or other players on the screen? What formula would you use to check whether any actor is in a certain cell?</li>
-<li>Could the player collect something to gain points?** How would you tell if the player has the same X and Y value as something else?</li>
-</ul>
+            <ul>
+                <li>
+                    Could there be obstacles for the player to get around? How
+                    would you adjust the X and Y formulas to block their
+                    movement?
+                </li>
+                <li>
+                    Could there be enemies or other players on the screen? What
+                    formula would you use to check whether any actor is in a
+                    certain cell?
+                </li>
+                <li>
+                    Could the player collect something to gain points?** How
+                    would you tell if the player has the same X and Y value as
+                    something else?
+                </li>
+            </ul>
 
-<p>Here are some examples of games I've made using these ideas:</p>
+            <p>Here are some examples of games I've made using these ideas:</p>
 
-<ul>
-<li><a href="https://docs.google.com/spreadsheets/d/1MEgU4Uup7ylcQMteLdUk27QqCIewLOal52UGDwjkdKM/copy">Sheethack</a></li>
-<li><a href="https://docs.google.com/spreadsheets/d/1INkUBJtp8P9UtyctqEl_YqYQdGpKg2A1ZPhBm7LTh5Y/copy">Sheetkoban</a></li>
-<li><a href="https://docs.google.com/spreadsheets/d/1q1UQnz8Rv6xq856_iipkKVdX_708cnLPU8jIqz5xIkE/copy">Cyberfrog Twenty7-Eleven</a></li>
-<li><a href="https://docs.google.com/spreadsheets/d/1p6MKqqJcelUsk16vakjJMq_I7mnRopfvc0LyxEQh1aw/copy">Snake</a></li>
-</ul>
+            <ul>
+                <li>
+                    <a
+                        href="https://docs.google.com/spreadsheets/d/1MEgU4Uup7ylcQMteLdUk27QqCIewLOal52UGDwjkdKM/copy"
+                        >Sheethack</a
+                    >
+                </li>
+                <li>
+                    <a
+                        href="https://docs.google.com/spreadsheets/d/1INkUBJtp8P9UtyctqEl_YqYQdGpKg2A1ZPhBm7LTh5Y/copy"
+                        >Sheetkoban</a
+                    >
+                </li>
+                <li>
+                    <a
+                        href="https://docs.google.com/spreadsheets/d/1q1UQnz8Rv6xq856_iipkKVdX_708cnLPU8jIqz5xIkE/copy"
+                        >Cyberfrog Twenty7-Eleven</a
+                    >
+                </li>
+                <li>
+                    <a
+                        href="https://docs.google.com/spreadsheets/d/1p6MKqqJcelUsk16vakjJMq_I7mnRopfvc0LyxEQh1aw/copy"
+                        >Snake</a
+                    >
+                </li>
+            </ul>
 
-<h2>Part 2: Making Board Games</h2>
+            <h2>Part 2: Making Board Games</h2>
 
-<p>Another benefit of turning checkboxes into buttons is that, if we put them directly on the "screen", we can treat them like pieces on a game board.  We're also going to add functions in the <i>buttons</i> section so that we can track where the user is clicking on the board. That screen is going to look a bit weird for a while, and we'll really rely on the "backstage screen" to see where our pieces are, but we'll clean it all up with Conditional Formatting at the end.</p>
+            <p>
+                Another benefit of turning checkboxes into buttons is that, if
+                we put them directly on the "screen", we can treat them like
+                pieces on a game board. We're also going to add functions in the
+                <i>buttons</i> section so that we can track where the user is
+                clicking on the board. That screen is going to look a bit weird
+                for a while, and we'll really rely on the "backstage screen" to
+                see where our pieces are, but we'll clean it all up with
+                Conditional Formatting at the end.
+            </p>
 
-<p><a href="https://docs.google.com/spreadsheets/d/1bYZVRHZmQ39AmnjswI8hI9phnEmYcRGWcJkGXPFbb5w/copy">Here's a template with an 8x8 board that you can copy to get started!</a></p>
+            <p>
+                <a
+                    href="https://docs.google.com/spreadsheets/d/1bYZVRHZmQ39AmnjswI8hI9phnEmYcRGWcJkGXPFbb5w/copy"
+                    >Here's a template with an 8x8 board that you can copy to
+                    get started!</a
+                >
+            </p>
 
-<p>Any time I reference a cell in guide below, I'll be using that template as a reference, so you can play along!</p>
+            <p>
+                Any time I reference a cell in guide below, I'll be using that
+                template as a reference, so you can play along!
+            </p>
 
-<h2>Picking up the pieces</h2>
+            <h2>Picking up the pieces</h2>
 
-In our **variables** section, let's write down information about all of the pieces, giving them each a:
+            <p>
+                In our <i>variables</i> section, let's write down information
+                about all of the pieces, giving them each a:
+            </p>
 
-- **Unique ID**: I like using the alphabet for this, so the first piece is A, second is B, and so on.
-- **Name**: This isn't always required, but if you're making a game like chess, it's handy to remember which piece is the knight, rook, etc.
-- **Starting X and Y**: When the game starts, where should this piece be placed?
-- **Current X and Y**: Where is the piece currently?
-- **Where can this piece move?**: This is where the most complex formulas are going to go, and I'll dedicate a whole section to it later on in this post. Leave it blank for now.
-- **Coordinates**: Combine the current X and Y values into a single, comma-separated string: "x,y"
-- **ID**: Just the piece's unique ID again
+            <ul>
+                <li>
+                    Unique ID: I like using the alphabet for this, so the first
+                    piece is A, second is B, and so on.
+                </li>
+                <li>
+                    Name: This isn't always required, but if you're making a
+                    game like chess, it's handy to remember which piece is the
+                    knight, rook, etc.
+                </li>
+                <li>
+                    Starting X and Y: When the game starts, where should this
+                    piece be placed?
+                </li>
+                <li>Current X and Y: Where is the piece currently?</li>
+                <li>
+                    Where can this piece move?: This is where the most complex
+                    formulas are going to go, and I'll dedicate a whole section
+                    to it later on in this post. Leave it blank for now.
+                </li>
+                <li>
+                    Coordinates: Combine the current X and Y values into a
+                    single, comma-separated string: "x,y"
+                </li>
+                <li>ID: Just the piece's unique ID again</li>
+            </ul>
 
-![Showing some example pieces using the layout above](https://cdn.zappy.app/8fcf0d9d5b40babb7f6a6afe8256ffc8.png)
+            <img
+                src="https://cdn.zappy.app/8fcf0d9d5b40babb7f6a6afe8256ffc8.png"
+            />
 
-While the Starting X and Y are static values that I've written in, the current X and Y will be variable. For now, let's set them to the starting values if the "reset" button (included in the template above) has been clicked:
+            <p>
+                While the Starting X and Y are static values that I've written
+                in, the current X and Y will be variable. For now, let's set
+                them to the starting values if the "reset" button (included in
+                the template above) has been clicked:
+            </p>
 
-```
+            <textarea readonly>
 =IF(reset,D27,F27)
-```
+</textarea
+            >
 
-Because of our layout, you can write that in the first "X" cell, then click-and-drag to apply it to the rest:
+            <p>
+                Because of our layout, you can write that in the first "X" cell,
+                then click-and-drag to apply it to the rest:
+            </p>
 
-![](https://cdn.zappy.app/439cbe3a84f6eeb0681f47967269bf88.gif)
+            <img
+                src="https://cdn.zappy.app/439cbe3a84f6eeb0681f47967269bf88.gif"
+            />
 
-Now that we have those set, we can start visualizing them on the board!
+            <p>
+                Now that we have those set, we can start visualizing them on the
+                board!
+            </p>
 
-First, click the "reset" button, so that the X and Y values update to match the starting cells. Then, in the "backstage screen", let's add a VLOOKUP formula in each cell. We're specifically going to try and find a match for the **Coordinates** column in our pieces, then return the ID. We placed those values to the right of the **X** and **Y** columns, to make sure we're always using the latest piece positions. 
+            <p>
+                First, click the "reset" button, so that the X and Y values
+                update to match the starting cells. Then, in the "backstage
+                screen", let's add a VLOOKUP formula in each cell. We're
+                specifically going to try and find a match for the
+                <i>Coordinates</i> column in our pieces, then return the ID. We
+                placed those values to the right of the <i>X</i> and
+                <i>Y</i> columns, to make sure we're always using the latest
+                piece positions.
+            </p>
 
-I've added a named range called 	`pieceCoordinates` that contains the **Coordinates** and **ID** columns for our pieces, to help write this VLOOKUP:
+            <p>
+                I've added a named range called
+                <code>pieceCoordinates</code> that contains the coordinates and
+                ID columns for our pieces, to help write this VLOOKUP:
 
-```
+                <textarea readonly>
 =IFNA(VLOOKUP(C$38&","&$B39,pieceCoordinates,2,FALSE),0)
-```
-
-The exact cell references may look slightly different based on your setup, but we're trying to match the numbers above and to the left of the "screen" with the X and Y of a piece:
-
-![](https://cdn.zappy.app/24c6d15e877706c4e83ff7c352d1ddc8.png)
-
-Using the dollar sign also keeps the **row** or **column** static in our formula, so you can click-and-drag the single formula across the whole board while ensuring their formulas continue to reference the correct X and Y values:
-
-![](https://cdn.zappy.app/1cca5d47dd65a28c118319298017a64a.gif)
-
-> **Note:** There are some cases where you'd want to use a QUERY formula instead of VLOOKUP, like I mentioned at the end of [Part 1](https://tyler.robertson.click/read/make-video-games-in-google-sheets-using-only-built-in-functions-(part-1)). The reason we're not using it here is that VLOOKUP is a "quicker" function. While QUERY has a lot of great features, it can sometimes cause your spreadsheet to slow down a little, so that not all of your spaces update in time. If you find that you don't like the VLOOKUP method, I encourage you to give QUERY a try!
-
-## Selecting pieces 
-
-What you should have now is a board that shows where the pieces are, and a "screen" of checkboxes, with calculations that let you see which space was clicked last.
-
-To move pieces around the board, we're first going to need to find the X and Y coordinates of that "clicked" space. There's a few ways to do this, but I've come to like this method:
-
-In the button calculation, let's turn the middle section, which checks to see if the left side is not equal to the right (check out my guide on buttons if you're lost), and turn it into either 1s or 0s. You can do that really quickly with the N formula, which turns TRUE into 1 and FALSE into 0. If you're using [this template](https://docs.google.com/spreadsheets/d/1bYZVRHZmQ39AmnjswI8hI9phnEmYcRGWcJkGXPFbb5w/copy), that formula is already added!
-
-
-This means that the most recent space the user has interacted with will show a 1, while the rest will show a 0. 
-
-![](https://cdn.zappy.app/e6c9dd173f27de8a6b6ea24471d515a5.png)
-
-And we can find the position of that space by JOINing the rows together, and FINDing the first "1". If none are found, let's return a blank instead:
-
-```
-=IFERROR(FIND("1",JOIN("",J8:Q8,J9:Q9,J10:Q10,J11:Q11,J12:Q12,J13:Q13,J14:Q14,J15:Q15)),"")
-```
-
-![](https://cdn.zappy.app/d333b90a1d75177e05155b63a0790ccd.png)
-
-"But Tyler," you may be thinking, "That only gives us a single number, not X and Y coordinates." And you would be right to think that! The number we see now is where the piece would be if we took the rows out of the board, and arranged them all in a straight line. To turn that back into our two-dimensional board, we can use some very special math. 
-
-To find the X position, we'll want to use the MOD (modulus) formula. This gives us the remainder left over when we divide two numbers. If we get the modulus of our new "selection" number and the width of our board, the result will be either the piece's X position on the board, or 0. If it's 0, that means we're on the right-hand side of the board, and should use the board's width instead. 
-
-I've gone ahead and saved a named range of the selection called `selection`, and here's what that looks like with our 8x8 example board:
-
-```
-=IF(selection="","",IF(MOD(selection,8)=0,8,MOD(selection,8)))
-```
-
-Our calculation for Y is much simpler, as we just want to divide the selection number by the board width, and use CEILING to round up:
-
-```
-=IF(selection="","",CEILING(selection/8))
-```
-
-Now we know exactly where the user is clicking on the board! And, because of that, we can learn which piece they're clicking on. To do that, let's add a QUERY formula that looks for any piece that matches the X and Y position of our latest selection. I've  added a named range for the `pieces` to help us locate that:
-
-```
-=IF(selection="","",IFNA(QUERY(pieces,"SELECT B WHERE F="&C23&" AND G="&D23&" LIMIT 1"),""))
-```
-
-![](https://cdn.zappy.app/b7baceba9315998e1d26dc32a6ff5e89.gif)
-
-Now we'll want to keep track of which piece we selected _previously_, so that we can see if that piece needs to move the next time the user clicks on the board.
-
-**Below** your piece information, add a new space for the **previously selected** piece. We'll use effectively the same QUERY formula as up above, but grab the piece **ID**, **Name**, **X**, **Y**, and **Can Move To** columns. This way, when our pieces are figuring out whether they need to move, they can look here to see if they were the most recently-selected piece.
-
-```
-=IFNA(QUERY(pieces,"SELECT B,C,F,G,H WHERE B='"&E23&"' LIMIT 1"),{"","","","",""})
-```
-
-![](https://cdn.zappy.app/8220d946e755d6cd2b8663f0e13dee73.png)
-
-Using that, we can go back through our X and Y columns in the `pieces` range, and update them to see whether that piece was selected previously, and if so, update the X and Y to match the new selection:
-
-```
-=IF(reset,D27,IF(lastSelection=$B27,C$23,F27))
-```
-
-**Now if we select a piece on the screen, then select another space, the piece will move!**
-
-I added a little bit of conditional formating here to help make it more obvious:
-
-![](https://cdn.zappy.app/6d16dc2ee1117193334483c2875a5e21.gif)
-
-## Determining where pieces can move
-
-After completing the last step, we can move a piece _anywhere_ on the board, including on top of other pieces. This is great if you're playing something free-form, or keeping track of your _Dungeons & Dragons_ characters virtually, but not so great if you want to play something with, you know, rules. 
-
-In this section, we're going to tell each piece where it can move to, and restrict them to just those spaces. 
-
-> This section takes a lot of patience and nesting IF statements. If you've been reading this post straight through, I'd recommend taking this opportunity to stretch and get a drink of water! 
-
-In the `pieces` range that we set aside, we've left the **Can Move To** column blank so far. That's because we're going to write formulas that take the current **X** and **Y** position of each piece, then determine rules that dictate where each piece can go. Based on those rules, we want a list of coordinates, listing each square the piece can move to.
-
-**Example:** Let's say we have a piece that can move one space in any orthogonal direction (up, down, left, right). If it is currently at **2,2**, we would want the "Can Move To" value for that piece to look something like this:
-
-```
-2,1;3,2;2,3;1,2;
-```
-
-That list contains the X and Y values of a space the piece can move to, with each pair separated by a semicolon (or any character of your choice). 
-
-To achieve that result, we're first going to create a new named range of our "backstage" screen, including the numbers on the left, and call it `board`:
-
-![](https://cdn.zappy.app/38272eba8fbbd029aa2bbc65faa90407.png)
-
-That's going to let us refer to spaces on the board in the next step, where we write a series of IF formulas that check the current piece, and see if the spaces it wants to move to are empty, to build out that list.
-
-The complexity of this can vary depending on what kind of game you're making. For example: in checkers, all of the pieces have the same rules for movement, but in chess they vary based on the type of piece. To help illustrate this, I'm going to write out the functions for two chess pieces: the **knight** and the **rook**. 
-
-### Example 1: The Knight
-
-In chess, the knight can move two spaces in any orthogonal direction, turn 90 degrees, then move one space in that direction. It can also "jump" over other pieces, meaning it won't matter if another piece gets in the way. Puzzles like [The Knight's Tour](https://compysando.itch.io/the-knights-tour) help illustrate its versatility really well.
-
-Because the knight doesn't care about other pieces, it's one of the simpler examples for our purposes. What we're going to do is write a series of IF statements that check to see whether a **destination** space is empty, and return the X,Y coordinates of that space if it is. We'll then use the `&` to concatenate all of the results into a list of coordinates. 
-
-Using our example template, I have the knight's X and Y positions in cells F28 and G28, respectively. Here's the formula for checking just one destination that is two spaces up and one space to the right of the piece's current position:
-
-```
-=IF(IFERROR(VLOOKUP(G28-2,board,F28+2)=0,FALSE),F28+1&","G28-2&";","")
-```
-
-A few things to note there:
-
-* We're performing a VLOOKUP formula to look at the board. This is why we include the numbers on the left in our named range, as that lets us use the piece's current Y position to find the right row, then locate the piece's X position in that row. 
-* We add an additional 1 to the piece's X in our VLOOKUP formula, to account for the numbers on the left. 
-* The IFERROR formula is included in case we try to look up a space that is not on the board, which would normally return an error in VLOOKUP.
-* If the space is not empty, or if VLOOKUP returns an error, we want to return a blank, or **""**. That way, we only list the viable spaces. 
-
-Using ampersands, we can concatenate that formula with 7 more just like it, to look at all of the spaces a knight _might_ move to:
-
-```
-=IF(IFERROR(VLOOKUP(G28-2,board,F28+2,FALSE)=0,FALSE),F28+1&","&G28-2&";","")
-&IF(IFERROR(VLOOKUP(G28-2,board,F28,FALSE)=0,FALSE),F28-1&","&G28-2&";","")
-&IF(IFERROR(VLOOKUP(G28-1,board,F28+3,FALSE)=0,FALSE),F28+2&","&G28-1&";","")
-&IF(IFERROR(VLOOKUP(G28-1,board,F28-1,FALSE)=0,FALSE),F28-2&","&G28-1&";","")
-&IF(IFERROR(VLOOKUP(G28+1,board,F28+3,FALSE)=0,FALSE),F28+2&","&G28+1&";","")
-&IF(IFERROR(VLOOKUP(G28+1,board,F28-1,FALSE)=0,FALSE),F28-2&","&G28+1&";","")
-&IF(IFERROR(VLOOKUP(G28+2,board,F28+2,FALSE)=0,FALSE),F28+1&","&G28+2&";","")
-&IF(IFERROR(VLOOKUP(G28+2,board,F28,FALSE)=0,FALSE),F28-1&","&G28+2&";","")
-```
-
-> To make this easier to read in Google Sheets, I like to add line returns within the formula, which you can do with `alt + enter`
-
-When we run this formula in our sheet, the list will update itself to match the spaces that the knight can move to, no matter where it is on the board:
-
-![](https://cdn.zappy.app/33f905124e6b3402ba99f02c14eae1ef.png)
-
-### Example 2: The Rook
-
-The rook is a _slightly_ more straightforward piece, as it can only move up, down, left, or right. However, it can move as many spaces as it wants _unless_ there is another piece in the way. This means that to determine where it can move, we need to look at each space in a certain direction, check if it is free, and stop if it is not. This is where we get into nested IF formulas! 
-
-Here is an example for the rook in my example board, which has its X and Y at cells F27 and G27, to check the two spaces to the right of it:
-
-```
-=IF(IFERROR(VLOOKUP(G27,board,F27+2)=0,FALSE),F27+1&","&G27&";"
-&IF(IFERROR(VLOOKUP(G27,board,F27+3)=0,FALSE),F27+2&","&G27&";"
-```
-
-Using this method, we check to see if the space to the piece's immediate right is free. If it is, we go on to check if the space to the right of _that_ is free, and so on. We keep adding to that list as far down as we want to go, and as soon as one IF runs into a piece or the edge of the board, the formula stops. 
-
-So far so good, right? OK, buckle in. Here's what it looks like when we check eight spaces in **each** direction the rook can go:
-
-```
-=IF(IFERROR(VLOOKUP(G27,board,F27+2,FALSE)=0,FALSE),F27+1&","&G27&";"
-&IF(IFERROR(VLOOKUP(G27,board,F27+3,FALSE)=0,FALSE),F27+2&","&G27&";"
-&IF(IFERROR(VLOOKUP(G27,board,F27+4,FALSE)=0,FALSE),F27+3&","&G27&";"
-&IF(IFERROR(VLOOKUP(G27,board,F27+5,FALSE)=0,FALSE),F27+4&","&G27&";"
-&IF(IFERROR(VLOOKUP(G27,board,F27+6,FALSE)=0,FALSE),F27+5&","&G27&";"
-&IF(IFERROR(VLOOKUP(G27,board,F27+7,FALSE)=0,FALSE),F27+6&","&G27&";"
-&IF(IFERROR(VLOOKUP(G27,board,F27+8,FALSE)=0,FALSE),F27+7&","&G27&";"
-&IF(IFERROR(VLOOKUP(G27,board,F27+9,FALSE)=0,FALSE),F27+8&","&G27&";"
-,""),""),""),""),""),""),""),"")
-&IF(IFERROR(VLOOKUP(G27,board,F27,FALSE)=0,FALSE),F27-1&","&G27&";"
-&IF(IFERROR(VLOOKUP(G27,board,F27-1,FALSE)=0,FALSE),F27-2&","&G27&";"
-&IF(IFERROR(VLOOKUP(G27,board,F27-2,FALSE)=0,FALSE),F27-3&","&G27&";"
-&IF(IFERROR(VLOOKUP(G27,board,F27-3,FALSE)=0,FALSE),F27-4&","&G27&";"
-&IF(IFERROR(VLOOKUP(G27,board,F27-4,FALSE)=0,FALSE),F27-5&","&G27&";"
-&IF(IFERROR(VLOOKUP(G27,board,F27-5,FALSE)=0,FALSE),F27-6&","&G27&";"
-&IF(IFERROR(VLOOKUP(G27,board,F27-6,FALSE)=0,FALSE),F27-7&","&G27&";"
-&IF(IFERROR(VLOOKUP(G27,board,F27-7,FALSE)=0,FALSE),F27-8&","&G27&";"
-,""),""),""),""),""),""),""),"")
-&IF(IFERROR(VLOOKUP(G27-1,board,F27+1,FALSE)=0,FALSE),F27&","&G27-1&";"
-&IF(IFERROR(VLOOKUP(G27-2,board,F27+1,FALSE)=0,FALSE),F27&","&G27-2&";"
-&IF(IFERROR(VLOOKUP(G27-3,board,F27+1,FALSE)=0,FALSE),F27&","&G27-3&";"
-&IF(IFERROR(VLOOKUP(G27-4,board,F27+1,FALSE)=0,FALSE),F27&","&G27-4&";"
-&IF(IFERROR(VLOOKUP(G27-5,board,F27+1,FALSE)=0,FALSE),F27&","&G27-5&";"
-&IF(IFERROR(VLOOKUP(G27-6,board,F27+1,FALSE)=0,FALSE),F27&","&G27-6&";"
-&IF(IFERROR(VLOOKUP(G27-7,board,F27+1,FALSE)=0,FALSE),F27&","&G27-7&";"
-&IF(IFERROR(VLOOKUP(G27-8,board,F27+1,FALSE)=0,FALSE),F27&","&G27-8&";"
-,""),""),""),""),""),""),""),"")
-&IF(IFERROR(VLOOKUP(G27+1,board,F27+1,FALSE)=0,FALSE),F27&","&G27+1&";"
-&IF(IFERROR(VLOOKUP(G27+2,board,F27+1,FALSE)=0,FALSE),F27&","&G27+2&";"
-&IF(IFERROR(VLOOKUP(G27+3,board,F27+1,FALSE)=0,FALSE),F27&","&G27+3&";"
-&IF(IFERROR(VLOOKUP(G27+4,board,F27+1,FALSE)=0,FALSE),F27&","&G27+4&";"
-&IF(IFERROR(VLOOKUP(G27+5,board,F27+1,FALSE)=0,FALSE),F27&","&G27+5&";"
-&IF(IFERROR(VLOOKUP(G27+6,board,F27+1,FALSE)=0,FALSE),F27&","&G27+6&";"
-&IF(IFERROR(VLOOKUP(G27+7,board,F27+1,FALSE)=0,FALSE),F27&","&G27+7&";"
-&IF(IFERROR(VLOOKUP(G27+8,board,F27+1,FALSE)=0,FALSE),F27&","&G27+8&";"
-,""),""),""),""),""),""),""),"")
-```
-
-_Whew_. 
-
-All things considered, that actually isn't that bad. In [Spreadsheet Tactics](https://docs.google.com/spreadsheets/d/18llr1p10M1ldWhQNVXM19rQSeJdRRi0sRzQ4q0aoKrc/copy), my turn-based tactics game, I wanted to account for walls and moving around corners, so each piece has **125** nested IF formulas. [Here's a Twitter thread with a rough illustration](https://twitter.com/aTylerRobertson/status/1390978272687710208).
-
-### Restricting movement
-
-Now that we know where our pieces can move to, we want to update the formulas in our X and Y columns, so that they update **only if**:
-
-* The piece is selected
-
-**_AND_**
-
-* The space we clicked on is a space that the piece can move to
-
-We already have the first part taken care of from earlier. Here's what that formula looks like right now for the rook:
-
-```
-=IF(reset,D27,IF(lastSelection=$B27,C$23,F27))
-```
-
-To only let the rook move if they "Can Move To" the space, let's add an AND and FIND formula:
-
-```
-=IF(reset,D27,IF(AND(lastSelection=$B27,IFERROR(FIND($C$23&","&$D$23,$H27)>-1,FALSE)),C$23,F27))
-```
-
-That way, if I try to move the rook diagonally... well, I can't.
-
-![](https://cdn.zappy.app/bee1e464eaeaa91666ccb2f4b48e274f.gif)
-
-Spend some time writing rules for where all of your pieces can go, and you've got 90% of a real working board game!
-
-## Making it look good
-
-The final 10% here is the aesthetics, and, _I know_. It's a spreadsheet. There's only so much we can do. 
-
-_But!_ We're going to do our best. 
-
-The name of the game here is **Conditional Formatting**, and we're going to use it to color in the pieces and the spaces they can move it to. You may have done this already to point out which spaces have pieces, using a formula that checks whether the corresponding "backstage" space is not 0:
-
-```
-=C39<>0
-```
-
-![](https://cdn.zappy.app/52ecb655354a18e76cbbb003b14df75b.png)
-
-We can hide the checkboxes by setting their font size to 100, and setting the colors to _slight_ variations of each other. As an example, I'm using the **custom** option to set the background to `#3c78d8` and the font color to `#3d79d9`:
-
-![](https://cdn.zappy.app/841da6b16dec076dbe2d9876da701d86.png)
-
-To highlight spaces the piece can move to, we'll revisit the FIND formula that restricts each piece's movement, and compare the X and Y of the corresponding "backstage" piece against the current selection's "Can Move To" list:
-
-```
-=FIND(C$38&","&$B39,$F$35)>-1
-```
-
-We can use a lighter color to point those out:
-
-![](https://cdn.zappy.app/0cf4f82f28dfa8b45bf705093e784097.png)
-
-Now when we click on a piece, we can see where it can move to, and move it there! 
-
-![](https://cdn.zappy.app/6473e18ae4d79f427d1f685cd919bba8.gif)
-
-To hide the spaces you've clicked on previously, set the whole board to `#fefefe` and `#ffffff`:
-
-![](https://cdn.zappy.app/fc33b045aa47c746f51eb70db8acf84d.png)
-
-Add a border around the board and hide any rows that you don't want the player to see, and you're ready to go! [Here's a copy of my example, with the rook and knight ready to go](https://docs.google.com/spreadsheets/d/1K8Mh8UsC2UYAYhxUcit9D1_Lt15s93g5rKp48Adf7eY/copy).
-
-## Taking it further
-
-Now that you've got pieces moving around the board successfully, here are some ideas you can explore on your way towards building a full game:
-
-* Assign pieces to different teams, and give each team a different color
-* Let pieces "capture" other pieces
-* Let pieces move, then perform a different action
-* Make some pieces move on their own
-
-Here are some things I've made using those ideas!
-
-* [Chess](https://docs.google.com/spreadsheets/d/1yZ1PL-24keRTKFQdeIKPULiLR-poIGfCTMRWcOw1uqA/copy)
-* [Checkers/Draughts](https://docs.google.com/spreadsheets/d/1INkUBJtp8P9UtyctqEl_YqYQdGpKg2A1ZPhBm7LTh5Y/copy)
-* [Spreadsheet Tactics](https://docs.google.com/spreadsheets/d/18llr1p10M1ldWhQNVXM19rQSeJdRRi0sRzQ4q0aoKrc/copy)
+</textarea
+                >
+            </p>
+
+            <p>
+                The exact cell references may look slightly different based on
+                your setup, but we're trying to match the numbers above and to
+                the left of the "screen" with the X and Y of a piece:
+            </p>
+
+            <img
+                src="https://cdn.zappy.app/24c6d15e877706c4e83ff7c352d1ddc8.png"
+            />
+
+            <p>
+                Using the dollar sign also keeps the row or column static in our
+                formula, so you can click-and-drag the single formula across the
+                whole board while ensuring their formulas continue to reference
+                the correct X and Y values:
+            </p>
+
+            <img
+                src="https://cdn.zappy.app/1cca5d47dd65a28c118319298017a64a.gif"
+            />
+
+            <blockquote>
+                <b>Note:</b> There are some cases where you'd want to use a
+                QUERY formula instead of VLOOKUP. The reason we're not using it
+                here is that VLOOKUP is a "quicker" function. While QUERY has a
+                lot of great features, it can sometimes cause your spreadsheet
+                to slow down a little, so that not all of your spaces update in
+                time. If you find that you don't like the VLOOKUP method, I
+                encourage you to give QUERY a try!
+            </blockquote>
+
+            <h2>Selecting pieces</h2>
+
+            <p>
+                What you should have now is a board that shows where the pieces
+                are, and a "screen" of checkboxes, with calculations that let
+                you see which space was clicked last. To move pieces around the
+                board, we're first going to need to find the X and Y coordinates
+                of that "clicked" space. There's a few ways to do this, but I've
+                come to like this method:</p> 
+                <p>In the button calculation, let's turn
+                the middle section, which checks to see if the left side is not
+                equal to the right (check out my guide on buttons if you're
+                lost), and turn it into either 1s or 0s. You can do that really
+                quickly with the N formula, which turns TRUE into 1 and FALSE
+                into 0. If you're using <a href="https://docs.google.com/spreadsheets/d/1bYZVRHZmQ39AmnjswI8hI9phnEmYcRGWcJkGXPFbb5w/copy">this
+                template</a>,
+                that formula is already added! This means that the most recent
+                space the user has interacted with will show a 1, while the rest
+                will show a 0.</p>
+
+                <img src="https://cdn.zappy.app/e6c9dd173f27de8a6b6ea24471d515a5.png" />
+
+                <p>And we can find the position of that space by JOINing the rows
+                together, and FINDing the first "1". If none are found, let's
+                return a blank instead:</p> 
+                
+                <textarea readonly>
+                =IFERROR(FIND("1",JOIN("",J8:Q8,J9:Q9,J10:Q10,J11:Q11,J12:Q12,J13:Q13,J14:Q14,J15:Q15)),"")
+                </textarea>
+
+                <img src="https://cdn.zappy.app/d333b90a1d75177e05155b63a0790ccd.png" />
+
+                <p><"But Tyler," you may be thinking, "That only gives us a single
+                number, not X and Y coordinates." And you would be right to
+                think that! The number we see now is where the piece would be if
+                we took the rows out of the board, and arranged them all in a
+                straight line. To turn that back into our two-dimensional board,
+                we can use some very special math.</p>
+                <p>To find the X position, we'll
+                want to use the MOD (modulus) formula. This gives us the
+                remainder left over when we divide two numbers. If we get the
+                modulus of our new "selection" number and the width of our
+                board, the result will be either the piece's X position on the
+                board, or 0. If it's 0, that means we're on the right-hand side
+                of the board, and should use the board's width instead. I've
+                gone ahead and saved a named range of the selection called
+                <code>selection</code>, and here's what that looks like with our 8x8
+                example board:</p>
+                
+                 ```
+                =IF(selection="","",IF(MOD(selection,8)=0,8,MOD(selection,8)))
+                ``` Our calculation for Y is much simpler, as we just want to
+                divide the selection number by the board width, and use CEILING
+                to round up: ``` =IF(selection="","",CEILING(selection/8)) ```
+                Now we know exactly where the user is clicking on the board!
+                And, because of that, we can learn which piece they're clicking
+                on. To do that, let's add a QUERY formula that looks for any
+                piece that matches the X and Y position of our latest selection.
+                I've added a named range for the `pieces` to help us locate
+                that: ``` =IF(selection="","",IFNA(QUERY(pieces,"SELECT B WHERE
+                F="&C23&" AND G="&D23&" LIMIT 1"),"")) ```
+                ![](https://cdn.zappy.app/b7baceba9315998e1d26dc32a6ff5e89.gif)
+                Now we'll want to keep track of which piece we selected
+                _previously_, so that we can see if that piece needs to move the
+                next time the user clicks on the board. **Below** your piece
+                information, add a new space for the **previously selected**
+                piece. We'll use effectively the same QUERY formula as up above,
+                but grab the piece **ID**, **Name**, **X**, **Y**, and **Can
+                Move To** columns. This way, when our pieces are figuring out
+                whether they need to move, they can look here to see if they
+                were the most recently-selected piece. ```
+                =IFNA(QUERY(pieces,"SELECT B,C,F,G,H WHERE B='"&E23&"' LIMIT
+                1"),{"","","","",""}) ```
+                ![](https://cdn.zappy.app/8220d946e755d6cd2b8663f0e13dee73.png)
+                Using that, we can go back through our X and Y columns in the
+                `pieces` range, and update them to see whether that piece was
+                selected previously, and if so, update the X and Y to match the
+                new selection: ```
+                =IF(reset,D27,IF(lastSelection=$B27,C$23,F27)) ``` **Now if we
+                select a piece on the screen, then select another space, the
+                piece will move!** I added a little bit of conditional formating
+                here to help make it more obvious:
+                ![](https://cdn.zappy.app/6d16dc2ee1117193334483c2875a5e21.gif)
+                ## Determining where pieces can move After completing the last
+                step, we can move a piece _anywhere_ on the board, including on
+                top of other pieces. This is great if you're playing something
+                free-form, or keeping track of your _Dungeons & Dragons_
+                characters virtually, but not so great if you want to play
+                something with, you know, rules. In this section, we're going to
+                tell each piece where it can move to, and restrict them to just
+                those spaces. > This section takes a lot of patience and nesting
+                IF statements. If you've been reading this post straight
+                through, I'd recommend taking this opportunity to stretch and
+                get a drink of water! In the `pieces` range that we set aside,
+                we've left the **Can Move To** column blank so far. That's
+                because we're going to write formulas that take the current
+                **X** and **Y** position of each piece, then determine rules
+                that dictate where each piece can go. Based on those rules, we
+                want a list of coordinates, listing each square the piece can
+                move to. **Example:** Let's say we have a piece that can move
+                one space in any orthogonal direction (up, down, left, right).
+                If it is currently at **2,2**, we would want the "Can Move To"
+                value for that piece to look something like this: ```
+                2,1;3,2;2,3;1,2; ``` That list contains the X and Y values of a
+                space the piece can move to, with each pair separated by a
+                semicolon (or any character of your choice). To achieve that
+                result, we're first going to create a new named range of our
+                "backstage" screen, including the numbers on the left, and call
+                it `board`:
+                ![](https://cdn.zappy.app/38272eba8fbbd029aa2bbc65faa90407.png)
+                That's going to let us refer to spaces on the board in the next
+                step, where we write a series of IF formulas that check the
+                current piece, and see if the spaces it wants to move to are
+                empty, to build out that list. The complexity of this can vary
+                depending on what kind of game you're making. For example: in
+                checkers, all of the pieces have the same rules for movement,
+                but in chess they vary based on the type of piece. To help
+                illustrate this, I'm going to write out the functions for two
+                chess pieces: the **knight** and the **rook**. ### Example 1:
+                The Knight In chess, the knight can move two spaces in any
+                orthogonal direction, turn 90 degrees, then move one space in
+                that direction. It can also "jump" over other pieces, meaning it
+                won't matter if another piece gets in the way. Puzzles like [The
+                Knight's Tour](https://compysando.itch.io/the-knights-tour) help
+                illustrate its versatility really well. Because the knight
+                doesn't care about other pieces, it's one of the simpler
+                examples for our purposes. What we're going to do is write a
+                series of IF statements that check to see whether a
+                **destination** space is empty, and return the X,Y coordinates
+                of that space if it is. We'll then use the `&` to concatenate
+                all of the results into a list of coordinates. Using our example
+                template, I have the knight's X and Y positions in cells F28 and
+                G28, respectively. Here's the formula for checking just one
+                destination that is two spaces up and one space to the right of
+                the piece's current position: ```
+                =IF(IFERROR(VLOOKUP(G28-2,board,F28+2)=0,FALSE),F28+1&","G28-2&";","")
+                ``` A few things to note there: * We're performing a VLOOKUP
+                formula to look at the board. This is why we include the numbers
+                on the left in our named range, as that lets us use the piece's
+                current Y position to find the right row, then locate the
+                piece's X position in that row. * We add an additional 1 to the
+                piece's X in our VLOOKUP formula, to account for the numbers on
+                the left. * The IFERROR formula is included in case we try to
+                look up a space that is not on the board, which would normally
+                return an error in VLOOKUP. * If the space is not empty, or if
+                VLOOKUP returns an error, we want to return a blank, or **""**.
+                That way, we only list the viable spaces. Using ampersands, we
+                can concatenate that formula with 7 more just like it, to look
+                at all of the spaces a knight _might_ move to: ```
+                =IF(IFERROR(VLOOKUP(G28-2,board,F28+2,FALSE)=0,FALSE),F28+1&","&G28-2&";","")
+                &IF(IFERROR(VLOOKUP(G28-2,board,F28,FALSE)=0,FALSE),F28-1&","&G28-2&";","")
+                &IF(IFERROR(VLOOKUP(G28-1,board,F28+3,FALSE)=0,FALSE),F28+2&","&G28-1&";","")
+                &IF(IFERROR(VLOOKUP(G28-1,board,F28-1,FALSE)=0,FALSE),F28-2&","&G28-1&";","")
+                &IF(IFERROR(VLOOKUP(G28+1,board,F28+3,FALSE)=0,FALSE),F28+2&","&G28+1&";","")
+                &IF(IFERROR(VLOOKUP(G28+1,board,F28-1,FALSE)=0,FALSE),F28-2&","&G28+1&";","")
+                &IF(IFERROR(VLOOKUP(G28+2,board,F28+2,FALSE)=0,FALSE),F28+1&","&G28+2&";","")
+                &IF(IFERROR(VLOOKUP(G28+2,board,F28,FALSE)=0,FALSE),F28-1&","&G28+2&";","")
+                ``` > To make this easier to read in Google Sheets, I like to
+                add line returns within the formula, which you can do with `alt
+                + enter` When we run this formula in our sheet, the list will
+                update itself to match the spaces that the knight can move to,
+                no matter where it is on the board:
+                ![](https://cdn.zappy.app/33f905124e6b3402ba99f02c14eae1ef.png)
+                ### Example 2: The Rook The rook is a _slightly_ more
+                straightforward piece, as it can only move up, down, left, or
+                right. However, it can move as many spaces as it wants _unless_
+                there is another piece in the way. This means that to determine
+                where it can move, we need to look at each space in a certain
+                direction, check if it is free, and stop if it is not. This is
+                where we get into nested IF formulas! Here is an example for the
+                rook in my example board, which has its X and Y at cells F27 and
+                G27, to check the two spaces to the right of it: ```
+                =IF(IFERROR(VLOOKUP(G27,board,F27+2)=0,FALSE),F27+1&","&G27&";"
+                &IF(IFERROR(VLOOKUP(G27,board,F27+3)=0,FALSE),F27+2&","&G27&";"
+                ``` Using this method, we check to see if the space to the
+                piece's immediate right is free. If it is, we go on to check if
+                the space to the right of _that_ is free, and so on. We keep
+                adding to that list as far down as we want to go, and as soon as
+                one IF runs into a piece or the edge of the board, the formula
+                stops. So far so good, right? OK, buckle in. Here's what it
+                looks like when we check eight spaces in **each** direction the
+                rook can go: ```
+                =IF(IFERROR(VLOOKUP(G27,board,F27+2,FALSE)=0,FALSE),F27+1&","&G27&";"
+                &IF(IFERROR(VLOOKUP(G27,board,F27+3,FALSE)=0,FALSE),F27+2&","&G27&";"
+                &IF(IFERROR(VLOOKUP(G27,board,F27+4,FALSE)=0,FALSE),F27+3&","&G27&";"
+                &IF(IFERROR(VLOOKUP(G27,board,F27+5,FALSE)=0,FALSE),F27+4&","&G27&";"
+                &IF(IFERROR(VLOOKUP(G27,board,F27+6,FALSE)=0,FALSE),F27+5&","&G27&";"
+                &IF(IFERROR(VLOOKUP(G27,board,F27+7,FALSE)=0,FALSE),F27+6&","&G27&";"
+                &IF(IFERROR(VLOOKUP(G27,board,F27+8,FALSE)=0,FALSE),F27+7&","&G27&";"
+                &IF(IFERROR(VLOOKUP(G27,board,F27+9,FALSE)=0,FALSE),F27+8&","&G27&";"
+                ,""),""),""),""),""),""),""),"")
+                &IF(IFERROR(VLOOKUP(G27,board,F27,FALSE)=0,FALSE),F27-1&","&G27&";"
+                &IF(IFERROR(VLOOKUP(G27,board,F27-1,FALSE)=0,FALSE),F27-2&","&G27&";"
+                &IF(IFERROR(VLOOKUP(G27,board,F27-2,FALSE)=0,FALSE),F27-3&","&G27&";"
+                &IF(IFERROR(VLOOKUP(G27,board,F27-3,FALSE)=0,FALSE),F27-4&","&G27&";"
+                &IF(IFERROR(VLOOKUP(G27,board,F27-4,FALSE)=0,FALSE),F27-5&","&G27&";"
+                &IF(IFERROR(VLOOKUP(G27,board,F27-5,FALSE)=0,FALSE),F27-6&","&G27&";"
+                &IF(IFERROR(VLOOKUP(G27,board,F27-6,FALSE)=0,FALSE),F27-7&","&G27&";"
+                &IF(IFERROR(VLOOKUP(G27,board,F27-7,FALSE)=0,FALSE),F27-8&","&G27&";"
+                ,""),""),""),""),""),""),""),"")
+                &IF(IFERROR(VLOOKUP(G27-1,board,F27+1,FALSE)=0,FALSE),F27&","&G27-1&";"
+                &IF(IFERROR(VLOOKUP(G27-2,board,F27+1,FALSE)=0,FALSE),F27&","&G27-2&";"
+                &IF(IFERROR(VLOOKUP(G27-3,board,F27+1,FALSE)=0,FALSE),F27&","&G27-3&";"
+                &IF(IFERROR(VLOOKUP(G27-4,board,F27+1,FALSE)=0,FALSE),F27&","&G27-4&";"
+                &IF(IFERROR(VLOOKUP(G27-5,board,F27+1,FALSE)=0,FALSE),F27&","&G27-5&";"
+                &IF(IFERROR(VLOOKUP(G27-6,board,F27+1,FALSE)=0,FALSE),F27&","&G27-6&";"
+                &IF(IFERROR(VLOOKUP(G27-7,board,F27+1,FALSE)=0,FALSE),F27&","&G27-7&";"
+                &IF(IFERROR(VLOOKUP(G27-8,board,F27+1,FALSE)=0,FALSE),F27&","&G27-8&";"
+                ,""),""),""),""),""),""),""),"")
+                &IF(IFERROR(VLOOKUP(G27+1,board,F27+1,FALSE)=0,FALSE),F27&","&G27+1&";"
+                &IF(IFERROR(VLOOKUP(G27+2,board,F27+1,FALSE)=0,FALSE),F27&","&G27+2&";"
+                &IF(IFERROR(VLOOKUP(G27+3,board,F27+1,FALSE)=0,FALSE),F27&","&G27+3&";"
+                &IF(IFERROR(VLOOKUP(G27+4,board,F27+1,FALSE)=0,FALSE),F27&","&G27+4&";"
+                &IF(IFERROR(VLOOKUP(G27+5,board,F27+1,FALSE)=0,FALSE),F27&","&G27+5&";"
+                &IF(IFERROR(VLOOKUP(G27+6,board,F27+1,FALSE)=0,FALSE),F27&","&G27+6&";"
+                &IF(IFERROR(VLOOKUP(G27+7,board,F27+1,FALSE)=0,FALSE),F27&","&G27+7&";"
+                &IF(IFERROR(VLOOKUP(G27+8,board,F27+1,FALSE)=0,FALSE),F27&","&G27+8&";"
+                ,""),""),""),""),""),""),""),"") ``` _Whew_. All things
+                considered, that actually isn't that bad. In [Spreadsheet
+                Tactics](https://docs.google.com/spreadsheets/d/18llr1p10M1ldWhQNVXM19rQSeJdRRi0sRzQ4q0aoKrc/copy),
+                my turn-based tactics game, I wanted to account for walls and
+                moving around corners, so each piece has **125** nested IF
+                formulas. [Here's a Twitter thread with a rough
+                illustration](https://twitter.com/aTylerRobertson/status/1390978272687710208).
+                ### Restricting movement Now that we know where our pieces can
+                move to, we want to update the formulas in our X and Y columns,
+                so that they update **only if**: * The piece is selected
+                **_AND_** * The space we clicked on is a space that the piece
+                can move to We already have the first part taken care of from
+                earlier. Here's what that formula looks like right now for the
+                rook: ``` =IF(reset,D27,IF(lastSelection=$B27,C$23,F27)) ``` To
+                only let the rook move if they "Can Move To" the space, let's
+                add an AND and FIND formula: ```
+                =IF(reset,D27,IF(AND(lastSelection=$B27,IFERROR(FIND($C$23&","&$D$23,$H27)>-1,FALSE)),C$23,F27))
+                ``` That way, if I try to move the rook diagonally... well, I
+                can't.
+                ![](https://cdn.zappy.app/bee1e464eaeaa91666ccb2f4b48e274f.gif)
+                Spend some time writing rules for where all of your pieces can
+                go, and you've got 90% of a real working board game! ## Making
+                it look good The final 10% here is the aesthetics, and, _I
+                know_. It's a spreadsheet. There's only so much we can do.
+                _But!_ We're going to do our best. The name of the game here is
+                **Conditional Formatting**, and we're going to use it to color
+                in the pieces and the spaces they can move it to. You may have
+                done this already to point out which spaces have pieces, using a
+                formula that checks whether the corresponding "backstage" space
+                is not 0: ``` =C39<>0 ```
+                ![](https://cdn.zappy.app/52ecb655354a18e76cbbb003b14df75b.png)
+                We can hide the checkboxes by setting their font size to 100,
+                and setting the colors to _slight_ variations of each other. As
+                an example, I'm using the **custom** option to set the
+                background to `#3c78d8` and the font color to `#3d79d9`:
+                ![](https://cdn.zappy.app/841da6b16dec076dbe2d9876da701d86.png)
+                To highlight spaces the piece can move to, we'll revisit the
+                FIND formula that restricts each piece's movement, and compare
+                the X and Y of the corresponding "backstage" piece against the
+                current selection's "Can Move To" list: ```
+                =FIND(C$38&","&$B39,$F$35)>-1 ``` We can use a lighter color to
+                point those out:
+                ![](https://cdn.zappy.app/0cf4f82f28dfa8b45bf705093e784097.png)
+                Now when we click on a piece, we can see where it can move to,
+                and move it there!
+                ![](https://cdn.zappy.app/6473e18ae4d79f427d1f685cd919bba8.gif)
+                To hide the spaces you've clicked on previously, set the whole
+                board to `#fefefe` and `#ffffff`:
+                ![](https://cdn.zappy.app/fc33b045aa47c746f51eb70db8acf84d.png)
+                Add a border around the board and hide any rows that you don't
+                want the player to see, and you're ready to go! [Here's a copy
+                of my example, with the rook and knight ready to
+                go](https://docs.google.com/spreadsheets/d/1K8Mh8UsC2UYAYhxUcit9D1_Lt15s93g5rKp48Adf7eY/copy).
+                ## Taking it further Now that you've got pieces moving around
+                the board successfully, here are some ideas you can explore on
+                your way towards building a full game: * Assign pieces to
+                different teams, and give each team a different color * Let
+                pieces "capture" other pieces * Let pieces move, then perform a
+                different action * Make some pieces move on their own Here are
+                some things I've made using those ideas! *
+                [Chess](https://docs.google.com/spreadsheets/d/1yZ1PL-24keRTKFQdeIKPULiLR-poIGfCTMRWcOw1uqA/copy)
+                *
+                [Checkers/Draughts](https://docs.google.com/spreadsheets/d/1INkUBJtp8P9UtyctqEl_YqYQdGpKg2A1ZPhBm7LTh5Y/copy)
+                * [Spreadsheet
+                Tactics](https://docs.google.com/spreadsheets/d/18llr1p10M1ldWhQNVXM19rQSeJdRRi0sRzQ4q0aoKrc/copy)
+            </p>
+        </main>
+    </body>
+</html>
