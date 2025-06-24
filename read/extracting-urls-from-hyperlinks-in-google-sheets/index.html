@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <title>Extracting URLs from Hyperlinks in Google Sheets - Tyler Robertson</title>
+        <meta name="author" content="Tyler Robertson" />
+        <style type="text/css">
+            body {
+                background-color: whitesmoke;
+                color: black;
+                font-size: 120%;
+            }
+            main {
+                width: 700px;
+                max-width: 90vw;
+                margin: 30px auto;
+                line-height: 1.7rem;
+            }
+            h1 {
+                line-height: 2.5rem;
+            }
+            textarea {
+                width: 100%;
+                min-height: 100px;
+                margin: 1rem 0;
+            }
+            img {
+                width: 100%;
+                margin: 1rem 0;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <h1>Extracting URLs from hyperlinks in Google Sheets</h1>
+
+<p>I pretty purposefully try to avoid Google Apps Script unless I <i>absolutely need</i> to use it, and while helping a friend with Google Sheets today I found one such need: <i>how can you get the URL of a hyperlink that</i> wasn't <i>made with the HYPERLINK() function?</i></p>
+
+<img src="./1.png" /> 
+
+<p>Because the link is part of the "rich text" in the cell, it's not something that standard Google Sheets functions can extract (or even see). To fix that, here's a handy bit of script copied/conglomerated from a few Stack Overflow threads (<a href="https://stackoverflow.com/questions/35230764/how-to-extract-url-from-link-in-google-sheets-using-a-formula">like this one!</a>).</p>
+
+<textarea readonly>
+function GETLINK(input){
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var range = sheet.getRange(input);
+  var value = range.getRichTextValue();
+  var url = value.getLinkUrl();
+  return url;
+}
+</textarea>
+
+You can add it to your sheet by going to <i>Extensions > Apps Script</i>, which will open a code editor.
+
+<img src="./2.png" />
+
+<img src="./3.png" />
+
+<p>When you add a function in that code, it becomes available as a function in your spreadsheet. So if you paste in the above code (and save your changes), you can use <code>=GETLINK("A2")</code> to get the URL from a hyperlinked value in cell A2.</p>
+
+<img src="./4.png" />
+
+<p>Note that the input <b>does</b> need to be in double quotes, which is unlike a lot of Google Sheets formulas. That's because when you insert the cell reference (sans quotes), Google Sheets tries to send the contents of that cell into the formula instead, minus the rich text formatting and hyperlink that we actually need. If the cell you want to pull the URL from needs to be variable, you can try <code>=GETLINK(CELL("Address",A2))</code> to achieve the same thing.</p>
+
+<p>If you run into cases where the function returns a blank cell, that usually means that the original text has multiple hyperlinks applied, or is formatted in some other weird way (this happens a lot if you are copy/pasting from websites like we were). In those cases, changing <code>value.getLinkUrl()</code> to <code>value.getLinkUrl(0,1)</code> tends to help solve it; that tells the function to look at just the first character in the input, and return whatever hyperlink was applied there.</p>
+        </main>
+    </body>
+</html>
