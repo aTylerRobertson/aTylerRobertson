@@ -13,20 +13,16 @@
             }
 
             main {
-                display: flex;
-                flex-direction: column;
-                flex-wrap: wrap;
-                max-height: 100vh;
-            }
-
-            section {
-                flex: 1;
-                padding-bottom: 2rem;
-                max-width: 400px;
+                display: grid;
+                gap: 1rem;
+                grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                grid-template-rows: masonry;
+                margin: 2rem auto;
             }
 
             li {
                 margin-bottom: 1rem;
+                line-height: 1.5rem;
             }
 
             a,
@@ -39,18 +35,27 @@
                 color: slateblue;
             }
 
-            h1 {
-                margin: 0;
-            }
-
             i {
                 margin-left: 2rem;
             }
 
             h1,
-            h2 {
+            legend {
                 color: darkolivegreen;
                 font-family: sans-serif;
+            }
+
+            h1 {
+                margin: 0;
+            }
+
+            legend {
+                font-size: 1.75rem;
+                font-weight: 600;
+            }
+
+            fieldset {
+                border-color: darkolivegreen;
             }
         </style>
     </head>
@@ -58,8 +63,8 @@
         <h1>Tyler Robertson</h1>
         <i>they/them &CenterDot; london, uk</i>
         <main>
-            <section>
-                <h2>Links</h2>
+            <fieldset>
+                <legend>Links</legend>
                 <ul>
                     <li>
                         <a href="mailto:aTylerRobertson+website@gmail.com"
@@ -75,9 +80,9 @@
                         >
                     </li>
                 </ul>
-            </section>
-            <section>
-                <h2>Useful things</h2>
+            </fieldset>
+            <fieldset>
+                <legend>Useful things</legend>
                 <ul>
                     <li>
                         <a href="./use/color-ringlight/">Browser ringlight</a>
@@ -107,9 +112,9 @@
                         >
                     </li>
                 </ul>
-            </section>
-            <section>
-                <h2>Games & toys</h2>
+            </fieldset>
+            <fieldset>
+                <legend>Games & toys</legend>
                 <ul>
                     <li>
                         <a
@@ -144,9 +149,9 @@
                         >
                     </li>
                 </ul>
-            </section>
-            <section>
-                <h2>Words</h2>
+            </fieldset>
+            <fieldset>
+                <legend>Words</legend>
                 <ul>
                     <li>
                         <a
@@ -172,7 +177,7 @@
                         >
                     </li>
                 </ul>
-            </section>
+            </fieldset>
         </main>
     </body>
 </html>
