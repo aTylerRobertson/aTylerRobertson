@@ -53,9 +53,7 @@
             B+C, but not A+B or A+C. Cell A, for all intents and purposes,
             <i>doesn't know its own value</i> unless we turn on Iterative
             Calculation.
-            <img
-                src="https://cdn.zappy.app/64a245dd4e12ddf7b0c28d11ef808cba.png"
-            />
+            <img src="./1.png" />
             <p>
                 With that setting enabled, we can set A to A+B, A+C, A+1, or any
                 combination of functions involving itself. I could, for example,
@@ -151,9 +149,7 @@
                 Sometimes that is what you want, though, so I encourage you to
                 play around.
             </p>
-            <img
-                src="https://cdn.zappy.app/6aa19ad114a749c2dc02aa33ff3c0e61.png"
-            />
+            <img src="./2.png" />
             <p>
                 Once I have my blank canvas, I'll set aside at least a few rows
                 each for the following sections, in this order:
@@ -163,11 +159,7 @@
                     Static values that never change, or will only change
                     manually
                 </li>
-                <li>
-                    Checking whether any
-                    [buttons](https://tyler.robertson.click/read/how-i-turn-google-sheets-checkboxes-into-buttons)
-                    have been pressed
-                </li>
+                <li>Checking whether any buttons have been pressed</li>
                 <li>
                     Information about the on-screen "actors", like the player
                     character or their enemies
@@ -201,9 +193,7 @@
                 Let's start with using buttons to move a character around a
                 screen.
             </p>
-            <img
-                src="https://cdn.zappy.app/9f957db47698e69a30ad203f799657a5.gif"
-            />
+            <img src="./3.gif" />
             <p>
                 I'll go through each of the sections I outlined above, and
                 <a
@@ -218,9 +208,7 @@
                 width and height of our "screen", and how we want the player
                 character to appear:
             </p>
-            <img
-                src="https://cdn.zappy.app/1c1798101a537e99bafe73b659038c7a.png"
-            />
+            <img src="./4.png" />
             <p>
                 Note I'm not worrying about which order these values go in, or
                 using every available space. The important thing here is that
@@ -241,9 +229,7 @@
                 <i>Tick box</i>) further below, which will get pushed down to
                 the "screen" level in step 5.
             </p>
-            <img
-                src="https://cdn.zappy.app/f50577b88e6f806a7bf7c65a327d79aa.png"
-            />
+            <img src="./5.png" />
             <p>
                 I always like to add a "reset" button to my games just in case
                 the player gets stuck or something breaks. This is also a great
@@ -253,9 +239,7 @@
                 the <i>middle</i> true/false value that tells us whether the
                 button was just pressed:
             </p>
-            <img
-                src="https://cdn.zappy.app/c682edef916b76898472f7dcd4ade73e.png"
-            />
+            <img src="./6.png" />
             <h3>3. Variables</h3>
             <p>
                 In this section, we'll list everything that might change when
@@ -295,9 +279,7 @@
                 whatever, but this is how most game-making apps think about it,
                 so I'm sticking to convention.)
             </p>
-            <img
-                src="https://cdn.zappy.app/74718d33cac4a18609aa42330ec0cf83.gif"
-            />
+            <img src="./7.gif" />
             <h3>4. The "backstage" screen</h3>
             <p>
                 Now that we've got buttons that move numbers around, we'll want
@@ -306,17 +288,13 @@
                 and width from Step 1, then number each row and column along the
                 top and left borders.
             </p>
-            <img
-                src="https://cdn.zappy.app/fa3a64b4ba887e0dd52ca4098a198297.png"
-            />
+            <img src="./8.png" />
             <p>
                 Each cell in this "screen" is going to have the same formula, so
                 I will typically make changes to the top-left cell, then
                 click-and-drag to apply it to all:
             </p>
-            <img
-                src="https://cdn.zappy.app/247c5854a58d2e9f2185dd3f321c453b.gif"
-            />
+            <img src="./9.gif" />
             <p>
                 For this game, the formula we're adding is going to check
                 whether the player's X and Y positions match each cell's row and
@@ -332,9 +310,7 @@
                 other cells. That lets us click-and-drag the formula from one
                 cell to the rest, without breaking anything.
             </p>
-            <img
-                src="https://cdn.zappy.app/4802b6c201551ef675fbc5f1d0e538c0.gif"
-            />
+            <img src="./10.gif" />
             <p>
                 Now you've got a screen for the player to move around! If you
                 wanted to, you could stop here, format the grid to look pretty,
@@ -349,9 +325,7 @@
                 designate a grid of the same size as before, leaving off the
                 numbers, and put our buttons right up next to it:
             </p>
-            <img
-                src="https://cdn.zappy.app/fbae2d37f733cbf1c1b15f2eac6dcc45.png"
-            />
+            <img src="./11.png" />
             <p>
                 All of the formulas here are really simple, because they're just
                 referencing our work from the last step. In this case, that's
@@ -373,9 +347,7 @@
                 size 100, and setting their text/background colors to slight
                 variations of each other:
             </p>
-            <img
-                src="https://cdn.zappy.app/9f957db47698e69a30ad203f799657a5.gif"
-            />
+            <img src="./12.gif" />
             <p>
                 Then, hide any rows or columns that you don't want your players
                 to see, and you've got yourself a working game! Here's
@@ -486,9 +458,7 @@
                 </li>
                 <li>ID: Just the piece's unique ID again</li>
             </ul>
-            <img
-                src="https://cdn.zappy.app/8fcf0d9d5b40babb7f6a6afe8256ffc8.png"
-            />
+            <img src="./13.png" />
             <p>
                 While the Starting X and Y are static values that I've written
                 in, the current X and Y will be variable. For now, let's set
@@ -502,9 +472,7 @@
                 Because of our layout, you can write that in the first "X" cell,
                 then click-and-drag to apply it to the rest:
             </p>
-            <img
-                src="https://cdn.zappy.app/439cbe3a84f6eeb0681f47967269bf88.gif"
-            />
+            <img src="./14.gif" />
             <p>
                 Now that we have those set, we can start visualizing them on the
                 board!
@@ -532,18 +500,14 @@
                 your setup, but we're trying to match the numbers above and to
                 the left of the "screen" with the X and Y of a piece:
             </p>
-            <img
-                src="https://cdn.zappy.app/24c6d15e877706c4e83ff7c352d1ddc8.png"
-            />
+            <img src="./15.png" />
             <p>
                 Using the dollar sign also keeps the row or column static in our
                 formula, so you can click-and-drag the single formula across the
                 whole board while ensuring their formulas continue to reference
                 the correct X and Y values:
             </p>
-            <img
-                src="https://cdn.zappy.app/1cca5d47dd65a28c118319298017a64a.gif"
-            />
+            <img src="./16.gif" />
             <blockquote>
                 <b>Note:</b> There are some cases where you'd want to use a
                 QUERY formula instead of VLOOKUP. The reason we're not using it
@@ -575,9 +539,7 @@
                 recent space the user has interacted with will show a 1, while
                 the rest will show a 0.
             </p>
-            <img
-                src="https://cdn.zappy.app/e6c9dd173f27de8a6b6ea24471d515a5.png"
-            />
+            <img src="./17.png" />
             <p>
                 And we can find the position of that space by JOINing the rows
                 together, and FINDing the first "1". If none are found, let's
@@ -586,9 +548,7 @@
             <textarea readonly>
 =IFERROR(FIND("1",JOIN("",J8:Q8,J9:Q9,J10:Q10,J11:Q11,J12:Q12,J13:Q13,J14:Q14,J15:Q15)),"")
             </textarea>
-            <img
-                src="https://cdn.zappy.app/d333b90a1d75177e05155b63a0790ccd.png"
-            />
+            <img src="./18.png" />
             <p>
                 "But Tyler," you may be thinking, "That only gives us a single
                 number, not X and Y coordinates." And you would be right to
@@ -630,9 +590,7 @@
             <textarea readonly>
 =IF(selection="","",IFNA(QUERY(pieces,"SELECT B WHERE F="&C23&" AND G="&D23&" LIMIT 1"),""))
             </textarea>
-            <img
-                src="https://cdn.zappy.app/b7baceba9315998e1d26dc32a6ff5e89.gif"
-            />
+            <img src="./19.gif" />
             <p>
                 Now we'll want to keep track of which piece we selected
                 <i>previously</i>, so that we can see if that piece needs to
@@ -647,9 +605,7 @@
             <textarea readonly>
 =IFNA(QUERY(pieces,"SELECT B,C,F,G,H WHERE B='"&E23&"' LIMIT 1"),{"","","","",""})
             </textarea>
-            <img
-                src="https://cdn.zappy.app/8220d946e755d6cd2b8663f0e13dee73.png"
-            />
+            <img src="./20.png" />
             <p>
                 Using that, we can go back through our X and Y columns in the
                 `pieces` range, and update them to see whether that piece was
@@ -664,9 +620,7 @@
                 space, the piece will move! I added a little bit of conditional
                 formating here to help make it more obvious:
             </p>
-            <img
-                src="https://cdn.zappy.app/6d16dc2ee1117193334483c2875a5e21.gif"
-            />
+            <img src="./21.gif" />
             <h2>Determining where pieces can move</h2>
             <p>
                 After completing the last step, we can move a piece
@@ -707,9 +661,7 @@
                 including the numbers on the left, and call it
                 <code>board</code>:
             </p>
-            <img
-                src="https://cdn.zappy.app/38272eba8fbbd029aa2bbc65faa90407.png"
-            />
+            <img src="./22.png" />
             <p>
                 That's going to let us refer to spaces on the board in the next
                 step, where we write a series of IF formulas that check the
@@ -793,9 +745,7 @@
                 itself to match the spaces that the knight can move to, no
                 matter where it is on the board:
             </p>
-            <img
-                src="https://cdn.zappy.app/33f905124e6b3402ba99f02c14eae1ef.png"
-            />
+            <img src="./23.png" />
             <h3>Example 2: The Rook</h3>
             <p>
                 The rook is another relatively straightforward piece, as it can
@@ -809,7 +759,7 @@
                 spaces to the right of it:
             </p>
             <textarea readonly>
-=IF(IFERROR(VLOOKUP(G27,board,F27+2)=0,FALSE),F27+1&","&G27&";" 
+=IF(IFERROR(VLOOKUP(G27,board,F27+2)=0,FALSE),F27+1&","&G27&";"
 &IF(IFERROR(VLOOKUP(G27,board,F27+3)=0,FALSE),F27+2&","&G27&";"
             </textarea>
             <p>
@@ -825,7 +775,38 @@
                 when we check eight spaces in each direction the rook can go:
             </p>
             <textarea readonly style="min-height: 600px">
-=IF(IFERROR(VLOOKUP(G27,board,F27+2,FALSE)=0,FALSE),F27+1&","&G27&";" &IF(IFERROR(VLOOKUP(G27,board,F27+3,FALSE)=0,FALSE),F27+2&","&G27&";" &IF(IFERROR(VLOOKUP(G27,board,F27+4,FALSE)=0,FALSE),F27+3&","&G27&";" &IF(IFERROR(VLOOKUP(G27,board,F27+5,FALSE)=0,FALSE),F27+4&","&G27&";" &IF(IFERROR(VLOOKUP(G27,board,F27+6,FALSE)=0,FALSE),F27+5&","&G27&";" &IF(IFERROR(VLOOKUP(G27,board,F27+7,FALSE)=0,FALSE),F27+6&","&G27&";" &IF(IFERROR(VLOOKUP(G27,board,F27+8,FALSE)=0,FALSE),F27+7&","&G27&";" &IF(IFERROR(VLOOKUP(G27,board,F27+9,FALSE)=0,FALSE),F27+8&","&G27&";" ,""),""),""),""),""),""),""),"") &IF(IFERROR(VLOOKUP(G27,board,F27,FALSE)=0,FALSE),F27-1&","&G27&";" &IF(IFERROR(VLOOKUP(G27,board,F27-1,FALSE)=0,FALSE),F27-2&","&G27&";" &IF(IFERROR(VLOOKUP(G27,board,F27-2,FALSE)=0,FALSE),F27-3&","&G27&";" &IF(IFERROR(VLOOKUP(G27,board,F27-3,FALSE)=0,FALSE),F27-4&","&G27&";" &IF(IFERROR(VLOOKUP(G27,board,F27-4,FALSE)=0,FALSE),F27-5&","&G27&";" &IF(IFERROR(VLOOKUP(G27,board,F27-5,FALSE)=0,FALSE),F27-6&","&G27&";" &IF(IFERROR(VLOOKUP(G27,board,F27-6,FALSE)=0,FALSE),F27-7&","&G27&";" &IF(IFERROR(VLOOKUP(G27,board,F27-7,FALSE)=0,FALSE),F27-8&","&G27&";" ,""),""),""),""),""),""),""),"") &IF(IFERROR(VLOOKUP(G27-1,board,F27+1,FALSE)=0,FALSE),F27&","&G27-1&";" &IF(IFERROR(VLOOKUP(G27-2,board,F27+1,FALSE)=0,FALSE),F27&","&G27-2&";" &IF(IFERROR(VLOOKUP(G27-3,board,F27+1,FALSE)=0,FALSE),F27&","&G27-3&";" &IF(IFERROR(VLOOKUP(G27-4,board,F27+1,FALSE)=0,FALSE),F27&","&G27-4&";" &IF(IFERROR(VLOOKUP(G27-5,board,F27+1,FALSE)=0,FALSE),F27&","&G27-5&";" &IF(IFERROR(VLOOKUP(G27-6,board,F27+1,FALSE)=0,FALSE),F27&","&G27-6&";" &IF(IFERROR(VLOOKUP(G27-7,board,F27+1,FALSE)=0,FALSE),F27&","&G27-7&";" &IF(IFERROR(VLOOKUP(G27-8,board,F27+1,FALSE)=0,FALSE),F27&","&G27-8&";" ,""),""),""),""),""),""),""),"") &IF(IFERROR(VLOOKUP(G27+1,board,F27+1,FALSE)=0,FALSE),F27&","&G27+1&";" &IF(IFERROR(VLOOKUP(G27+2,board,F27+1,FALSE)=0,FALSE),F27&","&G27+2&";" &IF(IFERROR(VLOOKUP(G27+3,board,F27+1,FALSE)=0,FALSE),F27&","&G27+3&";" &IF(IFERROR(VLOOKUP(G27+4,board,F27+1,FALSE)=0,FALSE),F27&","&G27+4&";" &IF(IFERROR(VLOOKUP(G27+5,board,F27+1,FALSE)=0,FALSE),F27&","&G27+5&";" &IF(IFERROR(VLOOKUP(G27+6,board,F27+1,FALSE)=0,FALSE),F27&","&G27+6&";" &IF(IFERROR(VLOOKUP(G27+7,board,F27+1,FALSE)=0,FALSE),F27&","&G27+7&";" &IF(IFERROR(VLOOKUP(G27+8,board,F27+1,FALSE)=0,FALSE),F27&","&G27+8&";" ,""),""),""),""),""),""),""),"")
+=IF(IFERROR(VLOOKUP(G27,board,F27+2,FALSE)=0,FALSE),F27+1&","&G27&";" 
+&IF(IFERROR(VLOOKUP(G27,board,F27+3,FALSE)=0,FALSE),F27+2&","&G27&";" 
+&IF(IFERROR(VLOOKUP(G27,board,F27+4,FALSE)=0,FALSE),F27+3&","&G27&";" 
+&IF(IFERROR(VLOOKUP(G27,board,F27+5,FALSE)=0,FALSE),F27+4&","&G27&";" 
+&IF(IFERROR(VLOOKUP(G27,board,F27+6,FALSE)=0,FALSE),F27+5&","&G27&";" 
+&IF(IFERROR(VLOOKUP(G27,board,F27+7,FALSE)=0,FALSE),F27+6&","&G27&";" 
+&IF(IFERROR(VLOOKUP(G27,board,F27+8,FALSE)=0,FALSE),F27+7&","&G27&";" 
+&IF(IFERROR(VLOOKUP(G27,board,F27+9,FALSE)=0,FALSE),F27+8&","&G27&";" ,""),""),""),""),""),""),""),"") 
+&IF(IFERROR(VLOOKUP(G27,board,F27,FALSE)=0,FALSE),F27-1&","&G27&";" 
+&IF(IFERROR(VLOOKUP(G27,board,F27-1,FALSE)=0,FALSE),F27-2&","&G27&";" 
+&IF(IFERROR(VLOOKUP(G27,board,F27-2,FALSE)=0,FALSE),F27-3&","&G27&";" 
+&IF(IFERROR(VLOOKUP(G27,board,F27-3,FALSE)=0,FALSE),F27-4&","&G27&";" 
+&IF(IFERROR(VLOOKUP(G27,board,F27-4,FALSE)=0,FALSE),F27-5&","&G27&";" 
+&IF(IFERROR(VLOOKUP(G27,board,F27-5,FALSE)=0,FALSE),F27-6&","&G27&";" 
+&IF(IFERROR(VLOOKUP(G27,board,F27-6,FALSE)=0,FALSE),F27-7&","&G27&";" 
+&IF(IFERROR(VLOOKUP(G27,board,F27-7,FALSE)=0,FALSE),F27-8&","&G27&";" ,""),""),""),""),""),""),""),"") 
+&IF(IFERROR(VLOOKUP(G27-1,board,F27+1,FALSE)=0,FALSE),F27&","&G27-1&";" 
+&IF(IFERROR(VLOOKUP(G27-2,board,F27+1,FALSE)=0,FALSE),F27&","&G27-2&";" 
+&IF(IFERROR(VLOOKUP(G27-3,board,F27+1,FALSE)=0,FALSE),F27&","&G27-3&";" 
+&IF(IFERROR(VLOOKUP(G27-4,board,F27+1,FALSE)=0,FALSE),F27&","&G27-4&";" 
+&IF(IFERROR(VLOOKUP(G27-5,board,F27+1,FALSE)=0,FALSE),F27&","&G27-5&";" 
+&IF(IFERROR(VLOOKUP(G27-6,board,F27+1,FALSE)=0,FALSE),F27&","&G27-6&";" 
+&IF(IFERROR(VLOOKUP(G27-7,board,F27+1,FALSE)=0,FALSE),F27&","&G27-7&";" 
+&IF(IFERROR(VLOOKUP(G27-8,board,F27+1,FALSE)=0,FALSE),F27&","&G27-8&";" ,""),""),""),""),""),""),""),"") 
+&IF(IFERROR(VLOOKUP(G27+1,board,F27+1,FALSE)=0,FALSE),F27&","&G27+1&";" 
+&IF(IFERROR(VLOOKUP(G27+2,board,F27+1,FALSE)=0,FALSE),F27&","&G27+2&";" 
+&IF(IFERROR(VLOOKUP(G27+3,board,F27+1,FALSE)=0,FALSE),F27&","&G27+3&";" 
+&IF(IFERROR(VLOOKUP(G27+4,board,F27+1,FALSE)=0,FALSE),F27&","&G27+4&";" 
+&IF(IFERROR(VLOOKUP(G27+5,board,F27+1,FALSE)=0,FALSE),F27&","&G27+5&";" 
+&IF(IFERROR(VLOOKUP(G27+6,board,F27+1,FALSE)=0,FALSE),F27&","&G27+6&";" 
+&IF(IFERROR(VLOOKUP(G27+7,board,F27+1,FALSE)=0,FALSE),F27&","&G27+7&";" 
+&IF(IFERROR(VLOOKUP(G27+8,board,F27+1,FALSE)=0,FALSE),F27&","&G27+8&";" ,""),""),""),""),""),""),""),"")
             </textarea>
             <p>
                 <i>Whew</i>. All things considered, that actually isn't that
@@ -870,9 +851,7 @@
 =IF(reset,D27,IF(AND(lastSelection=$B27,IFERROR(FIND($C$23&","&$D$23,$H27)>-1,FALSE)),C$23,F27))
             </textarea>
             <p>That way, if I try to move the rook diagonally... I can't.</p>
-            <img
-                src="https://cdn.zappy.app/bee1e464eaeaa91666ccb2f4b48e274f.gif"
-            />
+            <img src="./24.gif" />
             <p>
                 Spend some time writing rules for where all of your pieces can
                 go, and you've got 90% of a real working board game!
@@ -892,9 +871,7 @@
             </p>
             <textarea readonly>=C39<>0</textarea>
 
-            <img
-                src="https://cdn.zappy.app/52ecb655354a18e76cbbb003b14df75b.png"
-            />
+            <img src="./25.png" />
 
             <p>
                 We can hide the checkboxes by setting their font size to 100,
@@ -904,9 +881,7 @@
                 <code>#3d79d9</code>:
             </p>
 
-            <img
-                src="https://cdn.zappy.app/841da6b16dec076dbe2d9876da701d86.png"
-            />
+            <img src="./26.png" />
 
             <p>
                 To highlight spaces the piece can move to, we'll revisit the
@@ -919,27 +894,21 @@
 
             <p>We can use a lighter color to point those out:</p>
 
-            <img
-                src="https://cdn.zappy.app/0cf4f82f28dfa8b45bf705093e784097.png"
-            />
+            <img src="./27.png" />
 
             <p>
                 Now when we click on a piece, we can see where it can move to,
                 and move it there!
             </p>
 
-            <img
-                src="https://cdn.zappy.app/6473e18ae4d79f427d1f685cd919bba8.gif"
-            />
+            <img src="./28.gif" />
 
             <p>
                 To hide the spaces you've clicked on previously, set the whole
                 board to <code>#fefefe</code> and <code>#ffffff</code>:
             </p>
 
-            <img
-                src="https://cdn.zappy.app/fc33b045aa47c746f51eb70db8acf84d.png"
-            />
+            <img src="./29.png" />
 
             <p>
                 Add a border around the board and hide any rows that you don't
