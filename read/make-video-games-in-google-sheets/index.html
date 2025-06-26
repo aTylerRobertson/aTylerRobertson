@@ -681,7 +681,7 @@
 
                 <img src="https://cdn.zappy.app/d333b90a1d75177e05155b63a0790ccd.png" />
 
-                <p><"But Tyler," you may be thinking, "That only gives us a single
+                <p>"But Tyler," you may be thinking, "That only gives us a single
                 number, not X and Y coordinates." And you would be right to
                 think that! The number we see now is where the piece would be if
                 we took the rows out of the board, and arranged them all in a
@@ -697,68 +697,99 @@
                 gone ahead and saved a named range of the selection called
                 <code>selection</code>, and here's what that looks like with our 8x8
                 example board:</p>
-                
-                 ```
+                <textarea readonly>
                 =IF(selection="","",IF(MOD(selection,8)=0,8,MOD(selection,8)))
-                ``` Our calculation for Y is much simpler, as we just want to
+                </textarea> 
+                <p>Our calculation for Y is much simpler, as we just want to
                 divide the selection number by the board width, and use CEILING
-                to round up: ``` =IF(selection="","",CEILING(selection/8)) ```
-                Now we know exactly where the user is clicking on the board!
+                to round up:</p>
+                <textarea readonly>
+                    =IF(selection="","",CEILING(selection/8))
+                </textarea>
+                <p>Now we know exactly where the user is clicking on the board!
                 And, because of that, we can learn which piece they're clicking
                 on. To do that, let's add a QUERY formula that looks for any
                 piece that matches the X and Y position of our latest selection.
-                I've added a named range for the `pieces` to help us locate
-                that: ``` =IF(selection="","",IFNA(QUERY(pieces,"SELECT B WHERE
-                F="&C23&" AND G="&D23&" LIMIT 1"),"")) ```
-                ![](https://cdn.zappy.app/b7baceba9315998e1d26dc32a6ff5e89.gif)
-                Now we'll want to keep track of which piece we selected
-                _previously_, so that we can see if that piece needs to move the
-                next time the user clicks on the board. **Below** your piece
-                information, add a new space for the **previously selected**
+                I've added a named range for the <code>pieces</code> to help us locate
+                that:</p>
+                <textarea readonly>=IF(selection="","",IFNA(QUERY(pieces,"SELECT B WHERE
+                F="&C23&" AND G="&D23&" LIMIT 1"),""))</textarea>
+
+                <img src="https://cdn.zappy.app/b7baceba9315998e1d26dc32a6ff5e89.gif" />
+
+                <p>Now we'll want to keep track of which piece we selected
+                <i>previously</i>, so that we can see if that piece needs to move the
+                next time the user clicks on the board. <b>Below</b> your piece
+                information, add a new space for the <b>previously selected</b>
                 piece. We'll use effectively the same QUERY formula as up above,
-                but grab the piece **ID**, **Name**, **X**, **Y**, and **Can
-                Move To** columns. This way, when our pieces are figuring out
+                but grab the piece ID, Name, X, Y, and Can
+                Move To columns. This way, when our pieces are figuring out
                 whether they need to move, they can look here to see if they
-                were the most recently-selected piece. ```
+                were the most recently-selected piece.</p>
+
+                <textarea readonly>
                 =IFNA(QUERY(pieces,"SELECT B,C,F,G,H WHERE B='"&E23&"' LIMIT
-                1"),{"","","","",""}) ```
-                ![](https://cdn.zappy.app/8220d946e755d6cd2b8663f0e13dee73.png)
-                Using that, we can go back through our X and Y columns in the
+                1"),{"","","","",""})</textarea>
+
+                <img src="https://cdn.zappy.app/8220d946e755d6cd2b8663f0e13dee73.png" />
+
+                <p>Using that, we can go back through our X and Y columns in the
                 `pieces` range, and update them to see whether that piece was
                 selected previously, and if so, update the X and Y to match the
-                new selection: ```
-                =IF(reset,D27,IF(lastSelection=$B27,C$23,F27)) ``` **Now if we
+                new selection:</p>
+                <textarea readonly>
+                =IF(reset,D27,IF(lastSelection=$B27,C$23,F27))
+                </textarea>
+                
+                <p>Now if we
                 select a piece on the screen, then select another space, the
-                piece will move!** I added a little bit of conditional formating
-                here to help make it more obvious:
-                ![](https://cdn.zappy.app/6d16dc2ee1117193334483c2875a5e21.gif)
-                ## Determining where pieces can move After completing the last
-                step, we can move a piece _anywhere_ on the board, including on
+                piece will move! I added a little bit of conditional formating
+                here to help make it more obvious:</p>
+
+                <img src="https://cdn.zappy.app/6d16dc2ee1117193334483c2875a5e21.gif" />
+
+                <h2>Determining where pieces can move</h2> 
+                
+                <p>After completing the last
+                step, we can move a piece <i>anywhere</i> on the board, including on
                 top of other pieces. This is great if you're playing something
-                free-form, or keeping track of your _Dungeons & Dragons_
+                free-form, or keeping track of your <i>Dungeons & Dragons</i>
                 characters virtually, but not so great if you want to play
                 something with, you know, rules. In this section, we're going to
                 tell each piece where it can move to, and restrict them to just
-                those spaces. > This section takes a lot of patience and nesting
+                those spaces.</p> 
+                
+                <blockquote>This section takes a lot of patience and nesting
                 IF statements. If you've been reading this post straight
                 through, I'd recommend taking this opportunity to stretch and
-                get a drink of water! In the `pieces` range that we set aside,
-                we've left the **Can Move To** column blank so far. That's
+                get a drink of water!</blockquote> 
+                
+                <p>In the <code>pieces</code> range that we set aside,
+                we've left the <i>Can Move To</i> column blank so far. That's
                 because we're going to write formulas that take the current
-                **X** and **Y** position of each piece, then determine rules
+                X and Y position of each piece, then determine rules
                 that dictate where each piece can go. Based on those rules, we
                 want a list of coordinates, listing each square the piece can
-                move to. **Example:** Let's say we have a piece that can move
+                move to.</p>
+                
+                <p>Example: Let's say we have a piece that can move
                 one space in any orthogonal direction (up, down, left, right).
-                If it is currently at **2,2**, we would want the "Can Move To"
-                value for that piece to look something like this: ```
-                2,1;3,2;2,3;1,2; ``` That list contains the X and Y values of a
+                If it is currently at <code>2,2</code>, we would want the "Can Move To"
+                value for that piece to look something like this:</p>
+
+                <textarea readonly>
+                    2,1;3,2;2,3;1,2;
+                </textarea> 
+                
+                <p>That list contains the X and Y values of a
                 space the piece can move to, with each pair separated by a
                 semicolon (or any character of your choice). To achieve that
                 result, we're first going to create a new named range of our
                 "backstage" screen, including the numbers on the left, and call
-                it `board`:
-                ![](https://cdn.zappy.app/38272eba8fbbd029aa2bbc65faa90407.png)
+                it <code>board</code>:</p>
+
+                <img src="https://cdn.zappy.app/38272eba8fbbd029aa2bbc65faa90407.png" />
+                
                 That's going to let us refer to spaces on the board in the next
                 step, where we write a series of IF formulas that check the
                 current piece, and see if the spaces it wants to move to are
