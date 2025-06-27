@@ -15,7 +15,7 @@
             main {
                 display: grid;
                 gap: 1rem;
-                grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
                 grid-template-rows: masonry;
                 margin: 2rem auto;
             }
@@ -56,7 +56,19 @@
 
             fieldset {
                 border-color: darkolivegreen;
-                max-width: 90vw;
+            }
+
+            fieldset:first-of-type {
+                border-color: rebeccapurple;
+                background: rgba(255, 255, 255, 0.5);
+            }
+
+            fieldset:first-of-type > legend {
+                color: rebeccapurple;
+            }
+
+            fieldset:first-of-type > ul {
+                color: rebeccapurple;
             }
         </style>
     </head>
