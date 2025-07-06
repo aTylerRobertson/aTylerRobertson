@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<head>
+    <title>Scoundrel</title>
+    <style type="text/css">
+        html {
+            font-size: 120%;
+        }
+        button {
+            font-size: 200%;
+        }
+        button:not(:disabled) {
+            cursor: pointer;
+        }
+        table,
+        th,
+        td {
+            border: 1px solid;
+        }
+        table {
+            margin-top: 1rem;
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+    </style>
+    <meta charset="UTF-8" />
+</head>
+<body>
+    <h1></h1>
+    <main>
+        <section id="room">
+            <button class="card"></button>
+            <button class="card"></button>
+            <button class="card"></button>
+            <button class="card"></button>
+            <button id="openDoor">Open Door</button>
+            <button id="runAway" disabled>Run away!</button>
+        </section>
+        <section id="playerStats">
+            <table>
+                <tr>
+                    <th>Weapon</th>
+                    <th>Last Slain</th>
+                    <th>Cards in Deck</th>
+                    <th>Health Remaining</th>
+                    <th>Doors Opened</th>
+                    <th>Monsters Slain</th>
+                </tr>
+                <tr>
+                    <td id="weapon" class="card"></td>
+                    <td id="killedWithWeapon" class="card"></td>
+                    <td id="cardsLeft"></td>
+                    <td id="health"></td>
+                    <td id="doorsOpened"></td>
+                    <td id="monstersKilled"></td>
+                </tr>
+            </table>
+        </section>
+        <p>
+            <a href="http://www.stfj.net/art/2011/Scoundrel.pdf">Scoundrel</a>
+            rules by Zach Gage and Kurt Bieg
+        </p>
+    </main>
+    <script type="text/javascript">
+        let health = 20;
+        let weapon = "";
+        let killedWithWeapon = [];
+        let doorsOpened = 0;
+        let monstersKilled = 0;
+        let canRunAway = true;
+        let roomCards = [];
+        const roomCardButtons = [...document.querySelectorAll(".card")];
+
+        const cardValues = [
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "J",
+            "Q",
+            "K",
+            "A",
+        ];
+
+        const updateCardButtons = () => {
+            roomCards.forEach((value, index) => {
+                if (!value) {
+                    roomCardButtons[index].setAttribute("disabled", "true");
+                } else {
+                    roomCardButtons[index].innerHTML = value;
+                    roomCardButtons[index].removeAttribute("disabled");
+                    roomCardButtons[index].setAttribute("card", value);
+                }
+            });
+            if (canRunAway) {
+                document.querySelector("#runAway").removeAttribute("disabled");
+            } else {
+                document
+                    .querySelector("#runAway")
+                    .setAttribute("disabled", "true");
+            }
+            document.querySelector("#cardsLeft").innerHTML = deck.length;
+            document.querySelector("#health").innerHTML = health;
+            document.querySelector("#monstersKilled").innerHTML =
+                monstersKilled;
+            document.querySelector("#doorsOpened").innerHTML = doorsOpened;
+            document.querySelector("#weapon").innerHTML = weapon;
+            document.querySelector("#killedWithWeapon").innerHTML =
+                killedWithWeapon.at(-1) || "";
+
+            if (health < 0) {
+                document.querySelector("h1").innerText = "You died...";
+            }
+
+            if (deck.length == 0 && roomCards.filter((c) => c).length == 0) {
+                document.querySelector("h1").innerText =
+                    "You cleared the dungeon!";
+            }
+        };
+
+        const generateDeck = () => {
+            const clubs = new Array(13).fill("♧").map((symbol, index) => {
+                return `${cardValues[index]}${symbol}`;
+            });
+            const spades = new Array(13).fill("♤").map((symbol, index) => {
+                return `${cardValues[index]}${symbol}`;
+            });
+            const diamonds = new Array(9).fill("♢").map((symbol, index) => {
+                return `${cardValues[index]}${symbol}`;
+            });
+            const hearts = new Array(9).fill("♡").map((symbol, index) => {
+                return `${cardValues[index]}${symbol}`;
+            });
+            return [...clubs, ...spades, ...diamonds, ...hearts];
+        };
+
+        const selectCard = (e) => {
+            canRunAway = false;
+            if (roomCards.filter((c) => c).length == 1) return;
+            const card = e.target.innerHTML;
+            roomCards[roomCards.findIndex((c) => c === card)] = null;
+            if (card.includes("♧") || card.includes("♤")) {
+                const monster = card.includes("♧")
+                    ? card.split("♧")[0]
+                    : card.split("♤")[0];
+                const monsterRank = cardValues.indexOf(monster) + 2;
+                const weaponRank = weapon.length
+                    ? cardValues.indexOf(weapon.split("♢")[0]) + 2
+                    : 0;
+                const lastMonsterKilled = killedWithWeapon.at(-1) || "";
+                const lastMonsterNumber = lastMonsterKilled.includes("♧")
+                    ? lastMonsterKilled.split("♧")[0]
+                    : lastMonsterKilled.split("♤")[0];
+                const lastMonsterRank = lastMonsterKilled.length
+                    ? cardValues.indexOf(lastMonsterNumber) + 2
+                    : 0;
+                if (
+                    weaponRank == 0 ||
+                    (lastMonsterKilled.length && monsterRank >= lastMonsterRank)
+                ) {
+                    health -= monsterRank;
+                } else {
+                    health -= Math.max(0, monsterRank - weaponRank);
+                    killedWithWeapon.push(card);
+                }
+
+                if (health > 0) {
+                    monstersKilled += 1;
+                }
+            }
+            if (card.includes("♢")) {
+                weapon = card;
+                killedWithWeapon = [];
+            }
+            if (card.includes("♡")) {
+                const potionRank = cardValues.indexOf(card.split("♡")[0]) + 2;
+                health = Math.min(health + potionRank, 20);
+            }
+
+            updateCardButtons();
+            if (roomCards.filter((c) => c).length == 1 && deck.length) {
+                document.querySelector("#openDoor").removeAttribute("disabled");
+                document
+                    .querySelector("#runAway")
+                    .setAttribute("disabled", "true");
+            }
+        };
+
+        const shuffle = (cards) => {
+            return cards
+                .map((value) => ({
+                    value,
+                    rand: Math.random(),
+                }))
+                .sort((a, b) => a.rand - b.rand)
+                .map((card) => card.value);
+        };
+
+        let deck = shuffle(generateDeck());
+
+        const openDoor = () => {
+            doorsOpened += 1;
+            if (canRunAway)
+                document.querySelector("#runAway").removeAttribute("disabled");
+            for (let i = 0; i < 4; i++) {
+                if (roomCards[i] != null) continue;
+                const topCard = deck.pop();
+                roomCards[i] = topCard;
+            }
+            updateCardButtons();
+            document
+                .querySelector("#openDoor")
+                .setAttribute("disabled", "true");
+            canRunAway = true;
+        };
+
+        const runAway = () => {
+            deck.unshift(...shuffle(roomCards));
+            roomCards = [null, null, null, null];
+            updateCardButtons();
+            canRunAway = false;
+            document.querySelector("#runAway").setAttribute("disabled", "true");
+            document.querySelector("#openDoor").removeAttribute("disabled");
+        };
+
+        document.querySelector("#openDoor").addEventListener("click", openDoor);
+        document.querySelector("#runAway").addEventListener("click", runAway);
+        roomCardButtons.forEach((button) => {
+            button.addEventListener("click", selectCard);
+        });
+
+        openDoor();
+    </script>
+</body>
