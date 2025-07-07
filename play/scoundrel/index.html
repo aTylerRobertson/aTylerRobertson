@@ -7,6 +7,7 @@
         }
         button {
             font-size: 200%;
+            margin: 10px;
         }
         button:not(:disabled) {
             cursor: pointer;
@@ -140,7 +141,7 @@
         };
 
         const selectCard = (e) => {
-            canRunAway = false;
+            document.querySelector("#runAway").setAttribute("disabled", "true");
             if (roomCards.filter((c) => c).length == 1) return;
             const card = e.target.innerHTML;
             roomCards[roomCards.findIndex((c) => c === card)] = null;
