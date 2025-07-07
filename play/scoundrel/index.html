@@ -98,7 +98,7 @@
                     roomCardButtons[index].setAttribute("card", value);
                 }
             });
-            if (canRunAway) {
+            if (canRunAway && roomCards.filter((c) => c).length == 4) {
                 document.querySelector("#runAway").removeAttribute("disabled");
             } else {
                 document
