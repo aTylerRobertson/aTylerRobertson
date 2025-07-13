@@ -1,0 +1,191 @@
+<html>
+    <head>
+        <title>Draw an SVG</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8" />
+        <style type="text/css">
+            body {
+                margin: 0;
+                background-color: aliceblue;
+            }
+
+            main {
+                width: fit-content;
+                max-width: 90vw;
+                display: grid;
+                margin: 20px auto;
+                grid-template-areas: "input output" "code code" "desc desc";
+                grid-template-columns: 300px 300px;
+                grid-template-rows: 1fr 1fr;
+                grid-gap: 10px;
+            }
+
+            main > * {
+                background-color: white;
+            }
+
+            #input {
+                grid-area: input;
+            }
+
+            #output {
+                grid-area: output;
+            }
+
+            #code {
+                grid-area: code;
+            }
+
+            #desc {
+                grid-area: desc;
+                line-height: 1.5rem;
+            }
+
+            canvas {
+                border: 1px solid black;
+                cursor: pointer;
+                width: 300px;
+                aspect-ratio: 1/1;
+                border: 2px solid black;
+            }
+
+            img {
+                border: none;
+                width: 300px;
+                aspect-ratio: 1/1;
+            }
+
+            textarea {
+                width: 100%;
+                height: 300px;
+                resize: none;
+                border: 2px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <div id="input">
+                draw here
+                <canvas width="300" height="300"></canvas>
+            </div>
+            <div id="output">
+                final svg (right-click to save)
+                <img src="" alt="" />
+            </div>
+            <div id="code">
+                raw code
+                <textarea readonly></textarea>
+            </div>
+            <p id="desc">
+                <b>what is this?</b><br />i'm working on a couple projects that
+                need really simple black-and-white line drawings, and i don't
+                have photoshop or anything like that right now, so i made this
+                small tool that'll fill my needs for free. :)<br />draw using
+                your cursor in the left-hand box, and the right-hand box will
+                become an image you can save that matches your drawing. the box
+                beneath those is the raw code for the SVG file, in case you want
+                to copy the image straight into a web project (as i sometimes
+                do)
+            </p>
+        </main>
+        <script type="text/javascript">
+            const drawing = [];
+            const brushStroke = [];
+            const canvas = document.querySelector("canvas");
+            const ctx = canvas.getContext("2d");
+            const resolution = 5;
+            let isDrawing = false;
+
+            // Get the X and Y of either mouse or touch events
+            const getX = (e) => {
+                const rect = e.target.getBoundingClientRect();
+                const x = e.clientX || e.touches[0].clientX;
+                return x - rect.left;
+            };
+            const getY = (e) => {
+                const rect = e.target.getBoundingClientRect();
+                const y = e.clientY || e.touches[0].clientY;
+                return y - rect.top;
+            };
+
+            const writeSVG = () => {
+                let path = "";
+                for (const brush of [...drawing, brushStroke]) {
+                    for (let i = 0; i < brush.length; i++) {
+                        path += i == 0 ? "M" : "L";
+                        path += brush[i].x + " " + brush[i].y + " ";
+                    }
+                }
+                const svgData = `data:image/svg+xml;utf8,<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 300 300"><path d="${path}" style="fill: none; stroke: black; stroke-width: 4px" /></svg>`;
+                document.querySelector("textarea").innerText = svgData;
+                document.querySelector("img").setAttribute("src", svgData);
+                document.querySelector("a").setAttribute("href", svgData);
+            };
+
+            const draw = () => {
+                // The canvas is cleared each time we draw, so previous draws are erased
+                ctx.fillStyle = "white";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.strokeStyle = "black";
+                ctx.lineWidth = 3;
+
+                for (const brush of [...drawing, brushStroke]) {
+                    for (let i = 1; i < brush.length; i++) {
+                        ctx.moveTo(brush[i - 1].x, brush[i - 1].y);
+                        ctx.lineTo(brush[i].x, brush[i].y);
+                        ctx.stroke();
+                    }
+                }
+                ctx.closePath();
+                writeSVG();
+            };
+
+            // Mouse click or touch
+            const start = (e) => {
+                e.preventDefault();
+                const x = getX(e);
+                const y = getY(e);
+                isDrawing = true;
+                brushStroke.push({ x, y });
+            };
+
+            // Dragging the cursor/finger
+            const move = (e) => {
+                e.preventDefault();
+                if (isDrawing && brushStroke.length > 0) {
+                    const x = getX(e);
+                    const y = getY(e);
+                    ctx.beginPath();
+                    ctx.moveTo(brushStroke.at(-1).x, brushStroke.at(-1).y);
+                    ctx.lineTo(x, y);
+                    const distance = Math.sqrt(
+                        Math.pow(x - brushStroke.at(-1).x, 2) +
+                            Math.pow(y - brushStroke.at(-1).y, 2)
+                    );
+                    if (distance > resolution) {
+                        brushStroke.push({ x, y });
+                    }
+                    draw();
+                }
+            };
+            const end = (e) => {
+                e.preventDefault();
+                const x = getX(e);
+                const y = getY(e);
+                brushStroke.push({ x, y });
+                isDrawing = false;
+                drawing.push([...brushStroke]);
+                brushStroke.length = 0;
+                draw();
+            };
+            canvas.addEventListener("mousedown", start);
+            canvas.addEventListener("touchstart", start);
+            canvas.addEventListener("mousemove", move);
+            canvas.addEventListener("touchmove", move);
+            canvas.addEventListener("mouseup", end);
+            canvas.addEventListener("touchend", end);
+        </script>
+    </body>
+</html>
