@@ -117,10 +117,10 @@
                         path += brush[i].x + " " + brush[i].y + " ";
                     }
                 }
-                const svgData = `data:image/svg+xml;utf8,<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 300 300"><path d="${path}" style="fill: none; stroke: black; stroke-width: 4px" /></svg>`;
+                const svg = `<svg width="300px" height="300px" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xml:space="preserve" viewBox="0 0 300 300"><g><path d="${path}" style="fill: none; stroke: black; stroke-width: 4px" /></g></svg>`;
+                const svgData = `data:image/svg+xml;base64,${window.btoa(svg)}`;
                 document.querySelector("textarea").innerText = svgData;
                 document.querySelector("img").setAttribute("src", svgData);
-                document.querySelector("a").setAttribute("href", svgData);
             };
 
             const draw = () => {
