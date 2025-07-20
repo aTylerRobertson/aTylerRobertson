@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<head>
+    <title>Zan</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family: "Nunito", sans-serif;
+            font-size: 150%;
+            background-color: thistle;
+        }
+        main {
+            width: 700px;
+            max-width: 98vw;
+            margin: 2rem auto;
+        }
+        h1,
+        p {
+            margin: 0;
+            padding: 0 1rem;
+            color: #111;
+        }
+        p {
+            font-size: min(100%, 3vw);
+        }
+        li {
+            list-style-type: none;
+            width: 100%;
+            padding: 0.1rem 1rem;
+        }
+        li:nth-of-type(odd) {
+            color: rebeccapurple;
+            background-color: lavender;
+        }
+        div {
+            margin: 1rem 0;
+            padding: 1rem 0;
+            height: fit-content;
+            max-height: 60vh;
+            display: flex;
+            flex-direction: column-reverse;
+            overflow-y: scroll;
+            background-color: whitesmoke;
+            border-radius: 10px;
+        }
+        form {
+            width: 100%;
+        }
+        input {
+            font: inherit;
+            width: 100%;
+            padding: 0.1rem 0.5rem;
+        }
+        a:any-link {
+            color: rebeccapurple;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>This is Zan.</h1>
+        <p>
+            Zan wants to be like you, but has to start from nothing.
+            <br />Write to Zan to show them how.
+            <a href="./about.html">Click here to learn more</a>.
+        </p>
+        <div>
+            <li><b>Zan:</b> ...?</li>
+        </div>
+        <form><input placeholder="Chat with Zan" autofocus /></form>
+    </main>
+    <script>
+        const input = document.querySelector("input");
+        const dictionary = JSON.parse(localStorage.getItem("dictionary")) ?? [];
+        document.querySelector("form").addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            // Handle your input first
+            const message = input.value;
+            input.value = "";
+            document.querySelector(
+                "div"
+            ).innerHTML = `<li><b>You:</b> ${message}</li>${
+                document.querySelector("div").innerHTML
+            }`;
+
+            // Split up your message into component words
+            const words = message.split(" ");
+
+            // Zan learns how to talk by analyzing the order of words in each message
+            words.forEach((value, index) => {
+                const nextWord = words[index + 1] || "";
+                const placeInDict = dictionary.findIndex(
+                    ({ word }) => word == value
+                );
+                if (placeInDict > -1) {
+                    dictionary[placeInDict].next.push(nextWord);
+                } else {
+                    dictionary.push({ word: value, next: [nextWord] });
+                }
+            });
+
+            // Save the new words to the browser's local storage
+            localStorage.setItem("dictionary", JSON.stringify(dictionary));
+
+            // Zan picks the first word of their reply at random from the most recent message
+            const reply = [
+                words[Math.floor(Math.random() * words.length)].replace(
+                    /\D^/,
+                    ""
+                ),
+            ];
+
+            // Go until Zan can't come up with a next word
+            while (reply.at(-1) != "") {
+                const next = dictionary.find(({ word }) => word == reply.at(-1))
+                    .next ?? [""];
+                reply.push(next[Math.floor(Math.random() * next.length)]);
+            }
+
+            // Post Zan's reply
+            setTimeout(
+                () =>
+                    (document.querySelector(
+                        "div"
+                    ).innerHTML = `<li><b>Zan:</b> ${reply.join(" ")}</li>${
+                        document.querySelector("div").innerHTML
+                    }`),
+                Math.random() * 1500
+            );
+        });
+    </script>
+</body>
