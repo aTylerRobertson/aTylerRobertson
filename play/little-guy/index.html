@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf8" />
+    <title>Just a little guy</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            font-size: 150%;
+        }
+
+        main {
+            width: 90vw;
+            height: 90vh;
+            border: 1px solid black;
+            margin: 10px auto;
+            position: relative;
+            overflow: hidden;
+        }
+        main > * {
+            position: absolute;
+        }
+        footer {
+            background-color: cornflowerblue;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        button {
+            cursor: pointer;
+            font-size: inherit;
+            background-color: inherit;
+        }
+    </style>
+</head>
+<body>
+    <dialog>
+        <h1>Just a little guy</h1>
+        <p>in an HTML bullet hell</p>
+        <button>PLAY</button>
+    </dialog>
+    <main>
+        <div id="guy">🤷🏻‍♂️</div>
+        <footer>
+            <button id="left">◀️</button>
+            <button id="up">🔼</button>
+            <button id="down">🔽</button>
+            <button id="right">▶️</button>
+            <button id="pause">⏸️</button>
+        </footer>
+    </main>
+    <script>
+        document.querySelector("dialog").showModal();
+        let paused = true;
+
+        const guy = document.querySelector("#guy");
+        let guyMoving;
+        guy.style.top = "50%";
+        guy.style.left = "50%";
+
+        const moveGuy = (up, right) => {
+            guyMoving = setInterval(() => {
+                if (up != 0)
+                    guy.style.top =
+                        parseInt(guy.style.top.replace("%", "")) + up + "%";
+                if (right != 0)
+                    guy.style.left =
+                        parseInt(guy.style.left.replace("%", "")) + right + "%";
+            }, 1000 / 24);
+        };
+
+        const shootSparkle = () => {
+            const sparkle = document.createElement("div");
+            sparkle.classList.add("bullet");
+            sparkle.style["--angle"] = Math.round(Math.random() * 360);
+            sparkle.style["--speed"] = 2;
+            sparkle.style["--duration"] = 20;
+            sparkle.style.top = guy.style.top;
+            sparkle.style.left = guy.style.left;
+            sparkle.innerText = "✨";
+            document.querySelector("main").appendChild(sparkle);
+        };
+
+        const moveAllBullets = () => {
+            document.querySelectorAll(".bullet").forEach((bullet) => {
+                // TO-DO: Adjust movement based on angle
+                bullet.style.left =
+                    parseInt(bullet.style.left.replace("%", "")) +
+                    bullet.style["--speed"] +
+                    "%";
+                bullet.style["--duration"] = bullet.style["--duration"] - 1;
+                if (bullet.style["--duration"] < 1) bullet.remove();
+            });
+        };
+
+        document
+            .querySelector("dialog button")
+            .addEventListener("click", () => {
+                document.querySelector("dialog").close();
+
+                // Set up the game
+                document
+                    .querySelector("#up")
+                    .addEventListener("mousedown", () => moveGuy(-1, 0));
+                document
+                    .querySelector("#down")
+                    .addEventListener("mousedown", () => moveGuy(1, 0));
+                document
+                    .querySelector("#left")
+                    .addEventListener("mousedown", () => moveGuy(0, -1));
+                document
+                    .querySelector("#right")
+                    .addEventListener("mousedown", () => moveGuy(0, 1));
+                window.addEventListener("mouseup", () =>
+                    clearInterval(guyMoving)
+                );
+
+                setInterval(moveAllBullets, 1000 / 24);
+                setInterval(shootSparkle, 3000);
+            });
+    </script>
+</body>
