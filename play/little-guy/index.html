@@ -4,122 +4,419 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Just a little guy</title>
     <style type="text/css">
+        :root {
+            --size: 20px;
+        }
+
         body {
+            background-color: oldlace;
             margin: 0;
             font-size: 150%;
         }
 
         main {
-            width: 90vw;
+            background-color: white;
+            width: 700px;
+            max-width: 90vw;
             height: 90vh;
             border: 1px solid black;
             margin: 10px auto;
             position: relative;
             overflow: hidden;
         }
+
         main > * {
             position: absolute;
+            font-size: var(--size);
         }
+
+        main > div {
+            transition: top 100ms linear, left 100ms linear;
+            transform-origin: center;
+            transform: translate(-50%, -50%);
+            width: calc(var(--size) * 2);
+            height: calc(var(--size) * 2);
+            /* background-color: rgba(200, 200, 255, 0.5); */
+            display: flex;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
+
         footer {
-            background-color: cornflowerblue;
+            font-size: calc(var(--size) * 1.2);
+            min-height: 1rem;
+            padding: 5px;
+            background-color: dodgerblue;
             bottom: 0;
             left: 0;
             width: 100%;
             display: flex;
             justify-content: center;
             gap: 1rem;
+            z-index: 1;
         }
+
         button {
+            border: none;
+            outline: none;
             cursor: pointer;
             font-size: inherit;
             background-color: inherit;
         }
+
+        footer button:active {
+            text-shadow: 0 0 5px white;
+        }
+
+        dialog button {
+            border: 3px solid black;
+        }
+
+        dialog button:hover {
+            background-color: dodgerblue;
+            color: white;
+        }
+
+        .bullet {
+            color: darkorange;
+        }
+
+        .enemy {
+            color: darkred;
+        }
+
+        .damageNumber {
+            color: orange;
+        }
+
+        .xp {
+            color: green;
+        }
     </style>
 </head>
 <body>
-    <dialog>
-        <h1>Just a little guy</h1>
-        <p>in an HTML bullet hell</p>
+    <dialog id="intro">
+        <h1>You're just a little guy</h1>
+        <p>You're just a little guy in HTML hell.</p>
+        <ul>
+            <li>Avoid the <span style="color: darkred">red enemies</span></li>
+            <li>
+                You fire
+                <span style="color: orange">defenses</span> automatically
+            </li>
+            <li>Collect the <span style="color: green">green XP</span></li>
+        </ul>
         <button>PLAY</button>
     </dialog>
+    <dialog id="paused">
+        <h1>PAUSED 😴</h1>
+        <button>RESUME</button>
+    </dialog>
     <main>
-        <div id="guy">🤷🏻‍♂️</div>
+        <div id="you">you</div>
         <footer>
-            <button id="left">◀️</button>
-            <button id="up">🔼</button>
-            <button id="down">🔽</button>
-            <button id="right">▶️</button>
-            <button id="pause">⏸️</button>
+            <button id="left">left</button>
+            <button id="up">up</button>
+            <button id="down">down</button>
+            <button id="right">right</button>
+            <button id="pause">pause</button>
         </footer>
     </main>
     <script>
-        document.querySelector("dialog").showModal();
+        document.querySelector("#intro").showModal();
         let paused = true;
 
-        const guy = document.querySelector("#guy");
-        let guyMoving;
-        guy.style.top = "50%";
-        guy.style.left = "50%";
+        const main = document.querySelector("main");
+        const context = main.getBoundingClientRect();
 
-        const moveGuy = (up, right) => {
-            guyMoving = setInterval(() => {
+        const you = document.querySelector("#you");
+        you.style["--health"] = 10;
+        you.style["--speed"] = 5;
+        you.style["--delay"] = 3000;
+        you.style["--xp"] = 0;
+        you.style["--level"] = 1;
+        let youMoving;
+        you.style.top = context.height / 2 + "px";
+        you.style.left = context.width / 2 + "px";
+
+        const moveYou = (up, right) => {
+            if (paused) return;
+            youMoving = setInterval(() => {
                 if (up != 0)
-                    guy.style.top =
-                        parseInt(guy.style.top.replace("%", "")) + up + "%";
+                    you.style.top =
+                        parseInt(you.style.top.replace("px", "")) +
+                        up * you.style["--speed"] +
+                        "px";
                 if (right != 0)
-                    guy.style.left =
-                        parseInt(guy.style.left.replace("%", "")) + right + "%";
+                    you.style.left =
+                        parseInt(you.style.left.replace("px", "")) +
+                        right * you.style["--speed"] +
+                        "px";
             }, 1000 / 24);
         };
 
+        // NOTE: All angles are in radians
+
+        const getXandYfromAngle = (angle, speed) => ({
+            x: Math.cos(angle) * speed,
+            y: Math.sin(angle) * speed,
+        });
+
+        const getAngleBetweenTwoPoints = (x1, y1, x2, y2) =>
+            Math.atan2(y2 - y1, x2 - x1);
+
+        const getAngleBetweenTwoElements = (a, b) =>
+            getAngleBetweenTwoPoints(
+                parseFloat(a.style.left.replace("px", "")),
+                parseFloat(a.style.top.replace("px", "")),
+                parseFloat(b.style.left.replace("px", "")),
+                parseFloat(b.style.top.replace("px", ""))
+            );
+
+        const getDistanceBetweenTwoPoints = (x1, y1, x2, y2) =>
+            Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+
+        const getDistanceBetweenTwoElements = (a, b) =>
+            getDistanceBetweenTwoPoints(
+                parseFloat(a.style.left.replace("px", "")),
+                parseFloat(a.style.top.replace("px", "")),
+                parseFloat(b.style.left.replace("px", "")),
+                parseFloat(b.style.top.replace("px", ""))
+            );
+
+        const areTwoElementsTouching = (a, b) =>
+            getDistanceBetweenTwoElements(a, b) < 30;
+
+        const createDamageNumber = (x, y, amount) => {
+            const number = document.createElement("span");
+            number.classList.add("damageNumber");
+            number.innerText = amount;
+            number.style.top = y;
+            number.style.left = x;
+            number.style["--duration"] = 10;
+            main.appendChild(number);
+        };
+
+        const animateDamageNumbers = () => {
+            if (paused) return;
+            document.querySelectorAll(".damageNumber").forEach((number) => {
+                number.style.top =
+                    parseInt(number.style.top.replace("px", "")) - 2 + "px";
+                number.style["--duration"] = number.style["--duration"] - 1;
+                if (number.style["--duration"] < 1) number.remove();
+            });
+        };
+
+        const createXP = (x, y, amount) => {
+            const xp = document.createElement("span");
+            xp.classList.add("xp");
+            xp.innerText = amount;
+            xp.style.top = y;
+            xp.style.left = x;
+            main.appendChild(xp);
+        };
+
+        let enemyStartingAngle = Math.floor(Math.random() * 360);
+        const createEnemy = () => {
+            if (paused) return;
+            const enemy = document.createElement("div");
+            enemy.classList.add("enemy");
+            const startingPos = getXandYfromAngle(
+                (enemyStartingAngle * Math.PI) / 180,
+                Math.max(context.height, context.width) / 2
+            );
+            enemy.style.top = context.height / 2 + startingPos.x + "px";
+            enemy.style.left = context.width / 2 + startingPos.y + "px";
+            enemy.style["--speed"] = 2;
+            enemy.style["--health"] = 1;
+            enemy.style["font-size"] = "10px";
+            enemy.style["line-height"] = "10px";
+            enemy.innerHTML = "little<br/>enemy";
+            main.appendChild(enemy);
+            enemyStartingAngle += 10;
+        };
+
+        const moveAllEnemies = () => {
+            if (paused) return;
+            document.querySelectorAll(".enemy").forEach((enemy) => {
+                enemy.style["--angle"] = getAngleBetweenTwoElements(enemy, you);
+                const pos = getXandYfromAngle(
+                    enemy.style["--angle"],
+                    enemy.style["--speed"]
+                );
+
+                // Handle enemies that bump into you or each other
+                const otherEnemies = [
+                    you,
+                    ...document.querySelectorAll(".enemy"),
+                ].filter((e) => e !== enemy);
+                const someoneIsTouchingMe = otherEnemies.find((other) =>
+                    areTwoElementsTouching(enemy, other)
+                );
+                if (someoneIsTouchingMe) {
+                    const bump = getXandYfromAngle(
+                        getAngleBetweenTwoElements(enemy, someoneIsTouchingMe),
+                        getDistanceBetweenTwoElements(
+                            enemy,
+                            someoneIsTouchingMe
+                        ) / 4
+                    );
+                    pos.x -= bump.x;
+                    pos.y -= bump.y;
+                }
+
+                enemy.style.left =
+                    parseInt(enemy.style.left.replace("px", "")) + pos.x + "px";
+                enemy.style.top =
+                    parseInt(enemy.style.top.replace("px", "")) + pos.y + "px";
+
+                // Handle enemies getting hit
+                const bullets = [...document.querySelectorAll(".bullet")];
+                const bulletIsTouchingMe = bullets.find((bullet) =>
+                    areTwoElementsTouching(enemy, bullet)
+                );
+                if (bulletIsTouchingMe) {
+                    enemy.style["--health"] =
+                        enemy.style["--health"] -
+                        bulletIsTouchingMe.style["--damage"];
+                    bulletIsTouchingMe.style["--duration"] =
+                        bulletIsTouchingMe.style["--duration"] - 100;
+                    createDamageNumber(
+                        enemy.style.left,
+                        enemy.style.top,
+                        bulletIsTouchingMe.style["--damage"]
+                    );
+                }
+                if (enemy.style["--health"] < 1) {
+                    createXP(enemy.style.left, enemy.style.top, 1);
+                    enemy.remove();
+                }
+            });
+        };
+
         const shootSparkle = () => {
+            setTimeout(shootSparkle, you.style["--delay"]);
+            if (paused) return;
+
             const sparkle = document.createElement("div");
             sparkle.classList.add("bullet");
-            sparkle.style["--angle"] = Math.round(Math.random() * 360);
-            sparkle.style["--speed"] = 2;
+            if (!document.querySelectorAll(".enemy").length) return;
+            const allEnemies = [...document.querySelectorAll(".enemy")];
+
+            if (allEnemies.length > 1)
+                allEnemies.sort(
+                    (a, b) =>
+                        getDistanceBetweenTwoElements(a, you) -
+                        getDistanceBetweenTwoElements(b, you)
+                );
+            const closestEnemy = allEnemies[0];
+            sparkle.style["--angle"] = getAngleBetweenTwoElements(
+                you,
+                closestEnemy
+            );
+            sparkle.style["--speed"] = 10;
             sparkle.style["--duration"] = 20;
-            sparkle.style.top = guy.style.top;
-            sparkle.style.left = guy.style.left;
-            sparkle.innerText = "✨";
-            document.querySelector("main").appendChild(sparkle);
+            sparkle.style["--damage"] = 1;
+            sparkle.style["font-size"] = "14px";
+            sparkle.style.top = you.style.top;
+            sparkle.style.left = you.style.left;
+            sparkle.innerText = "pew";
+            main.appendChild(sparkle);
         };
 
         const moveAllBullets = () => {
+            if (paused) return;
             document.querySelectorAll(".bullet").forEach((bullet) => {
-                // TO-DO: Adjust movement based on angle
+                const pos = getXandYfromAngle(
+                    bullet.style["--angle"],
+                    bullet.style["--speed"]
+                );
                 bullet.style.left =
-                    parseInt(bullet.style.left.replace("%", "")) +
-                    bullet.style["--speed"] +
-                    "%";
+                    parseInt(bullet.style.left.replace("px", "")) +
+                    pos.x +
+                    "px";
+                bullet.style.top =
+                    parseInt(bullet.style.top.replace("px", "")) + pos.y + "px";
                 bullet.style["--duration"] = bullet.style["--duration"] - 1;
                 if (bullet.style["--duration"] < 1) bullet.remove();
             });
         };
 
+        const miscellaneous = () => {
+            const allXP = [...document.querySelectorAll(".xp")];
+            const xpTouchingYou = allXP.find((xp) =>
+                areTwoElementsTouching(you, xp)
+            );
+            if (xpTouchingYou) {
+                you.style["--xp"] = you.style["--xp"] + xpTouchingYou.innerText;
+                xpTouchingYou.remove();
+            }
+            if (you.style["--xp"] > 10 * you.style["--level"]) {
+                you.style["--level"] = you.style["--level"] + 1;
+                you.style["--delay"] = Math.max(1, you.style["--delay"] - 100);
+                you.style["--xp"] = 0;
+            }
+        };
+
         document
-            .querySelector("dialog button")
+            .querySelector("#intro button")
             .addEventListener("click", () => {
-                document.querySelector("dialog").close();
+                document.querySelector("#intro").close();
 
                 // Set up the game
+                // Mouse controls
                 document
                     .querySelector("#up")
-                    .addEventListener("mousedown", () => moveGuy(-1, 0));
+                    .addEventListener("mousedown", () => moveYou(-1, 0));
                 document
                     .querySelector("#down")
-                    .addEventListener("mousedown", () => moveGuy(1, 0));
+                    .addEventListener("mousedown", () => moveYou(1, 0));
                 document
                     .querySelector("#left")
-                    .addEventListener("mousedown", () => moveGuy(0, -1));
+                    .addEventListener("mousedown", () => moveYou(0, -1));
                 document
                     .querySelector("#right")
-                    .addEventListener("mousedown", () => moveGuy(0, 1));
+                    .addEventListener("mousedown", () => moveYou(0, 1));
                 window.addEventListener("mouseup", () =>
-                    clearInterval(guyMoving)
+                    clearInterval(youMoving)
                 );
+                // Touch controls
+                document
+                    .querySelector("#up")
+                    .addEventListener("touchstart", () => moveYou(-1, 0));
+                document
+                    .querySelector("#down")
+                    .addEventListener("touchstart", () => moveYou(1, 0));
+                document
+                    .querySelector("#left")
+                    .addEventListener("touchstart", () => moveYou(0, -1));
+                document
+                    .querySelector("#right")
+                    .addEventListener("touchstart", () => moveYou(0, 1));
+                window.addEventListener("touchend", () =>
+                    clearInterval(youMoving)
+                );
+                document
+                    .querySelector("#pause")
+                    .addEventListener("click", () => {
+                        paused = true;
+                        document.querySelector("#paused").showModal();
+                    });
+                document
+                    .querySelector("#paused button")
+                    .addEventListener("click", () => {
+                        document.querySelector("#paused").close();
+                        paused = false;
+                    });
 
+                paused = false;
+                setInterval(moveAllEnemies, 1000 / 12);
                 setInterval(moveAllBullets, 1000 / 24);
-                setInterval(shootSparkle, 3000);
+                setInterval(animateDamageNumbers, 1000 / 24);
+                setInterval(miscellaneous, 1000 / 24);
+                setInterval(createEnemy, 2000);
+                setTimeout(shootSparkle, you.style["--delay"]);
             });
     </script>
 </body>
