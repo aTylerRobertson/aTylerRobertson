@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <head>
     <title>spreadsheet</title>
+    <meta charset="utf-8" />
     <style>
         :root {
             --color-muted: gainsboro;
             --color-primary: black;
             --color-borders: lightgray;
+            --color-highlight: cornflowerblue;
         }
         body {
             background-color: var(--color-primary);
@@ -33,6 +35,9 @@
             justify-content: center;
             align-items: center;
         }
+        td:has(input:focus) {
+            border-color: var(--color-highlight);
+        }
         input {
             padding: 1px 3px;
             font-size: inherit;
@@ -43,6 +48,14 @@
         span {
             padding: 1px 3px;
             display: none;
+        }
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            margin: 0;
         }
         .hidden {
             display: none !important;
@@ -3022,6 +3035,12 @@
                     function: (params) =>
                         `<a href="${params[1]}">${params[0]}</a>`,
                 },
+                {
+                    name: "HEADING",
+                    params: "text, level",
+                    function: (params) =>
+                        `<h${params[1]}>${params[0]}</h${params[1]}>`,
+                },
             ];
 
             const formula = f;
@@ -3041,18 +3060,25 @@
 
         const parse = (formula) => {
             let result = formula.replace("=", "");
-            const addresses = [...result.matchAll(/[A-Za-z][1-9]\d*/g)].flat();
+            const addresses = [...result.matchAll(/\W?([A-Za-z][1-9]\d*)\W?/g)];
             for (const address of addresses) {
                 const index =
                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(
-                        address.charAt(0).toUpperCase()
-                    ) * parseInt(address.slice(1));
-                result = result.replace(address, outputs[index].innerText);
+                        address[1].charAt(0).toUpperCase()
+                    ) +
+                    (parseInt(address[1].slice(1)) - 1) * 26;
+                const value = outputs[index].innerText.trim();
+                result = result.replace(
+                    address[1],
+                    /[A-Za-z]/.test(value) ? `"${value}"` : value
+                );
             }
 
-            const functions = [...result.matchAll(/\W([A-Za-z]+\([^\(]*?\))/g)];
-            while (functions.length > 0) {
-                for (const func of functions) {
+            let innerFunctions = [
+                ...result.matchAll(/\W([A-Za-z]+\([^\(\)]*?\))/g),
+            ];
+            while (innerFunctions.length > 0) {
+                for (const func of innerFunctions) {
                     result = result.replace(func[1], f(func[1]));
                 }
 
@@ -3066,13 +3092,18 @@
                     }
                 }
 
-                functions = result.matchAll(functionRegExp);
+                innerFunctions = [
+                    ...result.matchAll(/\W([A-Za-z]+\([^\(]*?\))/g),
+                ];
             }
 
             // Process the final function
-            const finalForm = result.match(/([A-Za-z]+\(.*?\))/);
-            if (finalForm) {
-                result = result.replace(finalForm[0], f(finalForm[0]));
+            const outermostFunction = result.match(/([A-Za-z]+\(.*?\))/);
+            if (outermostFunction) {
+                result = result.replace(
+                    outermostFunction[1],
+                    f(outermostFunction[1])
+                );
             }
 
             // Take care of any leftover basic math
@@ -3100,6 +3131,7 @@
         };
 
         let selectedCell = 0;
+        let canMove = true;
 
         const edit = (index) => {
             selectedCell = index;
@@ -3116,6 +3148,7 @@
             outputs[index].classList.add("shown");
             inputs[index].classList.remove("shown");
             inputs[index].classList.add("hidden");
+            canMove = true;
         };
 
         for (const [index, input] of inputs.entries()) {
@@ -3129,17 +3162,40 @@
             if (e.key == "Tab") {
                 e.preventDefault();
                 inputs[selectedCell].blur();
-                selectedCell++;
+                selectedCell = Math.min(cells.length - 1, selectedCell + 1);
                 edit(selectedCell);
-            }
-            if (e.key == "Enter" || e.key == "Return") {
+            } else if (e.key == "Enter" || e.key == "Return") {
                 e.preventDefault();
                 inputs[selectedCell].blur();
-                selectedCell += 26;
+                selectedCell = Math.min(cells.length - 1, selectedCell + 26);
                 edit(selectedCell);
+            } else if (canMove && e.key == "ArrowUp") {
+                e.preventDefault();
+                inputs[selectedCell].blur();
+                selectedCell = Math.max(0, selectedCell - 26);
+                edit(selectedCell);
+            } else if (canMove && e.key == "ArrowDown") {
+                e.preventDefault();
+                inputs[selectedCell].blur();
+                selectedCell = Math.min(cells.length - 1, selectedCell + 26);
+                edit(selectedCell);
+            } else if (canMove && e.key == "ArrowLeft") {
+                e.preventDefault();
+                if (selectedCell % 26 == 0) return;
+                inputs[selectedCell].blur();
+                selectedCell = Math.max(0, selectedCell - 1);
+                edit(selectedCell);
+            } else if (canMove && e.key == "ArrowRight") {
+                e.preventDefault();
+                if ((selectedCell + 1) % 26 == 0) return;
+                inputs[selectedCell].blur();
+                selectedCell = Math.min(cells.length - 1, selectedCell + 1);
+                edit(selectedCell);
+            } else {
+                canMove = false;
             }
         };
 
-        document.addEventListener("keypress", handleKeys);
+        document.addEventListener("keydown", handleKeys);
     </script>
 </body>
