@@ -3252,6 +3252,12 @@
                             params[1] ? `width="${params[1]}"` : ""
                         } />`,
                 },
+                {
+                    name: "CHOOSE",
+                    params: "any",
+                    function: (params) =>
+                        params[Math.floor(Math.random() * params.length)],
+                },
             ];
 
             const formula = f;
