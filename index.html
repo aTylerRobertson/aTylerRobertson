@@ -734,7 +734,7 @@
             <td><span></span><input /></td>
             <td><span></span><input /></td>
             <td><span></span><input /></td>
-            <td><span></span><input value='=HYPERLINK("","")' /></td>
+            <td><span></span><input /></td>
             <td><span></span><input /></td>
             <td><span></span><input /></td>
             <td><span></span><input /></td>
@@ -3170,6 +3170,15 @@
         const cells = document.querySelectorAll("td");
         const inputs = document.querySelectorAll("input");
         const outputs = document.querySelectorAll("span");
+        const stored = JSON.parse(localStorage.getItem("spreadsheet"));
+
+        const save = () => {
+            let formulas = [];
+            for (const input of inputs) {
+                formulas.push(input.value);
+            }
+            localStorage.setItem("spreadsheet", JSON.stringify(formulas));
+        };
 
         const f = (f) => {
             const functions = [
@@ -3374,12 +3383,15 @@
             inputs[index].classList.remove("shown");
             inputs[index].classList.add("hidden");
             canMove = true;
+            save();
         };
 
         for (const [index, input] of inputs.entries()) {
             input.addEventListener("blur", () => update(index));
             cells[index].addEventListener("click", () => edit(index));
             cells[index].addEventListener("focus", () => edit(index));
+            if (input.value == "" && stored && stored.length)
+                input.value = stored[index];
             update(index);
         }
 
