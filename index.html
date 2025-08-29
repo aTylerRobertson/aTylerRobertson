@@ -384,7 +384,7 @@
             <td>
                 <span></span
                 ><input
-                    value='=HYPERLINK("Wordle","https://docs.google.com/spreadsheets/d/1Soh5MAsNgyECLyTxgL5oFCp3kSdJI8a0wgz1iy9gdz0/copy")'
+                    value='=HYPERLINK("Wordle","https://docs.google.com/spreadsheets/d/1Soh5MAsNgyECLyTxgL5oFCp3kSdJI8a0wgz1iy9gdz0/edit?usp=share_link")'
                 />
             </td>
             <td><span></span><input /></td>
@@ -3207,7 +3207,7 @@
                     name: "HYPERLINK",
                     params: "text, url",
                     function: (params) =>
-                        `<a href="${params[1]}">${params[0]}</a>`,
+                        `<a target="_blank" href="${params[1]}">${params[0]}</a>`,
                 },
                 {
                     name: "HEADING",
