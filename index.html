@@ -3291,7 +3291,7 @@
             const addresses = [
                 ...result.matchAll(/[^\"]*([A-Za-z][1-9]\d*)[^\"]*/g),
             ];
-            result = result.replace(",", "꛵");
+            result = result.replace(/\,/g, "꛵");
             for (const address of addresses) {
                 const index =
                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(
