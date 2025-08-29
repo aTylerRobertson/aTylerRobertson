@@ -3280,7 +3280,16 @@
         const parse = (formula) => {
             if (formula.charAt(0) !== "=") return formula;
             let result = formula.replace("=", "");
-            const addresses = [...result.matchAll(/\W?([A-Za-z][1-9]\d*)\W?/g)];
+            // Pull the strings out so we don't mess with them
+            const strings = [];
+            while (result.match(/\".*?\"/)) {
+                let match = result.match(/\".*?\"/);
+                strings.push(match);
+                result = result.replace(match, "🏳️‍⚧️🏳️‍⚧️🏳️‍⚧️");
+            }
+            const addresses = [
+                ...result.matchAll(/[^\"]*([A-Za-z][1-9]\d*)[^\"]*/g),
+            ];
             for (const address of addresses) {
                 const index =
                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(
@@ -3292,6 +3301,11 @@
                     address[1],
                     /[A-Za-z]/.test(value) ? `"${value}"` : value
                 );
+            }
+
+            // Put the strings back
+            for (const string of strings) {
+                result = result.replace(/🏳️‍⚧️🏳️‍⚧️🏳️‍⚧️/, string);
             }
 
             let innerFunctions = [
