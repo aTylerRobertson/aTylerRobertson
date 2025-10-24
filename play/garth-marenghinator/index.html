@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Garth Marenghi's Unofficial Garth Marenghinator</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <style>
+            body {
+                font-size: 130%;
+            }
+            main {
+                margin: 10px auto;
+                width: 666px;
+                max-width: 90vw;
+            }
+            section:first-of-type {
+                text-align: center;
+            }
+            section:nth-of-type(n + 2) {
+                padding: 1rem;
+                border: 3px solid black;
+                margin: 10px 0;
+            }
+            h1:first-of-type {
+                margin: 0;
+                font-size: 4rem;
+                line-height: 4rem;
+                text-transform: uppercase;
+            }
+            h2 {
+                margin: 0;
+                text-transform: uppercase;
+            }
+            input {
+                border: 3px solid black;
+                font-size: inherit;
+                width: 100%;
+                padding: 1px 3px;
+            }
+            input:focus {
+                border-color: crimson;
+                outline: none;
+            }
+            button {
+                width: 100%;
+                font-size: 2rem;
+                background: black;
+                color: white;
+                border: none;
+                outline: none;
+                font-family: serif;
+                text-transform: uppercase;
+                cursor: pointer;
+                transition: background-color 3s linear, color 1s ease;
+                margin-top: 2rem;
+            }
+            button:hover {
+                background-color: darkred;
+                color: crimson;
+            }
+            #inputs {
+                display: grid;
+                grid-template-columns: 1fr 2fr;
+                align-items: center;
+                grid-gap: 1rem;
+                padding: 0 1rem;
+            }
+            label {
+                text-align: right;
+            }
+            label::first-letter {
+                text-transform: capitalize;
+            }
+            .hidden {
+                display: none;
+            }
+            #title {
+                text-transform: uppercase;
+            }
+            #excerpt::first-letter {
+                text-transform: capitalize;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <section>
+                <i>Garth Marenghi's Unofficial</i>
+                <h1>Garth Marenghinator</h1>
+                <p>
+                    Create Garth Marenghi novel titles and excerpts based on
+                    your prompts.
+                </p>
+            </section>
+            <section id="input">
+                <form id="generate" autocomplete="off">
+                    <div id="inputs"></div>
+                    <button type="submit" id="generate">Marenghinate</button>
+                </form>
+            </section>
+            <section id="result" class="hidden">
+                <h2>Garth Marenghi's</h2>
+                <h1 id="title"></h1>
+                <p id="excerpt"></p>
+                <button id="reset">Marenghinate AGAIN</button>
+            </section>
+        </main>
+    </body>
+    <script>
+        const titleFormats = [
+            `The #color #place`,
+            `#liquid Killer`,
+            `#job from #adjective #town`,
+            `#liquid and #metal`,
+            `#drug #creature from Planet #letter`,
+            `#expletive #animalGroupName`,
+            `#nationality #food is best served #adjective`,
+            `#verbEndingInIng #job #name`,
+            `#state #farmTool #activity`,
+            `#liquid on the #place`,
+            `#nationality #pluralAnimals do it #adjective`,
+            `#phobia-maxxing`,
+            `#pluralInsect in your #itemOfClothing`,
+        ];
+        const excerptFormats = [
+            `"#expletive!" shouted #name, #presentVerb around the #adjective #location. "#expletive!" #name repeated, staring at the #color, #texture, #liquid spurting from #possessivePronoun #bodyPart after the #event with the #creature. #liquid? #liquid. #liquid. #expletive. #liquid.`,
+            `#name couldn't believe that #possessivePronoun #bodyPart had just been #verbEndingInEd apart by #number #stateOfMind #pluralThing. Did #pluralThing even #action at this time of year? #name's thought was interrupted by #verbEndingInIng #liquid, #color, #anotherColor #liquid. #possessivePronoun #liquid. #liquid. #liquid. Followed by #anotherLiquid and #aThirdLiquid from the #pluralThing. #liquid. #anotherLiquid. #aThirdLiquid.`,
+            `The #creature had #verbEndingInEd #name — and it was #adjective, too, because it had caught #name in the middle of #morningActivity. The pair flew into #placeYouWouldntWantToBe, narrowly dodging #pluralObject and #anotherPluralObject. #name could feel flesh #somethingFleshShouldntDo under the strain. #anotherAdjective flashes. #color. Darkness. #color. Darkness. #liquid.`,
+            `#pronoun knew #pluralKindOfPeople were supposed to #verb, but were they supposed to #anotherVerb? No, they weren't.`,
+            `The #job was #emotion to find themself in #timePeriod #city, but the #adjective #animalGroupName of #anotherAdjective natives was none too pleased at the interruption of their satanic #activity ritual. #name made for a delicious #food, and fed generations. Crunch. Munch. Crunch.`,
+            `#name #verbEndingInEd at the space where #possessivePronoun #pluralBodyPart used to be. Now there was just a bit of wiggly air there. #name looked to the #creature who had taken them, vision impaired by the #somethingMadeOfWater of #texture, #color #liquid building up in the room. "#quoteFromAMovie", said the #creature, clearly trying to relate it to the situation as #name's world turned #anotherColor, "#quoteFromAMovie"`,
+            `#name had finally decided to #lifeGoal, and not a moment too soon, as the #fabric-headed #kindOfPerson was just taking a #farmTool to #possessivePronoun #pluralBodyPart. "It's not ideal," thought #name in a moment of #stateOfMind, #verbEndingInIng #liquid all over the place, "But at least there will be plenty of time for #lifeGoal."`,
+        ];
+
+        let titleFormat =
+            titleFormats[Math.floor(Math.random() * titleFormats.length)];
+        let excerptFormat =
+            excerptFormats[Math.floor(Math.random() * excerptFormats.length)];
+
+        const init = () => {
+            titleFormat =
+                titleFormats[Math.floor(Math.random() * titleFormats.length)];
+            excerptFormat =
+                excerptFormats[
+                    Math.floor(Math.random() * excerptFormats.length)
+                ];
+            const inputFields = [];
+            titleFormat.matchAll(/(\#\w+)/gi).forEach((match) => {
+                if (!inputFields.includes(match[0])) inputFields.push(match[0]);
+            });
+            excerptFormat.matchAll(/(\#\w+)/gi).forEach((match) => {
+                if (!inputFields.includes(match[0])) inputFields.push(match[0]);
+            });
+            for (const field of inputFields) {
+                const labelEl = document.createElement("label");
+                labelEl.setAttribute("for", field);
+                labelEl.innerText = field
+                    .replace("#", "")
+                    .replace(/([a-z])([A-Z])/g, "$1 $2")
+                    .toLowerCase();
+                const inputEl = document.createElement("input");
+                inputEl.id = field;
+                inputEl.setAttribute("autocomplete", "off");
+
+                document.querySelector("#inputs").appendChild(labelEl);
+                document.querySelector("#inputs").appendChild(inputEl);
+            }
+        };
+
+        const marenghinate = () => {
+            const allFields = document.querySelectorAll("input");
+            const allEntries = [];
+            allFields.forEach((field) => {
+                allEntries.push({
+                    id: field.id,
+                    value: field.value,
+                });
+            });
+            document.querySelector("#title").innerText = titleFormat.replace(
+                /(\#\w+)/gi,
+                (x) => allEntries.find(({ id }) => id === x).value
+            );
+            document.querySelector("#excerpt").innerText = excerptFormat
+                .replace(
+                    /(\#\w+)/gi,
+                    (x) => allEntries.find(({ id }) => id === x).value
+                )
+                .replace(/([;:\.!\?]\W*\w)/gi, (x) => x.toUpperCase());
+
+            document.querySelector("#input").classList.add("hidden");
+            document.querySelector("#result").classList.remove("hidden");
+        };
+
+        const reset = () => {
+            document.querySelector("#inputs").innerHTML = "";
+            init();
+            document.querySelector("#result").classList.add("hidden");
+            document.querySelector("#input").classList.remove("hidden");
+            document.querySelectorAll("input")[0].focus();
+        };
+
+        init();
+
+        document.querySelector("form").addEventListener("submit", (e) => {
+            e.preventDefault();
+            let isFormFilled = true;
+            document.querySelectorAll("input").forEach((input) => {
+                if (!input.value) isFormFilled = false;
+            });
+            if (isFormFilled) {
+                marenghinate();
+            } else {
+                document.querySelector("input:focus").nextSibling.focus();
+            }
+        });
+        document
+            .querySelector("#reset")
+            .addEventListener("click", () => reset());
+    </script>
+</html>
