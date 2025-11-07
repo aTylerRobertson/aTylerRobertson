@@ -8,6 +8,8 @@ on:
 
 permissions:
     contents: write
+    pages: write
+    id-token: write
 
 concurrency:
     group: "pages"
@@ -20,59 +22,38 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-
-    get-files:
-        runs-on: ubuntu-latest
-        needs: [setup]
-        outputs:
-            files: ${{ steps.files.outputs }}
-        steps:
-            - name: List files
+            - name: Conver new Markdown to HTML
               id: files
               run: |
                   FILES=$(ls -1 read/*.md)
                   for i in $FILES; do
-                      echo $i >> "$GITHUB_OUTPUT"
+                    FILENAME=$(echo $i | cut -d . -f 1)
+                    FILEPATH="read/$FILENAME/index.html"
+                    # Skip already-created files
+                    if test -f "$FILEPATH"; then
+                        continue
+                    else
+                        IFS=''
+                        cat .github/template/postHeader.html > $FILEPATH
+                        # Heading 3
+                        echo "$(sed -r 's/^\#\#\# (.*)$/\<h3\>\1\<\/h3\>/' $FILEPATH)" > $FILEPATH
+                        # Heading 2
+                        echo "$(sed -r 's/^\#\# (.*)$/\<h2\>\<a href=\"\#\1\"\>\1\<\/a\>\<\/h2\>/' $FILEPATH)" > $FILEPATH
+                        # Heading 1
+                        echo "$(sed -r 's/^\# (.*)$/\<h1\>\<a href=\"\#\1\"\>\1\<\/a\>\<\/h1\>/' $FILEPATH)" > $FILEPATH
+                        # Bold text
+                        echo "$(sed -r 's/\*\*(.*)\*\*/\<b\>\1\<\/b\>/' $FILEPATH)" > $FILEPATH
+                        # Italic text
+                        echo "$(sed -r 's/\*(.*)\*/\<i\>\1\<\/i\>/' $FILEPATH)" > $FILEPATH
+                        # Italic text
+                        echo "$(sed -r 's/\_(.*)\_/\<i\>\1\<\/i\>/' $FILEPATH)" > $FILEPATH
+                        # Links
+                        echo "$(sed -r 's/\[(.*)\]\((.*)\)/\<a href=\"\2\"\>\1\<\/a\>/' $FILEPATH)" > $FILEPATH
+                        # Paragraphs
+                        echo "$(sed -r 's/^([^\<h].*)$/\<p\>\1\<\/p\>/' $FILEPATH)" > $FILEPATH
+                        cat ./github/template/footer.html >> $FILEPATH
+                    fi
                   done
-    convert:
-        runs-on: ubuntu-latest
-        needs: [get-files]
-        strategy:
-            matrix:
-                filename: ${{ needs.get-files.outputs.files }}
-        steps:
-            - name: Convert new Markdown to HTML
-              run: |
-                  FILENAME=$(echo ${{matrix.filename}} | cut -d . -f 1)
-                  FILEPATH="read/$FILENAME/index.html"
-                  # Skip already-created files
-                  if test -f "$FILEPATH"; then
-                    echo "File already exists"
-                  else
-                    IFS=''
-                    cat .github/template/postHeader.html > $FILEPATH
-                    # Heading 3
-                    echo "$(sed -r 's/^\#\#\# (.*)$/\<h3\>\1\<\/h3\>/' $FILEPATH)" > $FILEPATH
-                    # Heading 2
-                    echo "$(sed -r 's/^\#\# (.*)$/\<h2\>\<a href=\"\#\1\"\>\1\<\/a\>\<\/h2\>/' $FILEPATH)" > $FILEPATH
-                    # Heading 1
-                    echo "$(sed -r 's/^\# (.*)$/\<h1\>\<a href=\"\#\1\"\>\1\<\/a\>\<\/h1\>/' $FILEPATH)" > $FILEPATH
-                    # Bold text
-                    echo "$(sed -r 's/\*\*(.*)\*\*/\<b\>\1\<\/b\>/' $FILEPATH)" > $FILEPATH
-                    # Italic text
-                    echo "$(sed -r 's/\*(.*)\*/\<i\>\1\<\/i\>/' $FILEPATH)" > $FILEPATH
-                    # Italic text
-                    echo "$(sed -r 's/\_(.*)\_/\<i\>\1\<\/i\>/' $FILEPATH)" > $FILEPATH
-                    # Links
-                    echo "$(sed -r 's/\[(.*)\]\((.*)\)/\<a href=\"\2\"\>\1\<\/a\>/' $FILEPATH)" > $FILEPATH
-                    # Paragraphs
-                    echo "$(sed -r 's/^([^\<h].*)$/\<p\>\1\<\/p\>/' $FILEPATH)" > $FILEPATH
-                    cat ./github/template/footer.html >> $FILEPATH
-                  fi
-    commit:
-        runs-on: ubuntu-latest
-        needs: [convert]
-        steps:
             - name: Commit HTML to repo
               run: |
                   git config --local user.email "action@github.com"
@@ -80,3 +61,12 @@ jobs:
                   git add read/
                   git commit -m "Markdown file(s) to HTML"
                   git push --force
+            - name: Setup Pages
+              uses: actions/configure-pages@v5
+            - name: Upload artifact
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  # Upload entire repository
+                  path: "."
+            - name: Deploy to GitHub Pages
+              uses: actions/deploy-pages@v4
