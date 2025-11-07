@@ -37,7 +37,7 @@ jobs:
                         continue
                     else
                         touch $TEMPFILE
-                        cat $FILENAME > $TEMPFILE
+                        cat $i > $TEMPFILE
                         IFS=''
                         # Heading 3
                         echo "$(sed -r 's/^\#\#\# (.*)$/\<h3\>\1\<\/h3\>/' $TEMPFILE)" > $TEMPFILE
