@@ -28,11 +28,12 @@ jobs:
                   FILES=$(ls -1 read/*.md)
                   for i in $FILES; do
                     FILENAME=$(echo $i | cut -d . -f 1)
-                    FILEPATH="read/$FILENAME/index.html"
+                    FILEPATH="$FILENAME/index.html"
                     # Skip already-created files
                     if test -f "$FILEPATH"; then
                         continue
                     else
+                        touch $FILEPATH
                         IFS=''
                         cat .github/template/postHeader.html > $FILEPATH
                         # Heading 3
