@@ -51,6 +51,8 @@ jobs:
                         echo "$(sed -r 's/\*(.*)\*/\<i\>\1\<\/i\>/' $TEMPFILE)" > $TEMPFILE
                         # Italic text
                         echo "$(sed -r 's/\_(.*)\_/\<i\>\1\<\/i\>/' $TEMPFILE)" > $TEMPFILE
+                        # Images
+                        echo "$(sed -r 's/\!\[(.*)\]\((.*)\)/\<img alt=\"\2\" src=\"\1\" \/\>/' $TEMPFILE)" > $TEMPFILE
                         # Links
                         echo "$(sed -r 's/\[(.*)\]\((.*)\)/\<a href=\"\2\"\>\1\<\/a\>/' $TEMPFILE)" > $TEMPFILE
                         # Paragraphs
