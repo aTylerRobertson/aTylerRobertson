@@ -16,7 +16,9 @@ concurrency:
     cancel-in-progress: false
 
 jobs:
-    setup:
+    blog:
+        environment:
+            name: github-pages
         if: ${{ ! endsWith(github.actor, '[bot]') }}
         runs-on: ubuntu-latest
         steps:
@@ -29,31 +31,36 @@ jobs:
                   for i in $FILES; do
                     FILENAME=$(echo $i | cut -d . -f 1)
                     FILEPATH="$FILENAME/index.html"
+                    TEMPFILE="temp.html"
                     # Skip already-created files
                     if test -f "$FILEPATH"; then
                         continue
                     else
+                        touch $TEMPFILE
+                        IFS=''
+                        # Heading 3
+                        echo "$(sed -r 's/^\#\#\# (.*)$/\<h3\>\1\<\/h3\>/' $TEMPFILE)" > $TEMPFILE
+                        # Heading 2
+                        echo "$(sed -r 's/^\#\# (.*)$/\<h2\>\<a href=\"\#\1\"\>\1\<\/a\>\<\/h2\>/' $TEMPFILE)" > $TEMPFILE
+                        # Heading 1
+                        echo "$(sed -r 's/^\# (.*)$/\<h1\>\<a href=\"\#\1\"\>\1\<\/a\>\<\/h1\>/' $TEMPFILE)" > $TEMPFILE
+                        # Bold text
+                        echo "$(sed -r 's/\*\*(.*)\*\*/\<b\>\1\<\/b\>/' $TEMPFILE)" > $TEMPFILE
+                        # Italic text
+                        echo "$(sed -r 's/\*(.*)\*/\<i\>\1\<\/i\>/' $TEMPFILE)" > $TEMPFILE
+                        # Italic text
+                        echo "$(sed -r 's/\_(.*)\_/\<i\>\1\<\/i\>/' $TEMPFILE)" > $TEMPFILE
+                        # Links
+                        echo "$(sed -r 's/\[(.*)\]\((.*)\)/\<a href=\"\2\"\>\1\<\/a\>/' $TEMPFILE)" > $TEMPFILE
+                        # Paragraphs
+                        echo "$(sed -r 's/^([^\<h].*)$/\<p\>\1\<\/p\>/' $TEMPFILE)" > $TEMPFILE
+                        cat .github/template/postFooter.html >> $TEMPFILE
+
+                        # Make the output file and write to it
                         mkdir $FILENAME
                         touch $FILEPATH
-                        IFS=''
-                        cat .github/template/postHeader.html > $FILEPATH
-                        # Heading 3
-                        echo "$(sed -r 's/^\#\#\# (.*)$/\<h3\>\1\<\/h3\>/' $FILEPATH)" > $FILEPATH
-                        # Heading 2
-                        echo "$(sed -r 's/^\#\# (.*)$/\<h2\>\<a href=\"\#\1\"\>\1\<\/a\>\<\/h2\>/' $FILEPATH)" > $FILEPATH
-                        # Heading 1
-                        echo "$(sed -r 's/^\# (.*)$/\<h1\>\<a href=\"\#\1\"\>\1\<\/a\>\<\/h1\>/' $FILEPATH)" > $FILEPATH
-                        # Bold text
-                        echo "$(sed -r 's/\*\*(.*)\*\*/\<b\>\1\<\/b\>/' $FILEPATH)" > $FILEPATH
-                        # Italic text
-                        echo "$(sed -r 's/\*(.*)\*/\<i\>\1\<\/i\>/' $FILEPATH)" > $FILEPATH
-                        # Italic text
-                        echo "$(sed -r 's/\_(.*)\_/\<i\>\1\<\/i\>/' $FILEPATH)" > $FILEPATH
-                        # Links
-                        echo "$(sed -r 's/\[(.*)\]\((.*)\)/\<a href=\"\2\"\>\1\<\/a\>/' $FILEPATH)" > $FILEPATH
-                        # Paragraphs
-                        echo "$(sed -r 's/^([^\<h].*)$/\<p\>\1\<\/p\>/' $FILEPATH)" > $FILEPATH
-                        cat .github/template/postFooter.html >> $FILEPATH
+                        echo $(cat .github/template/postHeader.html) | cat - $TEMPFILE > $FILEPATH
+                        rm $TEMPFILE
                     fi
                   done
             - name: Commit HTML to repo
