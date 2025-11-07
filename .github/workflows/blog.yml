@@ -33,6 +33,7 @@ jobs:
                     if test -f "$FILEPATH"; then
                         continue
                     else
+                        mkdir $FILENAME
                         touch $FILEPATH
                         IFS=''
                         cat .github/template/postHeader.html > $FILEPATH
