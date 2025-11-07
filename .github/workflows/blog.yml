@@ -53,7 +53,7 @@ jobs:
                         echo "$(sed -r 's/\[(.*)\]\((.*)\)/\<a href=\"\2\"\>\1\<\/a\>/' $FILEPATH)" > $FILEPATH
                         # Paragraphs
                         echo "$(sed -r 's/^([^\<h].*)$/\<p\>\1\<\/p\>/' $FILEPATH)" > $FILEPATH
-                        cat ./github/template/postFooter.html >> $FILEPATH
+                        cat .github/template/postFooter.html >> $FILEPATH
                     fi
                   done
             - name: Commit HTML to repo
