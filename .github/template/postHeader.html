@@ -5,6 +5,21 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <style>
+            :root {
+                --bg: white;
+                --text: black;
+                --link: dodgerblue;
+            }
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --bg: black;
+                    --text: white;
+                    --link: cornflowerblue;
+                }
+            }
+            body {
+                background-color: var(--bg);
+            }
             main {
                 width: 666px;
                 max-width: 90vw;
@@ -12,9 +27,13 @@
                 font-family: serif;
                 font-size: 130%;
                 line-height: 130%;
+                color: var(--text);
             }
             p {
                 font-family: sans-serif;
+            }
+            a {
+                color: var(--link);
             }
             h1 {
                 font-size: 2.5em;
@@ -22,7 +41,7 @@
             h1 a,
             h2 a,
             h3 a {
-                color: black;
+                color: var(--text);
                 text-decoration: none;
             }
             hr {
