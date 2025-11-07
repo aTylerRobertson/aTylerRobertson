@@ -44,7 +44,7 @@ jobs:
                         # Heading 2
                         echo "$(sed -r 's/^\#\# (.*)$/\<h2\>\<a href=\"\#\1\"\>\1\<\/a\>\<\/h2\>/' $TEMPFILE)" > $TEMPFILE
                         # Heading 1
-                        echo "$(sed -r 's/^\# (.*)$/\<h1\>\<a href=\"\#\1\"\>\1\<\/a\>\<\/h1\>/' $TEMPFILE)" > $TEMPFILE
+                        echo "$(sed -r 's/^\# (.*)$/\<h1\>\1\<\/h1\>/' $TEMPFILE)" > $TEMPFILE
                         # Bold text
                         echo "$(sed -r 's/\*\*(.*)\*\*/\<b\>\1\<\/b\>/' $TEMPFILE)" > $TEMPFILE
                         # Italic text
