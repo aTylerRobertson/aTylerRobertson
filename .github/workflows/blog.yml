@@ -61,10 +61,11 @@ jobs:
                         # Append to RSS
                         touch tempRSS.xml
                         echo $(head -n -2 read/rss.xml) > tempRSS.xml
-                        echo "<item><title>$(head $i -1)</title><link>https://aTylerRobertson/$FILENAME</link><description>" >> tempRSS.xml
+                        echo "<item><title>$(head -1 $i)</title><link>https://aTylerRobertson/$FILENAME</link><description>" >> tempRSS.xml
                         echo $(cat $TEMPFILE) >> tempRSS.xml
                         echo "</description><pubDate>$(date +"%D %T")</pubDate><guid></guid></item>" >> tempRSS.xml
-                        echo "</channel></rss>" >> tempRSS.xml
+                        echo "</channel>" >> tempRSS.xml
+                        echo "</rss>" >> tempRSS.xml
                         echo $(cat tempRSS.xml) > read/rss.xml
                         rm tempRSS.xml
 
