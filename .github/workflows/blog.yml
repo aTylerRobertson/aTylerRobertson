@@ -76,15 +76,14 @@ jobs:
                         echo $(cat .github/template/postHeader.html) | cat - $TEMPFILE > $FILEPATH
                         cat .github/template/postFooter.html >> $TEMPFILE
                         rm $TEMPFILE
+
+                        git config --local user.email "action@github.com"
+                        git config --local user.name "github-actions"
+                        git add $FILEPATH
+                        git commit -m "Publish post \"$FILENAME\""
+                        git push --force
                     fi
                   done
-            - name: Commit HTML to repo
-              run: |
-                  git config --local user.email "action@github.com"
-                  git config --local user.name "github-actions"
-                  git add .
-                  git commit -m "Update website with latest content"
-                  git push --force
             - name: Setup Pages
               uses: actions/configure-pages@v5
             - name: Upload artifact
