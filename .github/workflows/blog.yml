@@ -59,9 +59,10 @@ jobs:
                         echo "$(sed -r 's/^([^\<h].*)$/\<p\>\1\<\/p\>/' $TEMPFILE)" > $TEMPFILE
 
                         # Append to RSS
+                        TITLE=$(head -1 $i)
                         touch tempRSS.xml
                         echo $(head -n -2 read/rss.xml) > tempRSS.xml
-                        echo "<item><title>${$(head -1 $i):2}</title><link>https://aTylerRobertson/$FILENAME</link><description><![CDATA[" >> tempRSS.xml
+                        echo "<item><title>${TITLE:2}</title><link>https://aTylerRobertson/$FILENAME</link><description><![CDATA[" >> tempRSS.xml
                         echo $(cat $TEMPFILE) >> tempRSS.xml
                         echo "]]></description><pubDate>$(date +"%D %T")</pubDate><guid></guid></item>" >> tempRSS.xml
                         echo "</channel>" >> tempRSS.xml
