@@ -57,12 +57,22 @@ jobs:
                         echo "$(sed -r 's/\[(.*)\]\((.*)\)/\<a href=\"\2\"\>\1\<\/a\>/' $TEMPFILE)" > $TEMPFILE
                         # Paragraphs
                         echo "$(sed -r 's/^([^\<h].*)$/\<p\>\1\<\/p\>/' $TEMPFILE)" > $TEMPFILE
-                        cat .github/template/postFooter.html >> $TEMPFILE
+
+                        # Append to RSS
+                        touch tempRSS.xml
+                        echo $(head -n -2 read/rss.xml) > tempRSS.xml
+                        echo "<item><title>$(head $i -1)</title><link>https://aTylerRobertson/$FILENAME</link><description>" >> tempRSS.xml
+                        echo $(cat $TEMPFILE) >> tempRSS.xml
+                        echo "</description><pubDate>$(date +"%D %T")</pubDate><guid></guid></item>" >> tempRSS.xml
+                        echo "</channel></rss>" >> tempRSS.xml
+                        echo $(cat tempRSS.xml) > read/rss.xml
+                        rm tempRSS.xml
 
                         # Make the output file and write to it
                         mkdir $FILENAME
                         touch $FILEPATH
                         echo $(cat .github/template/postHeader.html) | cat - $TEMPFILE > $FILEPATH
+                        cat .github/template/postFooter.html >> $TEMPFILE
                         rm $TEMPFILE
                     fi
                   done
