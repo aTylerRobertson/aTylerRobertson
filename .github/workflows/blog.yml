@@ -82,8 +82,8 @@ jobs:
               run: |
                   git config --local user.email "action@github.com"
                   git config --local user.name "github-actions"
-                  git add read/
-                  git commit -m "Markdown file(s) to HTML"
+                  git add .
+                  git commit -m "Update website with latest content"
                   git push --force
             - name: Setup Pages
               uses: actions/configure-pages@v5
