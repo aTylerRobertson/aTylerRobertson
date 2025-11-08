@@ -64,7 +64,7 @@ jobs:
                         echo $(head -n -2 read/rss.xml) > tempRSS.xml
                         echo "<item><title>${TITLE:2}</title><link>https://aTylerRobertson/$FILENAME</link><description><![CDATA[" >> tempRSS.xml
                         echo $(cat $TEMPFILE) >> tempRSS.xml
-                        echo "]]></description><pubDate>$(date +"%D %T")</pubDate><guid></guid></item>" >> tempRSS.xml
+                        echo "]]></description><pubDate>$(date +"%D %T")</pubDate><guid>https://aTylerRobertson/$FILENAME</guid></item>" >> tempRSS.xml
                         echo "</channel>" >> tempRSS.xml
                         echo "</rss>" >> tempRSS.xml
                         echo $(cat tempRSS.xml) > read/rss.xml
