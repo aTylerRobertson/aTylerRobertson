@@ -6,20 +6,23 @@
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
         :root {
+            --color-background: snow;
             --color-muted: gainsboro;
             --color-primary: black;
             --color-borders: lightgray;
             --color-highlight: cornflowerblue;
+            --color-link: slateblue;
         }
         body {
-            background-color: var(--color-primary);
+            background-color: var(--color-background);
             margin: 0;
             font-family: "Google Sans Code", monospace;
             font-size: 16px;
             box-sizing: border-box;
         }
         table {
-            background: white;
+            background: var(--color-background);
+            border: 1px solid var(--color-primary);
             border-collapse: collapse;
         }
         tr {
@@ -75,11 +78,66 @@
         h6 {
             margin: 0;
         }
+        a {
+            color: var(--color-link);
+            background-color: var(--color-background);
+            width: fit-content;
+        }
+        aside code {
+            background: var(--color-muted);
+            padding: 2px 5px;
+            border-radius: 5px;
+        }
         .hidden {
             display: none !important;
         }
         .shown {
             display: inherit !important;
+        }
+        aside {
+            background-color: var(--color-background);
+            border: 3px solid var(--color-primary);
+            padding: 10px 30px;
+            position: fixed;
+            height: 100vh;
+            width: 300px;
+            left: 100vw;
+            top: 0;
+            box-shadow: -3px 0 0 rgba(0, 0, 0, 0.5);
+            overflow-y: scroll;
+            transition: left 1s ease;
+        }
+        aside.focus {
+            left: calc(100vw - 360px);
+        }
+        aside > p:last-of-type {
+            margin-bottom: 60px;
+        }
+        .toggleInfo {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            left: calc(100vw - 50px);
+            top: 10px;
+            border: 3px solid var(--color-primary);
+            border-radius: 50%;
+            box-shadow: -3px 3px 0 rgba(0, 0, 0, 0.5);
+            background: var(--color-background);
+            color: var(--color-highlight);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: left 1s ease;
+        }
+        .toggleInfo.focus {
+            left: max(10px, calc(100vw - 410px));
+        }
+        .toggleInfo > i::before {
+            content: "i";
+        }
+        .toggleInfo.focus > i::before {
+            content: "x";
         }
     </style>
 </head>
@@ -87,9 +145,36 @@
     <!-- 
     Hey, friend! 👋 Thanks for being here. 
     Just a heads up that the next ~3000 lines of code is static HTML defining the spreadsheet,
-    so if you're curious about the logic you're gonna wanna scroll allllllll the way down. 
+    so if you're curious about the spreadsheet logic you're gonna wanna scroll allllllll the way down. 
     See you there!
     -->
+    <aside>
+        <p>
+            Hi! 👋 I'm Tyler, this is my personal site <i>and</i> a spreadsheet
+            you can use!
+        </p>
+        <p>
+            To write a formula, click any of the cells and enter
+            <code>=</code> followed by whatever it is you want to calculate.
+            This can be basic arithmetic like <code>2+2</code> or any
+            combination of the functions listed below.
+        </p>
+        <p>
+            You can also reference other cells by entering their address, like
+            <code>A1</code> for the top-left cell.
+        </p>
+        <p>
+            The source code for all of this is available
+            <a
+                target="_blank"
+                href="https://github.com/aTylerRobertson/aTylerRobertson/blob/main/index.html"
+                >here</a
+            >.
+        </p>
+        <hr />
+        <h2>Functions</h2>
+    </aside>
+    <div class="toggleInfo"><i></i></div>
     <table>
         <tr>
             <th></th>
@@ -3181,7 +3266,115 @@
         const cells = document.querySelectorAll("td");
         const inputs = document.querySelectorAll("input");
         const outputs = document.querySelectorAll("span");
+        const aside = document.querySelector("aside");
         let stored = JSON.parse(localStorage.getItem("spreadsheet"));
+
+        const functions = [
+            {
+                name: "IF",
+                params: "condition, true, false",
+                description:
+                    "Return one thing if the condition resolves TRUE, or another if FALSE",
+                function: (params) => {
+                    let condition = params[0].replace(
+                        /([^=<>])=([^=])/g,
+                        "$1==$2"
+                    );
+                    if (condition.match(/[<>=]+\"/)) {
+                        condition = condition.replace(
+                            /(.*?)([<>=]+\")/,
+                            '"$1"$2'
+                        );
+                    }
+                    if (eval(condition)) {
+                        return params[1] ? params[1] : "TRUE";
+                    } else {
+                        return params[2] ? params[2] : "FALSE";
+                    }
+                },
+            },
+            {
+                name: "HYPERLINK",
+                params: "text, url",
+                description:
+                    "Render a clickable link to a URL (opens in new tab)",
+                function: (params) =>
+                    `<a target="_blank" href="${params[1]}">${params[0]}</a>`,
+            },
+            {
+                name: "HEADING",
+                params: "text, level",
+                description:
+                    "Render text in a heading tag based on the level number, e.g. 1 for H1",
+                function: (params) =>
+                    `<h${params[1]}>${params[0]}</h${params[1]}>`,
+            },
+            {
+                name: "COLOR",
+                params: "text, color",
+                description: "Render text in a given color",
+                function: (params) =>
+                    `<span style='color:${params[1]
+                        .replace(/\"/g, "")
+                        .trim()};'>${params[0]}</span>`,
+            },
+            {
+                name: "ITALIC",
+                params: "text",
+                description: "Make text italic",
+                function: (params) => `<i>${params[0]}</i>`,
+            },
+            {
+                name: "BOLD",
+                params: "text",
+                description: "Make text bold",
+                function: (params) => `<b>${params[0]}</b>`,
+            },
+            {
+                name: "CENTER",
+                params: "text",
+                description: "Center-align text",
+                function: (params) => `<center>${params[0]}</center>`,
+            },
+            {
+                name: "RIGHT",
+                params: "text",
+                description: "Right-align text",
+                function: (params) =>
+                    `<span style="text-align:right;">${params[0]}</span>`,
+            },
+            {
+                name: "IMAGE",
+                params: "url, width",
+                description: "Render an image at an optional width",
+                function: (params) =>
+                    `<img src="${params[0]}" ${
+                        params[1] ? `width="${params[1]}"` : ""
+                    } />`,
+            },
+            {
+                name: "CHOOSE",
+                params: "any",
+                description:
+                    "Randomly display one of the items in a comma-separated list",
+                function: (params) =>
+                    params[Math.floor(Math.random() * params.length)],
+            },
+            {
+                name: "FILL",
+                params: "color",
+                description: "Fill the cell with a single color",
+                function: (params) =>
+                    `<div style="width:100%;height:100%;padding:0;margin:0;background-color:${params[0]}">&nbsp;</div>`,
+            },
+        ];
+
+        // Add function descriptions to aside
+        for (const func of functions) {
+            const p = document.createElement("p");
+            p.innerHTML = `<code>=${func.name}(${func.params})</code><br/>${func.description}`;
+            aside.appendChild(p);
+        }
 
         const save = () => {
             let formulas = [];
@@ -3192,85 +3385,6 @@
         };
 
         const f = (f) => {
-            const functions = [
-                {
-                    name: "IF",
-                    params: "condition, true, false",
-                    function: (params) => {
-                        let condition = params[0].replace(
-                            /([^=<>])=([^=])/g,
-                            "$1==$2"
-                        );
-                        if (condition.match(/[<>=]+\"/)) {
-                            condition = condition.replace(
-                                /(.*?)([<>=]+\")/,
-                                '"$1"$2'
-                            );
-                        }
-                        if (eval(condition)) {
-                            return params[1] ? params[1] : "TRUE";
-                        } else {
-                            return params[2] ? params[2] : "FALSE";
-                        }
-                    },
-                },
-                {
-                    name: "HYPERLINK",
-                    params: "text, url",
-                    function: (params) =>
-                        `<a target="_blank" href="${params[1]}">${params[0]}</a>`,
-                },
-                {
-                    name: "HEADING",
-                    params: "text, level",
-                    function: (params) =>
-                        `<h${params[1]}>${params[0]}</h${params[1]}>`,
-                },
-                {
-                    name: "COLOR",
-                    params: "text, color",
-                    function: (params) =>
-                        `<span style='color:${params[1]
-                            .replace(/\"/g, "")
-                            .trim()};'>${params[0]}</span>`,
-                },
-                {
-                    name: "ITALIC",
-                    params: "text",
-                    function: (params) => `<i>${params[0]}</i>`,
-                },
-                {
-                    name: "BOLD",
-                    params: "text",
-                    function: (params) => `<b>${params[0]}</b>`,
-                },
-                {
-                    name: "CENTER",
-                    params: "text",
-                    function: (params) => `<center>${params[0]}</center>`,
-                },
-                {
-                    name: "RIGHT",
-                    params: "text",
-                    function: (params) =>
-                        `<span style="text-align:right;">${params[0]}</span>`,
-                },
-                {
-                    name: "IMAGE",
-                    params: "url, width",
-                    function: (params) =>
-                        `<img src="${params[0]}" ${
-                            params[1] ? `width="${params[1]}"` : ""
-                        } />`,
-                },
-                {
-                    name: "CHOOSE",
-                    params: "any",
-                    function: (params) =>
-                        params[Math.floor(Math.random() * params.length)],
-                },
-            ];
-
             const formula = f;
             const name = formula.split("(")[0];
             const params = formula.match(/\((.*)\)/)[1].split("꛵");
@@ -3457,5 +3571,12 @@
         };
 
         document.addEventListener("keydown", handleKeys);
+
+        const toggleInfo = document.querySelector(".toggleInfo");
+
+        toggleInfo.addEventListener("click", () => {
+            aside.classList.toggle("focus");
+            toggleInfo.classList.toggle("focus");
+        });
     </script>
 </body>
