@@ -67,10 +67,9 @@
         </main>
         <script async>
             const init = async () => {
-                const rss = await fetch("./rss.xml").then((response) =>
-                    response.text()
-                );
-                const posts = [...rss.matchAll(/\<item\>(.*)\<\/item\>/g)];
+                const xml = await fetch("./rss.xml");
+                const text = await xml.text();
+                const posts = [...text.matchAll(/\<item\>(.+?)\<\/item\>/g)];
                 console.log(posts);
 
                 for (const post of posts) {
@@ -78,15 +77,13 @@
                     const a = document.createElement("a");
                     a.setAttribute(
                         "href",
-                        /\<link\>([^\s]*)\<\/link\>/i.exec(post)
+                        /\<link\>(.+?)\<\/link\>/i.exec(post)
                     );
                     const h1 = document.createElement("h1");
-                    h1.innerText = /\<title\>([^\s]*)\<\/title\>/i.exec(post);
+                    h1.innerText = /\<title\>(.+?)\<\/title\>/i.exec(post);
                     a.appendChild(h1);
                     article.appendChild(a);
-                    article.innerHTML += /\<\!\[CDATA\[([^\s]*)\]\]\>/i.exec(
-                        post
-                    );
+                    article.innerHTML += /\<\!\[CDATA\[(.+?)\]\]\>/i.exec(post);
                     document.querySelector("main").appendChild(article);
                 }
             };
