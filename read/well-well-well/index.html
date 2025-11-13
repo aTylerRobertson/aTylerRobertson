@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>A blog post by Tyler Robertson</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            :root {
+                --bg: white;
+                --text: black;
+                --link: dodgerblue;
+            }
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --bg: black;
+                    --text: white;
+                    --link: cornflowerblue;
+                }
+            }
+            body {
+                background-color: var(--bg);
+            }
+            main {
+                width: 666px;
+                max-width: 90vw;
+                margin: 0 auto;
+                font-family: serif;
+                font-size: 130%;
+                line-height: 130%;
+                color: var(--text);
+            }
+            p {
+                font-family: sans-serif;
+            }
+            a {
+                color: var(--link);
+            }
+            h1 {
+                font-size: 2.5em;
+                line-height: 1em;
+            }
+            h1 a,
+            h2 a,
+            h3 a {
+                color: var(--text);
+                text-decoration: none;
+            }
+            hr {
+                margin: 5rem;
+            }
+            footer {
+                margin: 3rem 0;
+                text-align: right;
+            }
+            img,
+            iframe,
+            video,
+            canvas {
+                margin: 1rem auto;
+                max-width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <article></article>
+        </main>
+    </body>
+</html>
+<h1>Well, well, well...</h1>
+
+<p>Look who said they wouldn't roll their own blog and RSS, and here they are anyway!</p>
+
+<p>This is all super basic, feel free to check out the <a href="https://github.com/aTylerRobertson/aTylerRobertson">source code</a> in the usual place. I'll be using it mostly for unserious writing, don't expect big tech guides or anything. <i>(that's coming in the book 👀)</i></p>
+            </article>
+            <footer>
+                This was a blog post by <a href="/">Tyler Robertson</a>
+            </footer>
+        </main>
+    </body>
+</html>
