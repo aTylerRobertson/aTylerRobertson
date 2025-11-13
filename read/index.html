@@ -77,8 +77,11 @@
         <script async>
             const init = async () => {
                 const xml = await fetch("./rss.xml");
-                const text = await xml.text().replaceAll(/\n/g, "");
-                const posts = [...text.matchAll(/\<item\>(.+?)\<\/item\>/gi)]
+                const text = await xml.text();
+                const flatText = text.replaceAll(/\n/g, "");
+                const posts = [
+                    ...flatText.matchAll(/\<item\>(.+?)\<\/item\>/gi),
+                ]
                     .map((post) => {
                         const postText = post.at(1);
                         return {
