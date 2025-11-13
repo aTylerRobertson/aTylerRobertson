@@ -69,6 +69,7 @@ jobs:
                         echo "</rss>" >> tempRSS.xml
                         echo $(cat tempRSS.xml) > read/rss.xml
                         rm tempRSS.xml
+                        git add read/rss.xml
 
                         # Make the output file and write to it
                         cat .github/template/postFooter.html >> $TEMPFILE
