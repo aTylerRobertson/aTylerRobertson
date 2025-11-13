@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Blog posts by Tyler Robertson</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            :root {
+                --bg: white;
+                --text: black;
+                --link: dodgerblue;
+            }
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --bg: black;
+                    --text: white;
+                    --link: cornflowerblue;
+                }
+            }
+            body {
+                background-color: var(--bg);
+            }
+            main {
+                width: 666px;
+                max-width: 90vw;
+                margin: 0 auto;
+                font-family: serif;
+                font-size: 130%;
+                line-height: 130%;
+                color: var(--text);
+            }
+            p {
+                font-family: sans-serif;
+            }
+            a {
+                color: var(--link);
+            }
+            h1 {
+                font-size: 2.5em;
+            }
+            h1 a,
+            h2 a,
+            h3 a {
+                color: var(--text);
+                text-decoration: none;
+            }
+            hr {
+                margin: 5rem;
+            }
+            footer {
+                margin: 3rem 0;
+                text-align: right;
+            }
+            img,
+            iframe,
+            video,
+            canvas {
+                margin: 1rem auto;
+                max-width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <h1>Blog posts by <a href="/">Tyler Robertson</a></h1>
+        </main>
+        <script async>
+            const init = async () => {
+                const rss = await fetch("./rss.xml").then((response) =>
+                    response.text()
+                );
+                const posts = rss.matchAll(/\<item\>(.*)\<\/item\>/g);
+                console.log(posts);
+            };
+        </script>
+    </body>
+</html>
