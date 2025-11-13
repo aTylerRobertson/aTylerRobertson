@@ -68,7 +68,9 @@
         <script async>
             const init = async () => {
                 const xml = await fetch("./rss.xml");
+                console.log(xml);
                 const text = await xml.text();
+                console.log(text);
                 const posts = [...text.matchAll(/\<item\>(.+?)\<\/item\>/g)];
                 console.log(posts);
 
