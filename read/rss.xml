@@ -8,12 +8,6 @@ Blog posts from Tyler Robertson
 <language>en-us</language>
 <webMaster>aTylerRobertson+rss@gmail.com (Tyler Robertson)</webMaster>
 <atom:link href="https://aTylerRobertson.com/read/rss.xml" rel="self" type="application/rss+xml"/>
-<item><title>Well, well, well...</title><link>https://aTylerRobertson.com/read/well-well-well</link><description><![CDATA[
-<h1>Well, well, well...</h1>
 
-<p>Look who said they wouldn't roll their own blog and RSS, and here they are anyway!</p>
-
-<p>This is all super basic, feel free to check out the <a href="https://github.com/aTylerRobertson/aTylerRobertson">source code</a> in the usual place. I'll be using it mostly for unserious writing, don't expect big tech guides or anything. <i>(that's coming in the book 👀)</i></p>
-]]></description><pubDate>11/13/25 20:19:12</pubDate><guid>https://aTylerRobertson.com/read/well-well-well</guid></item>
 </channel>
 </rss>

@@ -21,7 +21,7 @@
                 background-color: var(--bg);
             }
             main {
-                width: 666px;
+                width: 800px;
                 max-width: 90vw;
                 margin: 0 auto;
                 font-family: serif;
@@ -42,8 +42,8 @@
             h1 a,
             h2 a,
             h3 a {
-                color: var(--text);
                 text-decoration: none;
+                margin-bottom: 0;
             }
             hr {
                 margin: 5rem;
@@ -51,6 +51,13 @@
             footer {
                 margin: 3rem 0;
                 text-align: right;
+            }
+            li {
+                list-style: none;
+                margin-bottom: 1em;
+            }
+            li h2 {
+                margin-bottom: 0;
             }
             img,
             iframe,
@@ -64,31 +71,54 @@
     <body>
         <main>
             <h1>Blog posts by <a href="/">Tyler Robertson</a></h1>
+            <a href="./rss.xml">Subscribe with RSS</a>
+            <ul></ul>
         </main>
         <script async>
             const init = async () => {
                 const xml = await fetch("./rss.xml");
                 console.log(xml);
-                const text = await xml.text();
-                console.log(text);
-                const posts = [
-                    ...text.matchAll(/\<item\>(.+?)\<\/item\>/gi),
-                ][0];
+                const text = await xml.text().replaceAll(/\n/g, "");
+                const posts = [...text.matchAll(/\<item\>(.+?)\<\/item\>/gi)]
+                    .map((post) => {
+                        const postText = post.at(1);
+                        return {
+                            link: postText
+                                .match(/\<link\>(.+?)\<\/link\>/i)
+                                .at(1),
+                            title: postText
+                                .match(/\<title\>(.+?)\<\/title\>/i)
+                                .at(1),
+                            content: postText
+                                .match(/\<\!\[CDATA\[(.+?)\]\]\>/i)
+                                .at(1)
+                                .trim(),
+                            pubDate: postText
+                                .match(/\<pubDate\>(.+?)\<\/pubDate\>/i)
+                                .at(1),
+                        };
+                    })
+                    .sort((a, b) => {
+                        const dateA = new Date(a.pubDate);
+                        const dateB = new Date(b.pubDate);
+                        return dateB.valueOf() - dateA.valueOf();
+                    });
+
                 console.log(posts);
 
                 for (const post of posts) {
-                    const article = document.createElement("article");
+                    const li = document.createElement("li");
                     const a = document.createElement("a");
-                    a.setAttribute(
-                        "href",
-                        /\<link\>(.+?)\<\/link\>/i.exec(post)
-                    );
-                    const h1 = document.createElement("h1");
-                    h1.innerText = /\<title\>(.+?)\<\/title\>/i.exec(post);
-                    a.appendChild(h1);
-                    article.appendChild(a);
-                    article.innerHTML += /\<\!\[CDATA\[(.+?)\]\]\>/i.exec(post);
-                    document.querySelector("main").appendChild(article);
+                    const h2 = document.createElement("h2");
+                    a.setAttribute("href", post.link);
+                    a.innerText = post.title;
+                    const i = document.createElement("i");
+                    i.innerHTML = post.pubDate;
+
+                    h2.appendChild(a);
+                    li.appendChild(h2);
+                    li.appendChild(i);
+                    document.querySelector("ul").appendChild(li);
                 }
             };
 
