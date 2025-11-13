@@ -52,9 +52,9 @@ jobs:
                         # Italic text
                         echo "$(sed -r 's/\_(.*)\_/\<i\>\1\<\/i\>/' $TEMPFILE)" > $TEMPFILE
                         # Images
-                        echo "$(sed -r 's/\!\[(.*)\]\(([^\s]*)\)/\<img alt=\"\1\" src=\"\2\" \/\>/' $TEMPFILE)" > $TEMPFILE
+                        echo "$(sed -r 's/\!\[(.*)\]\(((?:http[s]?:\/\/.)?(?:www\.)?[-a-zA-Z0-9@%._\+~#=]{2,256}\.[a-z]{2,6}\b(?:[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*))\)/\<img alt=\"\1\" src=\"\2\" \/\>/' $TEMPFILE)" > $TEMPFILE
                         # Links
-                        echo "$(sed -r 's/\[(.*)\]\(([^\s]*)\)/\<a href=\"\2\"\>\1\<\/a\>/' $TEMPFILE)" > $TEMPFILE
+                        echo "$(sed -r 's/\[(.*)\]\(((?:http[s]?:\/\/.)?(?:www\.)?[-a-zA-Z0-9@%._\+~#=]{2,256}\.[a-z]{2,6}\b(?:[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*))\)/\<a href=\"\2\"\>\1\<\/a\>/' $TEMPFILE)" > $TEMPFILE
                         # Paragraphs
                         echo "$(sed -r 's/^([^\<h].*)$/\<p\>\1\<\/p\>/' $TEMPFILE)" > $TEMPFILE
 
