@@ -71,7 +71,9 @@
                 console.log(xml);
                 const text = await xml.text();
                 console.log(text);
-                const posts = [...text.matchAll(/\<item\>(.+?)\<\/item\>/g)];
+                const posts = [
+                    ...text.matchAll(/\<item\>(.+?)\<\/item\>/gi),
+                ][0];
                 console.log(posts);
 
                 for (const post of posts) {
