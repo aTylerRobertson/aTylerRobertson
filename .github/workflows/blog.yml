@@ -75,7 +75,8 @@ jobs:
                         cat .github/template/postFooter.html >> $TEMPFILE
                         mkdir $FILENAME
                         touch $FILEPATH
-                        echo $(cat .github/template/postHeader.html) | cat - $TEMPFILE > $FILEPATH
+                        echo $(cat .github/template/postHeader.html) | cat - $TEMPFILE > $TEMPFILE
+                        echo "$(sed -r 's/\<title\>.*\<\/title\>/\<title\>${TITLE:2}\<\/title\>/' $TEMPFILE)" > $FILEPATH
                         rm $TEMPFILE
 
                         git config --local user.email "action@github.com"
