@@ -116,7 +116,7 @@
                     a.innerText = post.title;
                     const i = document.createElement("i");
                     const pubDate = new Date(post.pubDate)
-                    i.innerHTML = pubDate.toLocaleDateString("en-GB", {
+                    i.innerHTML = pubDate.toLocaleString("en-GB", {
                         weekday: "long",
                         year: "numeric",
                         month: "long",
