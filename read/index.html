@@ -9,6 +9,7 @@
                 --bg: snow;
                 --text: black;
                 --link: slateblue;
+                --muted: gainsboro;
             }
             body {
                 background-color: var(--bg);
@@ -56,6 +57,9 @@
             }
             li h2 {
                 margin-bottom: 0;
+            }
+            li i {
+                color: var(--muted);
             }
             img,
             iframe,
@@ -111,7 +115,7 @@
                     a.setAttribute("href", post.link);
                     a.innerText = post.title;
                     const i = document.createElement("i");
-                    i.innerHTML = post.pubDate;
+                    i.innerHTML = `posted ${post.pubDate}`;
 
                     h2.appendChild(a);
                     li.appendChild(h2);
