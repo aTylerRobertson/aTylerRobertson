@@ -30,9 +30,13 @@
                 color: var(--link);
             }
             h1 {
-                font-size: 2.5em;
-                line-height: 1em;
+                font-size: min(8vw,3em);
+                line-height: 2em;
                 margin-bottom: 0;
+            }
+            h2 {
+                font-size: min(3vw,1em);
+                line-height: 1em;
             }
             h1 a,
             h2 a,
@@ -69,13 +73,18 @@
                 margin: 1rem auto;
                 max-width: 100%;
             }
+            section:first-of-type {
+                text-align: center;
+            }
         </style>
     </head>
     <body>
         <main>
-            <h1>This May Haunt Us Both</h1>
-            <h2>A growing collection of "blog posts" by <a href="/">Tyler Robertson</a></h2>
-            <a href="./rss.xml">Subscribe with RSS</a>
+            <section>
+                <h1>This May Haunt Us Both</h1>
+                <h2>a growing collection of "blog posts" by <a href="/">Tyler Robertson</a></h2>
+                <a href="./rss.xml">Subscribe with RSS</a>
+            </section>
             <ul></ul>
         </main>
         <script async>
