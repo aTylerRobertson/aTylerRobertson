@@ -15,5 +15,14 @@ Blog posts from Tyler Robertson
 
 <p>This is all super basic, feel free to check out the <a href="https://github.com/aTylerRobertson/aTylerRobertson">source code</a> in the usual place. I'll be using it mostly for unserious writing, don't expect big tech guides or anything. <i>(that's coming in the book 👀)</i></p>
 ]]></description><pubDate>11/13/25 21:08:57</pubDate><guid>https://aTylerRobertson.com/read/well-well-well</guid></item>
+<item><title>What do you do with a fascist spreadsheet?</title><link>https://aTylerRobertson.com/read/what-do-you-do-with-a-fascist-spreadsheet</link><description><![CDATA[
+<h1>What do you do with a fascist spreadsheet?</h1>
+
+<p>Well, I guess they're evil now. 404 Media <i>(go support independent journalism)</i> <a href="https://www.404media.co/google-has-chosen-a-side-in-trumps-mass-deportation-effort/">has a report up now</a> about how Google is hosting an app designed to help ICE "identify immigrants", which is... pretty fascist behavior. Meanwhile, Microsoft seems pretty chill about them [using Halo as a recruitment ad](https://www.avclub.com/microsoft-mum-ice-trump-halo-imagery), and the [long-standing contract ICE has with GitHub](https://www.zdnet.com/article/microsoft-employees-protest-stop-work-with-ice-over-cruel-border-policies/). Does this mean that using Google Sheets, Microsoft Excel, or even hosting my site on GitHub Pages like I do right now are acts in support of fascism? </p>
+
+<p>I mean... probably not directly, right? But it's something to consider, especially now that I'm thinking about moving back into the world of writing about these kinds of tools. It's not going to be enough to use a tool from a fascist company in a non-fascist way (the medium is the message, etc.), so the work itself has to be anti-fascist from end to end. <i>Antifasheets</i>, if you will. </p>
+
+<p>I don't know what that looks like yet. Is <a href="https://www.libreoffice.org">LibreOffice</a> any good? Do I roll my own thing, like I'm doing [on my homepage](/)? Suggestions welcome. </p>
+]]></description><pubDate>11/14/25 10:58:50</pubDate><guid>https://aTylerRobertson.com/read/what-do-you-do-with-a-fascist-spreadsheet</guid></item>
 </channel>
 </rss>
