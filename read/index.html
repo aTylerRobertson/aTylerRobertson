@@ -9,7 +9,7 @@
                 --bg: snow;
                 --text: black;
                 --link: slateblue;
-                --muted: gainsboro;
+                --muted: dimgrey;
             }
             body {
                 background-color: var(--bg);
@@ -121,9 +121,11 @@
                         year: "numeric",
                         month: "long",
                         day: "numeric",
+                        hour12: true,
                         hour: "2-digit",
                         minute: "2-digit",
-                        dayPeriod: "long"
+                        dayPeriod: "long",
+                        timeZone: "Europe/London",
                     });
 
                     h2.appendChild(a);
