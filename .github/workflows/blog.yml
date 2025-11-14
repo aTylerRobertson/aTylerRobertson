@@ -40,23 +40,23 @@ jobs:
                         cat $i > $TEMPFILE
                         IFS=''
                         # Heading 3
-                        echo "$(sed -r 's/^\#\#\# (.*)$/\<h3\>\1\<\/h3\>/' $TEMPFILE)" > $TEMPFILE
+                        echo "$(sed -r 's/^\#\#\# (.*)$/\<h3\>\1\<\/h3\>/g' $TEMPFILE)" > $TEMPFILE
                         # Heading 2
-                        echo "$(sed -r 's/^\#\# (.*)$/\<h2\>\<a href=\"\#\1\"\>\1\<\/a\>\<\/h2\>/' $TEMPFILE)" > $TEMPFILE
+                        echo "$(sed -r 's/^\#\# (.*)$/\<h2\>\<a href=\"\#\1\"\>\1\<\/a\>\<\/h2\>/g' $TEMPFILE)" > $TEMPFILE
                         # Heading 1
-                        echo "$(sed -r 's/^\# (.*)$/\<h1\>\1\<\/h1\>/' $TEMPFILE)" > $TEMPFILE
+                        echo "$(sed -r 's/^\# (.*)$/\<h1\>\1\<\/h1\>/g' $TEMPFILE)" > $TEMPFILE
                         # Bold text
-                        echo "$(sed -r 's/\*\*(.*)\*\*/\<b\>\1\<\/b\>/' $TEMPFILE)" > $TEMPFILE
+                        echo "$(sed -r 's/\*\*(.*)\*\*/\<b\>\1\<\/b\>/g' $TEMPFILE)" > $TEMPFILE
                         # Italic text
-                        echo "$(sed -r 's/\*(.*)\*/\<i\>\1\<\/i\>/' $TEMPFILE)" > $TEMPFILE
+                        echo "$(sed -r 's/\*(.*)\*/\<i\>\1\<\/i\>/g' $TEMPFILE)" > $TEMPFILE
                         # Italic text
-                        echo "$(sed -r 's/\_(.*)\_/\<i\>\1\<\/i\>/' $TEMPFILE)" > $TEMPFILE
+                        echo "$(sed -r 's/\_(.*)\_/\<i\>\1\<\/i\>/g' $TEMPFILE)" > $TEMPFILE
                         # Images
-                        echo "$(perl -pe 's/\!\[([^\]]*)\]\(([^\)]+)\)/\<img alt=\"$1\" src=\"$2\" \/\>/' $TEMPFILE)" > $TEMPFILE
+                        echo "$(perl -pe 's/\!\[([^\]]*)\]\(([^\)]+)\)/\<img alt=\"$1\" src=\"$2\" \/\>/g' $TEMPFILE)" > $TEMPFILE
                         # Links
-                        echo "$(perl -pe 's/\[([^\]]+)\]\(([^\)]+)\)/\<a href=\"$2\"\>$1\<\/a\>/' $TEMPFILE)" > $TEMPFILE
+                        echo "$(perl -pe 's/\[([^\]]+)\]\(([^\)]+)\)/\<a href=\"$2\"\>$1\<\/a\>/g' $TEMPFILE)" > $TEMPFILE
                         # Paragraphs
-                        echo "$(sed -r 's/^([^\<h].*)$/\<p\>\1\<\/p\>/' $TEMPFILE)" > $TEMPFILE
+                        echo "$(sed -r 's/^([^\<h].*)$/\<p\>\1\<\/p\>/g' $TEMPFILE)" > $TEMPFILE
 
                         # Append to RSS
                         TITLE=$(head -1 $i)
