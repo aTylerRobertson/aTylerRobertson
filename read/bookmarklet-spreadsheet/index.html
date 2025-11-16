@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bookmarklet Spreadsheet</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            :root {
+                --bg: snow;
+                --text: black;
+                --link: slateblue;
+            }
+            body {
+                background-color: var(--bg);
+            }
+            main {
+                width: 666px;
+                max-width: 90vw;
+                margin: 0 auto;
+                font-family: serif;
+                font-size: 130%;
+                line-height: 130%;
+                color: var(--text);
+            }
+            p, ul {
+                font-family: sans-serif;
+            }
+            a {
+                color: var(--link);
+            }
+            h1 {
+                font-size: 2.5em;
+                line-height: 1em;
+            }
+            h1 a,
+            h2 a,
+            h3 a {
+                color: var(--text);
+                text-decoration: none;
+            }
+            hr {
+                margin: 5rem;
+            }
+            footer {
+                margin: 3rem 0;
+                text-align: right;
+            }
+            img,
+            iframe,
+            video,
+            canvas,
+            pre {
+                margin: 1rem auto;
+                width: 100%;
+                white-space: pre-line;
+            }
+            code {
+                width: 100%;
+                word-break: break-all;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <h1>Bookmarklet Spreadsheet</h1>
+            <p>
+                Features:
+                <ul>
+                    <li>Click a cell to edit it</li>
+                    <li>Cells evaluate Javascript functions on blur</li>
+                    <li>Reference other cell addresses (e.g. A1 or B5)</li>
+                    <li>Resizeable columns</li>
+                </ul>
+            </p>
+            <iframe
+                src='data:text/html,%3Cbody%3E%3Cstyle%3Ebody{display:grid;grid-template:auto/repeat(26,1fr);margin: 0;}.c{display:grid;grid-template:auto/1fr;}.h{width:100px;background:lightgrey;resize:horizontal;overflow:hidden;text-align:center;}input{width:100%;}%3C/style%3E%3Cscript%3Eif(!document.querySelector("input")){for(let i=0;i%3C26;i++){let a=document.createElement("div");a.classList.add("c");let b=document.createElement("div");b.classList.add("h");b.innerText="ABCDEFGHIJKLMNOPQRSTUVWXYZ"[i];a.appendChild(b);for(let j=0;j%3C100;j++){let c=document.createElement("input");c.classList.add("ABCDEFGHIJKLMNOPQRSTUVWXYZ"[i]+(j+1));c.addEventListener("blur",(e)=%3E{e.target.setAttribute("placeholder",e.target.value)||"";if(e.target.value){e.target.value=eval(e.target.value.replaceAll(/[A-Z]\d+/g,(x)=%3Edocument.querySelector(`.${x}`).value));}});c.addEventListener("focus",(e)=%3E{e.target.value=e.target.getAttribute("placeholder");});a.appendChild(c);}document.body.appendChild(a);}}%3C/script%3E'
+            ></iframe>
+            <p>
+                To use, copy/paste this into your address bar, then bookmark it:
+            </p>
+            <pre><code>
+                data:text/html,%3Cbody%3E%3Cstyle%3Ebody{display:grid;grid-template:auto/repeat(26,1fr);margin: 0;}.c{display:grid;grid-template:auto/1fr;}.h{width:100px;background:lightgrey;resize:horizontal;overflow:hidden;text-align:center;}input{width:100%;}%3C/style%3E%3Cscript%3Eif(!document.querySelector("input")){for(let i=0;i%3C26;i++){let a=document.createElement("div");a.classList.add("c");let b=document.createElement("div");b.classList.add("h");b.innerText="ABCDEFGHIJKLMNOPQRSTUVWXYZ"[i];a.appendChild(b);for(let j=0;j%3C100;j++){let c=document.createElement("input");c.classList.add("ABCDEFGHIJKLMNOPQRSTUVWXYZ"[i]+(j+1));c.addEventListener("blur",(e)=%3E{e.target.setAttribute("placeholder",e.target.value)||"";if(e.target.value){e.target.value=eval(e.target.value.replaceAll(/[A-Z]\d+/g,(x)=%3Edocument.querySelector(`.${x}`).value));}});c.addEventListener("focus",(e)=%3E{e.target.value=e.target.getAttribute("placeholder");});a.appendChild(c);}document.body.appendChild(a);}}%3C/script%3E
+            </code></pre>
+            <p>
+                To-do:
+                <ul>
+                    <li>Find a way to save data locally</li>
+                    <li>Handle array references/outputs</li>
+                </ul>
+            </p>
+        </main>
+    </body>
+</html>
