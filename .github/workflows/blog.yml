@@ -36,6 +36,8 @@ jobs:
                     if test -f "$FILEPATH"; then
                         continue
                     else
+                        mkdir $FILENAME
+                        touch $FILEPATH
                         touch $TEMPFILE
                         cat $i > $TEMPFILE
                         IFS=''
@@ -73,8 +75,6 @@ jobs:
 
                         # Make the output file and write to it
                         cat .github/template/postFooter.html >> $TEMPFILE
-                        mkdir $FILENAME
-                        touch $FILEPATH
                         echo $(cat .github/template/postHeader.html) | cat - $TEMPFILE > $TEMPFILE
                         echo "$(sed -r 's/\<title\>.*\<\/title\>/\<title\>${TITLE:2}\<\/title\>/' $TEMPFILE)" > $FILEPATH
                         rm $TEMPFILE
