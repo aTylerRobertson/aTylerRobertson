@@ -46,11 +46,11 @@ jobs:
                         # Heading 1
                         echo "$(sed -r 's/^\# (.*)$/\<h1\>\1\<\/h1\>/g' $FILEPATH)" > $FILEPATH
                         # Bold text
-                        echo "$(sed -r 's/\*\*(.*)\*\*/\<b\>\1\<\/b\>/g' $FILEPATH)" > $FILEPATH
+                        echo "$(perl -pe 's/\*\*([^\*]*)\*\*/\<b\>\1\<\/b\>/g' $FILEPATH)" > $FILEPATH
                         # Italic text
-                        echo "$(sed -r 's/\*(.*)\*/\<i\>\1\<\/i\>/g' $FILEPATH)" > $FILEPATH
+                        echo "$(perl -pe 's/\*([^\*]*)\*/\<i\>\1\<\/i\>/g' $FILEPATH)" > $FILEPATH
                         # Italic text
-                        echo "$(sed -r 's/\_(.*)\_/\<i\>\1\<\/i\>/g' $FILEPATH)" > $FILEPATH
+                        echo "$(perl -pe 's/\_([^_]*)\_/\<i\>\1\<\/i\>/g' $FILEPATH)" > $FILEPATH
                         # Images
                         echo "$(perl -pe 's/\!\[([^\]]*)\]\(([^\)]+)\)/\<img alt=\"$1\" src=\"$2\" \/\>/g' $FILEPATH)" > $FILEPATH
                         # Links
