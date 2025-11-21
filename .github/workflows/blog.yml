@@ -37,7 +37,7 @@ jobs:
                     else
                         mkdir $FILENAME
                         touch $FILEPATH
-                        echo $(cat $i) > $FILEPATH
+                        echo "$(cat $i)" > $FILEPATH
                         IFS=''
                         # Heading 3
                         echo "$(sed -r 's/^\#\#\# (.*)$/\<h3\>\1\<\/h3\>/g' $FILEPATH)" > $FILEPATH
