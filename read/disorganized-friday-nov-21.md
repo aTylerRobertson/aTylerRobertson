@@ -1,0 +1,25 @@
+# Disorganized thoughts of the week - Friday, November 21
+
+After all that work to get the new blog set up, I nearly forgot I had it! Haven't had the energy to put together a full post on anything this week, so here's a collection of thoughts from the week that I want to talk about and might put more words to soon.
+
+## Brand vs. Hobby
+
+I've been thinking about my [previous post](../what-do-you-do-with-a-fascist-spreadsheet/) and can't shake the harm that branding — as a concept — has done to tech. It's never enough for something to be "just a bit of code", it has to have a clever name and logo to associate it with, or else people won't take it seriously. That's "hobby code". And then when there _is_ a brand name to go along with it, your Googles and Microsofts of the world, it's trusted implicitly, even when it shouldn't be. I'm sure this isn't a new problem, but it does feel pretty related to recent events, especially thinking about how various AI products now all have catchy, human-sounding names. They're all _just code_, but the brand plays a powerful part in how people interact with them. 
+
+Going back to the spreadsheet of it all, I do feel like the next thing I want to focus on is something more _conceptually complete_ than _marketable_, maybe extending something like this [bookmarklet spreadsheet](../bookmarklet-spreadsheet/) so the tool can exist on its own and separate from any one brand or person. 
+
+## Software Engineering is a Sales job
+
+Related to the whole branding thought is that I've just had an interview for a senior role at my company, and feel like more and more the job of a software engineer is more about sales than coding ability. For example, you have to know which Amazon product best suits a given scenario, and how to adjust your AWS usage to fit a budget. Or you have to explain your AI prompt process, and why you prefer Claude over Copilot. And then if you're lucky there's a _tiny_ bit of coding for you to do, but you have to make sure you're following the standards that Meta gave a cute brand name to. 
+
+Which is all... _fine_, I guess, but we can't do that _and_ tell people just starting in the industry that it's a career full of puzzle solving and critical thinking. (Though now that I've said that I'm sure that illusion will die the second any of them meet a manager.) 
+
+## Trans Day of Remembrance
+
+Trans Day of Remembrance was yesterday, and like always I nearly forget until about 10pm. I'm glad it exists, but I wish everyone did more to make it so trans people are known and cared for while still living. 
+
+## NoctHorror 2026
+
+We're wrapping up our annual Halloween movie festival! (It used to be called _OctHorror_ but we've been creeping further and further into November) I'll do a full write-up of it next month, but I've been very happy with my video setup this year, which involves an HDMI-to-analog converter that I _highly_ recommend to anyone who streams and likes that SD video look. Our screenings had the vibe of watching VHS tapes with friends, and I had a load of fun making it all work.
+
+The big difference this year was that I kept the films a secret until the day before each screening, but would send puzzles with hints towards the film and their order. So before each film they could guess what the upcoming films would be, and get more points based on how far ahead they could accurately guess. A few people did really well! Some of the clues are very dependent on inside jokes so I'll only share some in the full write-up, but the morale of the story is that we should all be making puzzles for our friends. 
