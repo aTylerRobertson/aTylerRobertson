@@ -31,7 +31,7 @@ jobs:
                   for i in $FILES; do
                     FILENAME=$(echo $i | cut -d . -f 1)
                     FILEPATH="$FILENAME/index.html"
-                    TEMPFILE="temp.html"
+                    TEMPFILE="$FILENAME/temp.html"
                     # Skip already-created files
                     if test -f "$FILEPATH"; then
                         continue
