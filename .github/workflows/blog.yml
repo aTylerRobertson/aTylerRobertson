@@ -31,41 +31,39 @@ jobs:
                   for i in $FILES; do
                     FILENAME=$(echo $i | cut -d . -f 1)
                     FILEPATH="$FILENAME/index.html"
-                    TEMPFILE="$FILENAME/temp.html"
                     # Skip already-created files
                     if test -f "$FILEPATH"; then
                         continue
                     else
                         mkdir $FILENAME
                         touch $FILEPATH
-                        touch $TEMPFILE
-                        echo $(cat $i) > $TEMPFILE
+                        echo $(cat $i) > $FILEPATH
                         IFS=''
                         # Heading 3
-                        echo "$(sed -r 's/^\#\#\# (.*)$/\<h3\>\1\<\/h3\>/g' $TEMPFILE)" > $TEMPFILE
+                        echo "$(sed -r 's/^\#\#\# (.*)$/\<h3\>\1\<\/h3\>/g' $FILEPATH)" > $FILEPATH
                         # Heading 2
-                        echo "$(sed -r 's/^\#\# (.*)$/\<h2\>\<a href=\"\#\1\"\>\1\<\/a\>\<\/h2\>/g' $TEMPFILE)" > $TEMPFILE
+                        echo "$(sed -r 's/^\#\# (.*)$/\<h2\>\<a href=\"\#\1\"\>\1\<\/a\>\<\/h2\>/g' $FILEPATH)" > $FILEPATH
                         # Heading 1
-                        echo "$(sed -r 's/^\# (.*)$/\<h1\>\1\<\/h1\>/g' $TEMPFILE)" > $TEMPFILE
+                        echo "$(sed -r 's/^\# (.*)$/\<h1\>\1\<\/h1\>/g' $FILEPATH)" > $FILEPATH
                         # Bold text
-                        echo "$(sed -r 's/\*\*(.*)\*\*/\<b\>\1\<\/b\>/g' $TEMPFILE)" > $TEMPFILE
+                        echo "$(sed -r 's/\*\*(.*)\*\*/\<b\>\1\<\/b\>/g' $FILEPATH)" > $FILEPATH
                         # Italic text
-                        echo "$(sed -r 's/\*(.*)\*/\<i\>\1\<\/i\>/g' $TEMPFILE)" > $TEMPFILE
+                        echo "$(sed -r 's/\*(.*)\*/\<i\>\1\<\/i\>/g' $FILEPATH)" > $FILEPATH
                         # Italic text
-                        echo "$(sed -r 's/\_(.*)\_/\<i\>\1\<\/i\>/g' $TEMPFILE)" > $TEMPFILE
+                        echo "$(sed -r 's/\_(.*)\_/\<i\>\1\<\/i\>/g' $FILEPATH)" > $FILEPATH
                         # Images
-                        echo "$(perl -pe 's/\!\[([^\]]*)\]\(([^\)]+)\)/\<img alt=\"$1\" src=\"$2\" \/\>/g' $TEMPFILE)" > $TEMPFILE
+                        echo "$(perl -pe 's/\!\[([^\]]*)\]\(([^\)]+)\)/\<img alt=\"$1\" src=\"$2\" \/\>/g' $FILEPATH)" > $FILEPATH
                         # Links
-                        echo "$(perl -pe 's/\[([^\]]+)\]\(([^\)]+)\)/\<a href=\"$2\"\>$1\<\/a\>/g' $TEMPFILE)" > $TEMPFILE
+                        echo "$(perl -pe 's/\[([^\]]+)\]\(([^\)]+)\)/\<a href=\"$2\"\>$1\<\/a\>/g' $FILEPATH)" > $FILEPATH
                         # Paragraphs
-                        echo "$(sed -r 's/^([^\<h].*)$/\<p\>\1\<\/p\>/g' $TEMPFILE)" > $TEMPFILE
+                        echo "$(sed -r 's/^([^\<h].*)$/\<p\>\1\<\/p\>/g' $FILEPATH)" > $FILEPATH
 
                         # Append to RSS
                         TITLE=$(head -1 $i)
                         touch tempRSS.xml
                         echo $(head -n -2 read/rss.xml) > tempRSS.xml
                         echo "<item><title>${TITLE:2}</title><link>https://aTylerRobertson.com/$FILENAME</link><description><![CDATA[" >> tempRSS.xml
-                        echo $(cat $TEMPFILE) >> tempRSS.xml
+                        echo $(cat $FILEPATH) >> tempRSS.xml
                         echo "]]></description><pubDate>$(date +"%D %T")</pubDate><guid>https://aTylerRobertson.com/$FILENAME</guid></item>" >> tempRSS.xml
                         echo "</channel>" >> tempRSS.xml
                         echo "</rss>" >> tempRSS.xml
@@ -74,10 +72,10 @@ jobs:
                         git add read/rss.xml
 
                         # Make the output file and write to it
-                        cat .github/template/postFooter.html >> $TEMPFILE
-                        echo $(cat .github/template/postHeader.html) | cat - $TEMPFILE > $TEMPFILE
-                        echo "$(sed -r 's/\<title\>.*\<\/title\>/\<title\>${TITLE:2}\<\/title\>/' $TEMPFILE)" > $FILEPATH
-                        rm $TEMPFILE
+                        FOOTER=$(cat .github/template/postFooter.html)
+                        HEADER=$(sed -r 's/\<title\>.*\<\/title\>/\<title\>${TITLE:2}\<\/title\>/' '.github/template/postHeader.html')
+                        CONTENT=$(cat $FILEPATH)
+                        echo "$HEADER $CONTENT $FOOTER" > $FILEPATH
 
                         git config --local user.email "action@github.com"
                         git config --local user.name "github-actions"
