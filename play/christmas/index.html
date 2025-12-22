@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Christmas Card Generator</title>
+        <style>
+            body {
+                margin: 0;
+                background-color: black;
+            }
+
+            main {
+                width: 600px;
+                max-width: 90vw;
+                margin: 0 auto;
+                text-align: center;
+            }
+
+            svg {
+                border: 6px solid white;
+            }
+
+            textarea {
+                color: white;
+                background: black;
+                font-size: 200%;
+                width: 100%;
+                min-height: 200px;
+                border: 1px solid black;
+                text-align: center;
+                font-family: serif;
+                margin: 20px 0;
+            }
+        </style>
+    </head>
+
+    <body>
+        <main>
+            <svg
+                id="tree"
+                width="480"
+                height="800"
+                viewBox="0 0 300 500"
+                xmlns="http://www.w3.org/2000/svg"
+            ></svg>
+            <textarea id="input">
+Merry
+Christmas!</textarea
+            >
+        </main>
+        <script>
+            const input = document.querySelector("#input");
+            const tree = document.querySelector("#tree");
+
+            const updateTree = () => {
+                const text = input.value;
+                const lines = text.split(/\n/);
+
+                let x = 100;
+                let y = 280 - lines.length * 10;
+
+                // Backdrop
+                let treeSVG = `
+                <rect x="0" y="0" width="300" height="500" fill="darkslategrey" />
+                <rect x="-10" y="50" width="60" height="200" fill="dodgerblue"/>
+                <rect x="-10" y="230" width="58" height="18" fill="snow" />
+                <rect x="250" y="50" width="60" height="200" fill="dodgerblue"/>
+                <rect x="250" y="230" width="58" height="18" fill="snow" />
+                <rect x="0" y="310" width="300" height="300" fill="brown" />
+                <circle cx="30" cy="288" r="${
+                    4 + (-1 + Math.random() * 2)
+                }" fill="orange" />
+                <circle cx="30" cy="290" r="${
+                    2 + (-0.5 + Math.random())
+                }" fill="yellow" />
+                <rect x="20" y="290" width="20" height="15" fill="papayawhip" />
+                <rect x="18" y="305" width="24" height="5" fill="silver" />
+                <circle cx="265" cy="275" r="${
+                    4 + (-1 + Math.random() * 2)
+                }" fill="orange" />
+                <circle cx="265" cy="277" r="${
+                    2 + (-0.5 + Math.random())
+                }" fill="yellow" />
+                <rect x="260" y="277" width="10" height="30" fill="tomato" />
+                <circle cx="269" cy="303" r="3" fill="tomato" />
+                <rect x="253" y="305" width="24" height="5" fill="silver" />
+                <rect x="0" y="310" width="300" height="20" fill="firebrick" />
+                <rect x="0" y="330" width="300" height="5" fill="rgba(0,0,0,0.1)" />
+                `;
+
+                // Snow
+                for (let i = 0; i < Math.random() * 10 + 10; i++) {
+                    treeSVG += `<circle cx="${Math.random() * 50}" cy="${
+                        50 + Math.random() * 200
+                    }" r="1" fill="white" />`;
+                }
+                for (let i = 0; i < Math.random() * 10 + 10; i++) {
+                    treeSVG += `<circle cx="${250 + Math.random() * 50}" cy="${
+                        50 + Math.random() * 200
+                    }" r="1" fill="white" />`;
+                }
+
+                // Windowframes
+                treeSVG += `
+                <rect x="-10" y="50" width="60" height="100" fill="none" stroke="sienna" stroke-width="5" />
+                <rect x="-10" y="150" width="60" height="100" fill="none" stroke="sienna" stroke-width="5" />
+                <rect x="250" y="50" width="60" height="100" fill="none" stroke="sienna" stroke-width="5" />
+                <rect x="250" y="150" width="60" height="100" fill="none" stroke="sienna" stroke-width="5" />
+                <rect x="-10" y="47" height="6" width="66" fill="burlywood" />
+                <rect x="34" y="45" height="220" width="19" fill="rebeccapurple" />
+                <circle cx="58" cy="50" r="6" fill="goldenrod" /> 
+                <rect x="250" y="47" height="6" width="66" fill="burlywood" />
+                <rect x="247" y="45" height="220" width="19" fill="rebeccapurple" />
+                <circle cx="242" cy="50" r="6" fill="goldenrod" />
+                `;
+
+                // Bricks
+                let brickX = 0;
+                let brickY = 330;
+                for (let i = 0; i < 16; i++) {
+                    for (let j = 0; j < 12; j++) {
+                        treeSVG += `<rect x="${brickX}" y="${brickY}" width="30" height="10" fill="none" stroke="rgba(0,0,0,0.1)" stroke-width="1" /> `;
+                        brickX += 30;
+                    }
+                    brickX = i % 2 == 0 ? -15 : 0;
+                    brickY += 10;
+                }
+
+                // Fireplace
+                treeSVG += `
+                <circle cx="150" cy="500" r="100" fill="black" />
+                <circle cx="150" cy="500" r="60" fill="orange" />
+                <circle cx="150" cy="500" r="48" fill="yellow" />
+                <rect x="0" y="465" width="300" height="10" fill="firebrick" />
+                <rect x="0" y="475" width="300" height="200" fill="midnightblue" /><rect x="120" y="400" height="90" width="60" fill="saddlebrown" />
+                `;
+
+                // Christmas lights
+                treeSVG += `<path stroke="black" fill="none" d="M 0 230`;
+                for (let i = 0; i < 25; i++) {
+                    treeSVG += `L ${i * 20} ${340 + Math.sin(i * 1.4) * 20}`;
+                }
+                treeSVG += `" />`;
+                for (let i = 0; i < 25; i++) {
+                    treeSVG += `
+                <circle r="5" cx="${i * 20}" cy="${
+                        343 + Math.sin(i * 1.4) * 20
+                    }" fill="${
+                        ["azure", "lightyellow", "white"][
+                            Math.floor(Math.random() * 3)
+                        ]
+                    }" /> 
+                `;
+                }
+
+                // Tree
+                treeSVG += `
+                <path d="M 150 100 L 100 200 L 110 200 L 60 300 L 80 300 L 20 390 L 50 390 L 0 460 L 300 460 L 250 390 L 280 390 L 220 300 L 240 300 L 190 200 L 200 200" fill="green" />
+                <path d="M 150 100 L 140 120 L 160 120" fill="gold" />
+                <path d="M 150 60 L 140 80 L 120 80 L 135 95 L 130 115 L 150 105 L 170 115 L 165 95 L 180 80 L 160 80" fill="gold" />
+                <path d="M 110 200 L 190 200 L 107 205" fill="rgba(0,0,0,0.1)" />
+                <path d="M 80 300 L 220 300 L 73 310" fill="rgba(0,0,0,0.1)" />
+                <path d="M 50 390 L 250 390 L 39 405" fill="rgba(0,0,0,0.1)" />
+                <circle cx="110" cy="180" r="8" fill="silver" />
+                <circle cx="130" cy="170" r="8" fill="gold" />
+                <circle cx="155" cy="158" r="8" fill="silver" />
+                <circle cx="170" cy="140" r="8" fill="gold" />
+                <circle cx="20" cy="450" r="8" fill="gold" />
+                <circle cx="60" cy="440" r="8" fill="silver" />
+                <circle cx="120" cy="450" r="8" fill="gold" />
+                <circle cx="170" cy="440" r="8" fill="silver" />
+                <circle cx="225" cy="445" r="8" fill="gold" />
+                <circle cx="280" cy="440" r="8" fill="silver" />
+            `;
+
+                // Presents
+                treeSVG += `
+                <circle cx="220" cy="466" r="4" fill="none" stroke="darkred" stroke-width="4" />
+                <circle cx="212" cy="466" r="4" fill="none" stroke="darkred" stroke-width="4" />
+                <rect fill="white" x="190" y="470" height="30" width="50" />
+                <rect fill="red" x="200" y="470" height="30" width="10" />
+                <rect fill="lightgrey" x="220" y="470" height="30" width="20" />
+                <rect fill="darkred" x="227" y="470" height="30" width="6" />
+
+                <circle cx="90" cy="460" r="4" fill="none" stroke="darkred" stroke-width="4" />
+                <circle cx="82" cy="460" r="4" fill="none" stroke="darkred" stroke-width="4" />
+                <rect fill="lightgrey" x="60" y="464" height="30" width="50" />
+                <rect fill="darkred" x="70" y="464" height="30" width="10" />
+                <rect fill="white" x="90" y="464" height="30" width="20" />
+                <rect fill="red" x="97" y="464" height="30" width="6" />
+            `;
+
+                // Letter ornaments
+                const lineHeight = Math.min(100, 250 / lines.length + 1);
+                for (const [index, line] of lines.entries()) {
+                    const letters = line.trim().split("");
+                    const lineWidth = y * 0.5;
+
+                    const letterWidth = lineWidth / letters.length;
+                    x = 150 - lineWidth * 0.5 + letterWidth / 2;
+
+                    for (const [i, letter] of letters.entries()) {
+                        if (letter !== " ")
+                            treeSVG += `
+                            <circle r="${Math.min(
+                                10,
+                                letterWidth / 2
+                            )}" cx="${x}" cy="${y}" fill="${
+                                i % 2 == 0 ? "goldenrod" : "gold"
+                            }"/>
+                            <text fill="purple" font-weight="bold" text-anchor="middle" x="${x}" y="${
+                                y + 4
+                            }" rotate="${
+                                -10 + Math.random() * 20
+                            } " font-size="${Math.min(
+                                20,
+                                letterWidth * 0.7
+                            )} ">${letter}</text>
+                        `;
+                        x += letterWidth;
+                        y += Math.sin(x) * 8;
+                    }
+                    y += lineHeight;
+                }
+
+                // Write the final SVG
+                tree.innerHTML = treeSVG;
+            };
+
+            input.addEventListener("input", () => updateTree());
+            updateTree();
+        </script>
+    </body>
+</html>
