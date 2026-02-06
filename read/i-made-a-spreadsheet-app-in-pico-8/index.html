@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>A blog post by Tyler Robertson</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            :root {
+                --bg: snow;
+                --text: black;
+                --link: slateblue;
+            }
+            body {
+                background-color: var(--bg);
+            }
+            main {
+                width: 666px;
+                max-width: 90vw;
+                margin: 0 auto;
+                font-family: serif;
+                font-size: 130%;
+                line-height: 180%;
+                color: var(--text);
+            }
+            p {
+                font-family: sans-serif;
+            }
+            a {
+                color: var(--link);
+            }
+            h1 {
+                font-size: 2.5em;
+                line-height: 1em;
+            }
+            h1 a,
+            h2 a,
+            h3 a {
+                color: var(--text);
+                text-decoration: none;
+            }
+            ol,
+            ul,
+            li {
+                font-family: sans-serif;
+                font-size: inherit;
+            }
+            hr {
+                margin: 5rem;
+            }
+            footer {
+                margin: 3rem 0;
+                text-align: right;
+            }
+            img,
+            iframe,
+            video,
+            canvas {
+                margin: 1rem auto;
+                max-width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <article> <h1>I made a spreadsheet app in PICO-8!</h1>
+
+<a href="https://www.lexaloffle.com/pico-8.php">PICO-8</a> is a fantasy console from Lexaloffle — "fantasy" as in there's not <i>actually</i> a box you can plug into your TV (though you could certainly make one), but a system designed with the contstraints that a console of a certain age might actually have, like an 8-bit color pallette or 128x128-pixel resolution. All of its devtools (a sprite/map editor, sfx/music sequencer, coding interface) also exist within those constraints, which is charming as hell. And in part, it's the constraints that make it an excellent creative tool, usually for small video games or music experiments. Notably, <i>Celeste</i> started as a PICO-8 game, and Adamatomic's <i>CorgiSpace</i> <a href="https://store.steampowered.com/app/4044300/CorgiSpace/">just released on Steam</a>.
+
+<p>So naturally, I uh... I made a spreadsheet app with it:</p>
+
+<iframe src="https://www.lexaloffle.com/bbs/widget.php?pid=pico_sheets" allowfullscreen width="621" height="513" style="border:none; overflow:hidden"></iframe>
+
+<i>(Press the X button to open the menu and load the "help" screen for more info)</i>
+
+<p>I'll put together a video walking through the hows and whys soon, but for now I think it's enough that it exists. It's silly! I've got a little gameboy-shaped emulator that it runs beautifully on.</p>
+
+<p>And it proves a point that I'm keen to make as often as I can: <b>practical digital tools like spreadsheets do not need multi-million-dollar teams to be useful</b>. If I can make a spreadsheet app that runs <i>in PICO-8</i>, a system almost explicitly <i>not</i> built for it, you can make the app you need with what you've got access to. More on that soon!</p>             </article>
+            <footer>
+                This was a blog post by <a href="/read">Tyler Robertson</a><br/>
+                If you liked it, consider <a href="https://ko-fi.com/atylerrobertson">buying me a coffee</a>!
+            </footer>
+        </main>
+    </body>
+</html>
