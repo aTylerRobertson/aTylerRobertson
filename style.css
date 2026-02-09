@@ -1,0 +1,268 @@
+/**
+    Design inspired by Popular Mechanics guide to basic auto repair
+    https://archive.org/details/popularmechanics0000unse_f7g2/page/n3/mode/2up
+*/
+
+:root {
+    --primary: rgb(72, 68, 65);
+    --background: rgb(232, 229, 225);
+    --muted: rgb(137, 135, 128);
+}
+
+html {
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+}
+
+/* Disable smooth scrolling if user prefers reduced motion */
+@media (prefers-reduced-data: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+body {
+    margin: 0;
+    color: var(--primary);
+    background-color: var(--background);
+    background: linear-gradient(
+        to right,
+        rgb(198, 191, 180),
+        var(--background) 30px
+    );
+    font-size: 130%;
+    font-family: sans-serif;
+}
+
+main {
+    position: relative;
+    margin: 2rem auto;
+    width: 1000px;
+    max-width: 90vw;
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+}
+
+section {
+    border-left: 10px solid var(--primary);
+    padding: 0 2rem;
+}
+
+h2 {
+    font-size: min(9vw, 5rem);
+    line-height: min(9vw, 5rem);
+    letter-spacing: -4px;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+h3 {
+    font-family: sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--muted);
+}
+
+a {
+    font: inherit;
+    color: var(--primary);
+    font-weight: 900;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 100 100"><rect x="0" y="0" height="100" width="100" style="fill:rgba(252,249,85,0.5)" /></svg>');
+    background-repeat: no-repeat;
+    background-position: left;
+    background-size: 0%;
+    padding: 3px;
+    margin: 0 -3px;
+    transition: background-size 0.5s ease;
+}
+
+a:hover {
+    background-size: 100%;
+}
+
+i {
+    font-family: serif;
+    font-size: 1.1rem;
+}
+
+ol,
+ul,
+li {
+    font: inherit;
+    margin-inline-start: 0;
+}
+
+code {
+    color: var(--background);
+    background-color: var(--muted);
+    padding: 0 3px;
+}
+
+@media (max-width: 550px) {
+    body {
+        background: var(--background);
+    }
+    main {
+        max-width: 100vw;
+    }
+    section {
+        border: none !important;
+        padding: 0 1rem;
+    }
+    h1,
+    h2 {
+        letter-spacing: -2px;
+    }
+}
+
+/**
+    MASTHEAD
+*/
+#masthead {
+    text-align: right;
+    border-right: 10px solid var(--primary);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: end;
+}
+
+#masthead h1 {
+    width: min-content;
+    color: var(--background);
+    background: var(--primary);
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 2rem;
+    font-family: serif;
+    text-align: left;
+    padding: 5px 10px;
+    margin: 0;
+}
+
+#masthead img {
+    width: 300px;
+    max-width: 50vw;
+    height: auto;
+    aspect-ratio: auto;
+    image-rendering: crisp-edges;
+}
+
+/**
+    TWO-COLUMN SECTIONS
+*/
+.two-columns {
+    padding-left: 0;
+    padding-right: 0;
+    display: grid;
+    grid-template-areas: "header header" "column1 column2";
+    grid-template-columns: 1fr 1fr;
+}
+
+.two-columns h2 {
+    grid-area: header;
+    margin-left: 1rem;
+}
+
+.column {
+    padding: 0 1rem;
+    border-right: 10px solid var(--primary);
+    height: 100%;
+}
+
+.column h3 {
+    margin-top: 1rem;
+    margin-bottom: 0;
+    letter-spacing: -1px;
+}
+
+.column h3:not(:has(a)) {
+    display: flex;
+    justify-content: space-between;
+}
+
+.column h3:first-child {
+    margin-top: 0;
+}
+
+.column h3 a {
+    font: inherit;
+    color: inherit;
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    transition: background-size 0.5s ease, color 1s ease;
+}
+
+.column h3 a:hover {
+    color: var(--primary);
+    text-decoration: underline;
+}
+
+.column p {
+    margin: 0;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    text-align: justify;
+}
+
+.column p::first-letter {
+    margin-left: 2rem;
+}
+
+/**
+    TABLE OF CONTENTS
+*/
+#contents p {
+    font-size: 0.8rem;
+    line-height: 1rem;
+    width: 80%;
+    color: var(--muted);
+}
+
+#contents p::first-letter {
+    margin-left: 0;
+}
+
+#scrollingOptions {
+    position: sticky;
+    bottom: 0;
+    padding: 10px 4px;
+    background: var(--background);
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    gap: 10px;
+}
+
+#scrollingOptions a {
+    display: block;
+    width: min-content;
+    color: var(--background);
+    background: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 900;
+    line-height: 0.8rem;
+    font-family: serif;
+    text-align: left;
+    padding: 5px 10px;
+    text-decoration: none;
+    transition: background-color 0.5s ease;
+}
+
+#scrollingOptions a:hover {
+    background: var(--primary);
+}
+
+@media (max-width: 550px) {
+    .two-columns {
+        display: flex;
+        flex-direction: column;
+    }
+    .column {
+        border: none;
+    }
+}
