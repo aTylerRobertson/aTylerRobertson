@@ -322,7 +322,7 @@
                         I try to post about what I'm working on at least once a
                         month
                     </p>
-                    <ul id="#posts1"></ul>
+                    <ul id="posts1"></ul>
                 </div>
                 <div class="column">
                     <h3 style="font-weight: bold">
@@ -334,7 +334,7 @@
                         >
                     </h3>
                     <p>That's less formal, but I love to yap!</p>
-                    <ul id="#posts2"></ul>
+                    <ul id="posts2"></ul>
                 </div>
                 <script type="text/javascript" defer async>
                     const init = async () => {
@@ -394,7 +394,9 @@
                                 h3.appendChild(a);
                                 li.appendChild(h3);
                                 li.appendChild(date);
-                                document.querySelector(list).appendChild(li);
+                                document.body
+                                    .querySelector(list)
+                                    .appendChild(li);
                             }
                         };
 
@@ -407,53 +409,58 @@
             </section>
 
             <!-- REFERENCE INFORMATION -->
-            <section id="reference">
+            <section id="reference" class="two-columns">
                 <h2>Reference<br />Information</h2>
-
-                <ul>
-                    <li>
-                        <a href="mailto:aTylerRobertson+site@gmail.com"
-                            >Email me</a
-                        >
-                    </li>
-                    <li>
-                        <a href="https://github.com/aTylerRobertson"
-                            >Follow me on GitHub</a
-                        >
-                    </li>
-                    <li>
-                        <a href="https://bsky.app/profile/atylerrobertson.com"
-                            >Follow me on Bluesky</a
-                        >
-                    </li>
-                    <li>
-                        <a href="https://ko-fi.com/atylerrobertson"
-                            >Buy me a coffee</a
-                        >
-                    </li>
-                </ul>
-                <p>
-                    I am currently (2023- ) a
-                    <b>full-stack software engineer</b> at
-                    <a href="https://lego.com">The LEGO Group</a>, focused on
-                    the intersection of membership and ecommerce, but with my
-                    fingers in everything from infrastructure scaling during the
-                    busy season to improving developer experience across the
-                    org. I work in <b>HTML/CSS</b>, <b>JavaScript</b>,
-                    <b>TypeScript</b>, <b>React</b>, <b>NextJS</b>,
-                    <b>GraphQL</b>, <b>Python</b>, <b>Databricks</b>,
-                    <b>CDK</b>, and the various <b>AWS</b> services.
-                </p>
-                <p>
-                    Before that, I was (2019-2023) at <b>Zapier</b> helping
-                    developers integrate with a rapidly-growing automation
-                    platform.
-                </p>
-                <p>
-                    And even before that (2017-2018) I was at
-                    <b>Squarespace</b>, as the last line of defense for the
-                    legacy Squarespace 5 platform (RIP).
-                </p>
+                <div class="column">
+                    <p>
+                        I am currently (2023- ) a
+                        <b>full-stack software engineer</b> at
+                        <a href="https://lego.com">The LEGO Group</a>, focused
+                        on the intersection of membership and ecommerce, but
+                        with my fingers in everything from infrastructure
+                        scaling during the busy season to improving developer
+                        experience across the org. I work in <b>HTML/CSS</b>,
+                        <b>JavaScript</b>, <b>TypeScript</b>, <b>React</b>,
+                        <b>NextJS</b>, <b>GraphQL</b>, <b>Python</b>,
+                        <b>Databricks</b>, <b>CDK</b>, and the various
+                        <b>AWS</b> services.
+                    </p>
+                    <p>
+                        Before that, I was (2019-2023) at <b>Zapier</b> helping
+                        developers integrate with a rapidly-growing automation
+                        platform.
+                    </p>
+                    <p>
+                        And even before that (2017-2018) I was at
+                        <b>Squarespace</b>, as the last line of defense for the
+                        legacy Squarespace 5 platform (RIP).
+                    </p>
+                </div>
+                <div class="column">
+                    <ul>
+                        <li>
+                            <a href="mailto:aTylerRobertson+site@gmail.com"
+                                >Email me</a
+                            >
+                        </li>
+                        <li>
+                            <a href="https://github.com/aTylerRobertson"
+                                >Follow me on GitHub</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://bsky.app/profile/atylerrobertson.com"
+                                >Follow me on Bluesky</a
+                            >
+                        </li>
+                        <li>
+                            <a href="https://ko-fi.com/atylerrobertson"
+                                >Buy me a coffee</a
+                            >
+                        </li>
+                    </ul>
+                </div>
             </section>
 
             <!-- SCROLL TO TOP -->
