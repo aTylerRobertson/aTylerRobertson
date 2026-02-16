@@ -10,6 +10,7 @@
 }
 
 html {
+    background-color: var(--background);
     scroll-behavior: smooth;
     box-sizing: border-box;
 }
@@ -24,7 +25,6 @@ html {
 body {
     margin: 0;
     color: var(--primary);
-    background-color: var(--background);
     background: linear-gradient(
         to right,
         rgb(198, 191, 180),
@@ -36,17 +36,16 @@ body {
 
 main {
     position: relative;
-    margin: 2rem auto;
+    margin: 0 auto;
     width: 1000px;
     max-width: 90vw;
     display: flex;
     flex-direction: column;
-    gap: 5rem;
 }
 
 section {
     border-left: 10px solid var(--primary);
-    padding: 0 2rem;
+    padding: 4rem 2rem;
 }
 
 h2 {
@@ -97,6 +96,64 @@ code {
     color: var(--background);
     background-color: var(--muted);
     padding: 0 3px;
+}
+
+img,
+iframe {
+    max-width: 100%;
+}
+
+iframe {
+    display: block;
+    margin: 1rem auto;
+}
+
+.pico8 {
+    width: 100%;
+    aspect-ratio: 6/5;
+}
+
+/**
+* SPREADSHEET
+*/
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+tr {
+    height: 2rem;
+}
+th {
+    border-top: 1px solid var(--muted);
+    border-bottom: 1px solid var(--muted);
+    width: 7%;
+}
+tr:first-of-type th,
+tr:last-of-type th {
+    border: none;
+    border-left: 1px solid var(--muted);
+    border-right: 1px solid var(--muted);
+}
+tr:first-of-type th:first-of-type,
+tr:first-of-type th:last-of-type,
+tr:last-of-type th:first-of-type,
+tr:last-of-type th:last-of-type {
+    border: none;
+}
+td {
+    padding: 5px;
+    border: 1px solid var(--muted);
+    width: fit-content;
+    width: 14%;
+    word-break: break-word;
+    font-size: 1rem;
+}
+td a {
+    font-weight: normal;
+}
+td.center {
+    text-align: center;
 }
 
 @media (max-width: 550px) {
@@ -162,7 +219,7 @@ code {
 
 .two-columns h2 {
     grid-area: header;
-    margin-left: 1rem;
+    margin-left: 2rem;
 }
 
 .column {
@@ -192,7 +249,9 @@ code {
     text-decoration: none;
     display: flex;
     justify-content: space-between;
-    transition: background-size 0.5s ease, color 1s ease;
+    transition:
+        background-size 0.5s ease,
+        color 1s ease;
 }
 
 .column h3 a:hover {
@@ -213,16 +272,18 @@ code {
 }
 
 /**
-    TABLE OF CONTENTS
+    TABLE OF CONTENTS or PERIODIC UPDATES
 */
-#contents p {
+#contents p,
+#updates p {
     font-size: 0.8rem;
     line-height: 1rem;
     width: 80%;
     color: var(--muted);
 }
 
-#contents p::first-letter {
+#contents p::first-letter,
+#updates p::first-letter {
     margin-left: 0;
 }
 
