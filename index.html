@@ -343,38 +343,34 @@
                         const flatText = text.replaceAll(/\n/g, "");
                         const posts = [
                             ...flatText.matchAll(/\<item\>(.+?)\<\/item\>/gi),
-                        ];
+                        ]
+                            .map((post) => {
+                                const postText = post.at(1);
+                                return {
+                                    link: postText
+                                        .match(/\<link\>(.+?)\<\/link\>/i)
+                                        .at(1),
+                                    title: postText
+                                        .match(/\<title\>(.+?)\<\/title\>/i)
+                                        .at(1),
+                                    content: postText
+                                        .match(/\<\!\[CDATA\[(.+?)\]\]\>/i)
+                                        .at(1)
+                                        .trim(),
+                                    pubDate: postText
+                                        .match(/\<pubDate\>(.+?)\<\/pubDate\>/i)
+                                        .at(1),
+                                };
+                            })
+                            .sort((a, b) => {
+                                const dateA = new Date(a.pubDate);
+                                const dateB = new Date(b.pubDate);
+                                return dateB.valueOf() - dateA.valueOf();
+                            });
                         console.log(posts);
 
                         const addToList = (list, items) => {
-                            items
-                                .map((post) => {
-                                    const postText = post.at(1);
-                                    return {
-                                        link: postText
-                                            .match(/\<link\>(.+?)\<\/link\>/i)
-                                            .at(1),
-                                        title: postText
-                                            .match(/\<title\>(.+?)\<\/title\>/i)
-                                            .at(1),
-                                        content: postText
-                                            .match(/\<\!\[CDATA\[(.+?)\]\]\>/i)
-                                            .at(1)
-                                            .trim(),
-                                        pubDate: postText
-                                            .match(
-                                                /\<pubDate\>(.+?)\<\/pubDate\>/i,
-                                            )
-                                            .at(1),
-                                    };
-                                })
-                                .sort((a, b) => {
-                                    const dateA = new Date(a.pubDate);
-                                    const dateB = new Date(b.pubDate);
-                                    return dateB.valueOf() - dateA.valueOf();
-                                });
-
-                            for (const post of posts) {
+                            for (const post of items) {
                                 const li = document.createElement("li");
                                 const title = document.createElement("span");
                                 const date = document.createElement("p");

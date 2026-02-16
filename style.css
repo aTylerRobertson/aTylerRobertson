@@ -259,6 +259,15 @@ td.center {
     text-decoration: underline;
 }
 
+.column ul {
+    list-style-type: none;
+    padding-inline-start: 0;
+}
+
+.column li {
+    margin-bottom: 1rem;
+}
+
 .column p {
     margin: 0;
     margin-bottom: 1rem;
