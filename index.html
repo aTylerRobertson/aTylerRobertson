@@ -394,14 +394,12 @@
                                 h3.appendChild(a);
                                 li.appendChild(h3);
                                 li.appendChild(date);
-                                document
-                                    .querySelector(`#${list}`)
-                                    .appendChild(li);
+                                document.querySelector(list).appendChild(li);
                             }
                         };
 
-                        addToList("posts1", posts.slice(0, 2));
-                        addToList("posts2", posts.slice(3, 5));
+                        addToList("#posts1", posts.slice(0, 2));
+                        addToList("#posts2", posts.slice(3, 5));
                     };
 
                     init();
