@@ -144,7 +144,6 @@ tr:last-of-type th:last-of-type {
 td {
     padding: 5px;
     border: 1px solid var(--muted);
-    width: fit-content;
     width: 14%;
     word-break: break-word;
     font-size: 1rem;
@@ -165,11 +164,17 @@ td.center {
     }
     section {
         border: none !important;
-        padding: 0 1rem;
+        padding: 2rem 1rem;
     }
     h1,
     h2 {
         letter-spacing: -2px;
+    }
+    #spreadsheets {
+        overflow-x: scroll;
+    }
+    table {
+        width: 800px;
     }
 }
 
