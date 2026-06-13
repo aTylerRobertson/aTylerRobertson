@@ -107,11 +107,9 @@ h4 {
 	height: 400px;
 }
 #manifesto {
+	text-align: left;
 	padding: 1rem;
 	border-top: 2px dashed lightgrey;
-}
-ol {
-text-align: left;
 }
 button {
 	margin: 1rem;
@@ -146,6 +144,10 @@ button {
 			<li><b>Do less.</b></li>
 		</ol>
 		<p>-<a href="https://aTylerRobertson.com">Tyler</a></p>
+		<b style="color: grey;">Addendum:</b>
+		<ol type="a" style="color: grey;">
+			<li>It is possible in the above example to reach <i>NaN</i> points, which is also fun.</li>
+		</ol>
 	</section>	
 	</main>
 	<script>
@@ -216,7 +218,6 @@ button {
 
 		const deck = [];
 
-
         const updateUI = () => {
             const left = 5-round;
             document.querySelector("#goal").innerText = `Goal: ${goal} ${left > 0 ? `in ${left} round${left==1?'':'s'}` : 'now!'}`; 
@@ -250,7 +251,7 @@ button {
 			const playCard = (index) => {
 				card = deck[index];
 				// Calculate damage
-                if (card.type == "rewind" && index>0) playCard(index-1);
+                if (card.type == "rewind" && index>0 && deck[index-1].type !== "rewind") playCard(index-1);
                 if (card.type == "slap" || card.type == "cement" || card.type == "cloud") numbers.push(card.value);
                 if (card.type == "splash" && index>0) numbers.push(numbers.at(-1)*card.value);
                 if (card.type == "acid") deck.splice(-1,1);
@@ -306,16 +307,16 @@ button {
 				const type = types[Math.floor(Math.random()*types.length)];
 				const name1 = adjectives[type][Math.floor(Math.random()*adjectives[type].length)];
 				const name2 = items[type][Math.floor(Math.random()*items[type].length)];
-				const desc = type == "rewind" ? "Rewind cards <b>replay the previous card</b> in the deck" 
-					: type == "slap" ? "Slap cards just deal <b>damage</b>"
-					: type == "splash" ? "Splash cards <b>multiply</b> the previous card's damage"
-					: type == "acid" ? "Acid cards <b>destroy the bottom card</b> in the deck each time you shuffle"
-					: type == "burn" ? "Burn cards <b>deal triple damage</b>, but <b>turn to useless ash</b>"
-					: type == "clone" ? "Clone cards create a <b>copy</b> of the previous card in the deck"
-					: type == "poison" ? "Poison cards deal damage <b>equal to the number of poison cards</b> in the deck"
-					: type == "cement" ? "Cement cards <b>sink to the bottom</b> of the deck"
-					: type == "cloud" ? "Cloud cards <b>rise to the top</b> of the deck"
-					: type == "campfire" ? "Smoking cards <b>deal more damage for each ash card</b> in the deck"
+				const desc = type == "rewind" ? "<b>Replay</b> the previous card (except rewinds)" 
+					: type == "slap" ? "No frills <b>damage</b>"
+					: type == "splash" ? "<b>Multiply</b> the previous card's damage"
+					: type == "acid" ? "<b>Destroy the bottom card</b> in the deck each round"
+					: type == "burn" ? "<b>Deal triple damage</b>, then <b>turn to useless ash</b>"
+					: type == "clone" ? "<b>Create a copy</b> of the previous card in the deck"
+					: type == "poison" ? "Deal damage <b>equal to the number of poison cards</b> in the deck"
+					: type == "cement" ? "<b>Sinks to the bottom</b> of the deck"
+					: type == "cloud" ? "<b>Rises to the top</b> of the deck"
+					: type == "campfire" ? "<b>Deal more damage for each ash card</b> in the deck"
 					: "";
 				const newCard = {
 					name: `${name1} ${name2}`,
