@@ -319,7 +319,8 @@ button {
             deck.splice(0,deck.length);
             deck.push(...defaultCards);
             goal=25;
-            round=-2;
+            round=0;
+			document.querySelector("#goal").innerText = `Goal: ${goal} in 5 rounds!`; 
             draw(); 
         }
 
