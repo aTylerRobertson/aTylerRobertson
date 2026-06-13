@@ -1,6 +1,7 @@
 <html>
 <head>
-<title>Roguelike Deckbuilder: Good Parts Edition</title>
+<meta charset="utf8" />
+<title>Roguelike Deckbuilders Have One Good Part</title>
 <style>
 body {
 	background: floralwhite;
@@ -33,6 +34,9 @@ h2 {
 	font-size: 2rem;
 	line-height: 2rem;
 }
+h4 {
+	font-family: serif;
+}
 #cards {
 	display: flex;
 	flex-direction: row;
@@ -40,6 +44,7 @@ h2 {
 	margin: 1rem 0;
 }
 .card {
+	position: relative;
 	width: 30%;
 	max-height: auto;
 	overflow-y: scroll;
@@ -49,21 +54,38 @@ h2 {
 	border-radius: 15px;
 	padding: 1rem; 
 	cursor: pointer;
-	display: grid;
-	grid-template-areas: "img img img" "name name name" "type empty damage" "desc desc desc";
-	grid-gap: 0 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+.type {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	padding: 3px 5px;
+	border-radius: 50%;
+	border: 2px solid grey;
+	background: white;
+}
+.value {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	padding: 3px 5px;
+	border-radius: 50%;
+	border: 2px solid grey;
+	background: darkred;
+	color: white;
 }
 .card svg {
 	width: 100%;
-	aspect-ratio: 5/4;
+	aspect-ratio: 4/5;
+	max-height: 50%;
 	grid-area: img;
 }
 .card h4 {
 	grid-area: name;
 	margin: 0;
-}
-.card b {
-	grid-area: auto;
 }
 .card p {
 	grid-area: desc;
@@ -81,6 +103,12 @@ h2 {
 	font-size: 6rem;
 	font-weight: 900;
 }
+#game {
+	height: 400px;
+}
+ol {
+text-align: left;
+}
 button {
 	font-family: monospace;
 	font-size: 2rem;
@@ -89,9 +117,9 @@ button {
 </style>
 <body>
 	<main>
-	<h1>Roguelike Deckbuilder</h1>
-	<h2>Just the good parts</h2>
-	
+	<h1>Roguelike Deckbuilders</h1>
+	<h2>Have One Good Part</h2>
+	<section id="game">	
 	<span id="goal"></span>
 	<div id="shuffle" class="hidden">
 		<span id="damage"></span>
@@ -102,16 +130,73 @@ button {
 		<div id="cards">
 		</div>
 		<b><span id="deckTotal">5</span> cards in deck:</b><select id="deck"></select>
-	</div>	
+	</div>
+	</section>
+	<section id="manifesto">
+		<ol>
+			<li>Not all roguelike deckbuilders have to be <i>Slay the Spire</i> clones</li>
+			<li>Those that are should admit that the best part is when you are presented with three cards, and have to pick one</li>
+			<li>That part can be the whole game</li>
+		</ol>
+		<p>-<a href="https://aTylerRobertson.com">Tyler</a></p>
+	</section>	
 	</main>
 	<script>
 		let goal = 100;
 		let round = 0;
 
 		const types = ["slap","splash","rewind","acid","burn","clone","poison","cement","cloud","campfire"];
-		const nameParts = {
-			adjective:["Cool","Normal","Rusty","Ballooning","Haunted","Bubble","New"],
-			item:["Wand","Blade","Frog","Shield","Feather","Helm","Cape","Boots"],
+		
+		const adjectives = {
+			slap: ["Bouncy","Thick","Meaty","Hefty","Swole","Terrifying","Normal","Rusty","Old","New"],
+			splash: ["Electrifying","Reverb","Echoing","Loud","Resounding"],
+			rewind: ["Fwrrrrp","Bzzzzrt","sdrawkcaB","Frobozz","???"],
+			acid: ["Melting", "Dripping","Ruinous","Stinky"],
+			burn: ["Flaming", "Blazing", "Lit", "Bright"],
+			clone: ["Experimental","Specimen","Test Tube","Space"],
+			poison: ["Neon", "Dipped", "Scented", "Venom", "Sample"],
+			cement: ["Heavy", "Weighted", "Doomed", "Drowned", "Sinking"],
+			cloud: ["Happy", "Light", "Lifting", "Fizzy", "High", "Highest", "Top"],
+			campfire: ["Forested", "Woodland", "Treetop", "Smokey", "Shadowed"],
+		};
+
+		const items = {
+			slap: ["Sword", "Mace", "Club", "Axe", "Hammer", "Hand", "Fist", "Boots"],
+			splash: ["Amp","Megaphone","Shout","Cry","Roar"],
+			rewind: ["!!!", "Backwards", "...Again!", "Do-over", "???"],
+			acid: ["Accident", "Spill", "Curse", "Eater", "Devourer"],
+			burn: ["Torch", "Missile", "Rocket", "Fodder", "Bomb"], 
+			clone: ["Generator","Duplicator","Teleporter","Machine","Device"],
+			poison: ["Poison", "Potion", "Dagger", "Snake", "Toad"],
+			cement: ["Shoes", "Block", "Brick", "Jacket", "Chains"],
+			cloud: ["Bird", "Sky", "Bubbles", "Peak", "Goat", "Cloud"],
+			campfire: ["Camp", "Outpost", "Watchtower", "Tower", "Lookout"],
+		};
+			
+		const emoji = {
+			slap: '✋',
+			splash: '🌊',
+			rewind: '⏪',
+			acid: '☠️',
+			burn: '🔥',
+			clone: '🧬',
+			poison: '🤢',
+			cement: '🧱',
+			cloud: '☁️',
+			campfire: '🚬',
+		};
+
+		const color = {
+			slap: 'orangered',
+			splash: 'royalblue',
+			rewind: 'antiquewhite',
+			acid: 'yellowgreen',
+			burn: 'red',
+			clone: 'pink',
+			poison: 'springgreen',
+			cement: 'slategrey',
+			cloud: 'snow',
+			campfire: 'whitesmoke',
 		};
 
 		const defaultCard = {
@@ -130,8 +215,6 @@ button {
 				return Math.random() > 0.5;		
 			});
 
-			const deckList = document.querySelector("#deck");
-			deckList.innerHTML="";
 			let damage = 0;
 			let acid = 0;
 			const poison = deck.filter((card) => card.type == "poison").length;
@@ -175,26 +258,10 @@ button {
 					goal = goal * 3;
 					round = 0;
 				}
-
-				// Update deck list UI
-				const opt = document.createElement("option");
-				opt.innerText = `${card.name} - ${card.type} - ${card.value}`;
-				deckList.prepend(opt);
 			};
 			const left = 5-round;
 			document.querySelector("#goal").innerText = `Goal: ${goal} ${left > 0 ? `in ${left} round${left==1?'':'s'}` : 'now!'}`; 
 		}
-
-		const reset = () => {
-			const defaultCards = new Array(5).fill({...defaultCard});
-            deck.splice(0,deck.length);
-			deck.push(...defaultCards);
-			goal=25;
-			round=-2;
-			shuffle();	
-        }
-
-		reset();
 
 		const addCard = (card) => {
 			deck.push({...card});
@@ -203,23 +270,31 @@ button {
 		}
 
 		const draw = () => {
+			// Update deck list UI
+			const opt = document.createElement("option");
+			const deckList = document.querySelector("#deck");
+			deckList.innerHTML="";
+			deck.forEach((card) => {
+				opt.innerText = `${card.name} - ${card.type} - ${card.value}`;
+				deckList.prepend(opt);
+			});
 			const cardOptions = document.querySelector("#cards");
 			cardOptions.innerHTML = "";
 			// Make new cards!
 			for (let i=0; i<3; i++) {
-				const name1 = nameParts.adjective[Math.floor(Math.random()*nameParts.adjective.length)];
-				const name2 = nameParts.item[Math.floor(Math.random()*nameParts.item.length)];
 				const type = types[Math.floor(Math.random()*types.length)];
-				const desc = type == "rewind" ? "Rewind cards replay the last card" 
-					: type == "slap" ? "Slap cards deal straightforward damage"
-					: type == "splash" ? "Splash cards multiple the previous card's damage"
-					: type == "acid" ? "Acid cards destroy the bottom card in the deck each time you shuffle"
-					: type == "burn" ? "Burn cards deal lots of damage, but turn to useless ash"
-					: type == "clone" ? "Clone cards create copies of the previous card in the deck"
-					: type == "poison" ? "Poison cards deal damage equal to the number of poison cards in the deck"
-					: type == "cement" ? "Cement cards sink to the bottom of the deck"
-					: type == "cloud" ? "Cloud cards rise to the top of the deck"
-					: type == "campfire" ? "Campfires deal more damage for each ash card in the deck"
+				const name1 = adjectives[type][Math.floor(Math.random()*adjectives[type].length)];
+				const name2 = items[type][Math.floor(Math.random()*items[type].length)];
+				const desc = type == "rewind" ? "Rewind cards <b>replay the previous card</b> in the deck" 
+					: type == "slap" ? "Slap cards just deal <b>damage</b>"
+					: type == "splash" ? "Splash cards <b>multiply</b> the previous card's damage"
+					: type == "acid" ? "Acid cards <b>destroy the bottom card</b> in the deck each time you shuffle"
+					: type == "burn" ? "Burn cards <b>deal triple damage</b>, but <b>turn to useless ash</b>"
+					: type == "clone" ? "Clone cards create a <b>copy</b> of the previous card in the deck"
+					: type == "poison" ? "Poison cards deal damage <b>equal to the number of poison cards</b> in the deck"
+					: type == "cement" ? "Cement cards <b>sink to the bottom</b> of the deck"
+					: type == "cloud" ? "Cloud cards <b>rise to the top</b> of the deck"
+					: type == "campfire" ? "Smoking cards <b>deal more damage for each ash card</b> in the deck"
 					: "";
 				const newCard = {
 					name: `${name1} ${name2}`,
@@ -229,8 +304,8 @@ button {
 				if (type == "splash") newCard.value == Math.min(2,newCard.value);
 				const newCardElem = document.createElement("div");
 				newCardElem.classList.add("card");
-				newCardElem.innerHTML=`<svg><rect width="100%" height="100%" fill="black"/></svg>
-                <h4>${newCard.name}</h4><b>${newCard.type}</b><b></b><b>${newCard.value}</b><p>${desc}</p>`;
+				newCardElem.innerHTML=`<svg><rect width="100%" height="100%" fill="${color[type]}"/></svg>
+                <h4>${newCard.name}</h4><b class="type">${emoji[type]}</b><b class="value">${newCard.value}</b><p>${desc}</p>`;
 				newCardElem.addEventListener("click", () => addCard({...newCard}));
 				cardOptions.appendChild(newCardElem);
 
@@ -239,7 +314,16 @@ button {
 			}			
 		}
 
-		shuffle();
+		const reset = () => {
+            const defaultCards = new Array(5).fill({...defaultCard});
+            deck.splice(0,deck.length);
+            deck.push(...defaultCards);
+            goal=25;
+            round=-2;
+            draw(); 
+        }
+
+        reset();
 	</script>
 </body>
 
