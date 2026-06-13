@@ -271,10 +271,10 @@ button {
 
 		const draw = () => {
 			// Update deck list UI
-			const opt = document.createElement("option");
 			const deckList = document.querySelector("#deck");
 			deckList.innerHTML="";
 			deck.forEach((card) => {
+				const opt = document.createElement("option");
 				opt.innerText = `${card.name} - ${card.type} - ${card.value}`;
 				deckList.prepend(opt);
 			});
