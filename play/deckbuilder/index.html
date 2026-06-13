@@ -254,7 +254,7 @@ button {
                 if (card.type == "rewind" && index>0) playCard(index-1);
                 if (card.type == "slap" || card.type == "cement" || card.type == "cloud") numbers.push(card.value);
                 if (card.type == "splash" && index>0) numbers.push(numbers.at(-1)*card.value);
-                if (card.type == "acid") deck.splice(-1,1);
+                if (card.type == "acid") deck.splice(0,1);
                 if (card.type == "burn") {numbers.push(card.value*3); deck[index].value=0; deck[index].type="ash";}
                 if (card.type == "clone" && index>0) clones.push({...deck[index-1]});
                 if (card.type == "poison") numbers.push(poison);
