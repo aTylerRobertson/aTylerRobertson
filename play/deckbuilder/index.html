@@ -321,7 +321,8 @@ button {
             goal=25;
             round=0;
 			document.querySelector("#goal").innerText = `Goal: ${goal} in 5 rounds!`; 
-            draw(); 
+            document.querySelector("#deckTotal").innerText = deck.length;
+			draw(); 
         }
 
         reset();
