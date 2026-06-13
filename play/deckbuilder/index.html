@@ -236,14 +236,19 @@ button {
             });
 			document.querySelector("#best").innerText = best;
         }
+
+		const sortCards = () => {
+			deck.forEach((card, index) => {
+				deck[index].index = index;
+				if (card.type == "cement") deck[index].index = 0;
+				if (card.type == "cloud") deck[index].index=deck.length;
+			});
+			deck.sort((a,b) => a.index - b.index);
+		}
 		
 		const shuffle = () => {
 			round+=1;
-			deck.sort((a,b) => {
-				if (a.type == "cement") return -1;
-				if (a.type == "cloud") return 1;
-				return a.index - b.index;
-			});
+			sortCards();
 
 			const clones = [];	
 			const numbers = [];
@@ -296,12 +301,7 @@ button {
 
 			if (damage > best) best = damage;
 
-			deck.sort((a,b) => {
-				if (a.type == "cement") return -1;
-				if (a.type == "cloud") return 1;
-				return a.index - b.index;
-			});
-
+			sortCards();
 			updateUI();		
 		}
 		
