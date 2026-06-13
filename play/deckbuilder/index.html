@@ -230,8 +230,9 @@ button {
 		const shuffle = () => {
 			round+=1;
 			deck.sort((a,b) => {
-				if (a.type == "cement") return false;
-				if (a.type == "cloud") return true;
+				if (a.type == "cement") return -1;
+				if (a.type == "cloud") return 1;
+				return a.index - b.index;
 			});
 
 			
@@ -321,7 +322,7 @@ button {
 				newCardElem.classList.add("card");
 				newCardElem.innerHTML=`<svg><rect width="100%" height="100%" fill="${color[type]}"/></svg>
                 <h4>${newCard.name}</h4><b class="type">${emoji[type]}</b><b class="value">${newCard.value}</b><p>${desc}</p>`;
-				newCardElem.addEventListener("click", () => addCard({...newCard}));
+				newCardElem.addEventListener("click", () => addCard({...newCard, index: deck.length}));
 				cardOptions.appendChild(newCardElem);
 
 				document.querySelector("#shuffle").classList.add("hidden");
