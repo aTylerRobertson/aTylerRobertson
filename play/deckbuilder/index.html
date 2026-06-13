@@ -154,7 +154,7 @@ button {
 		let goal = 100;
 		let round = 0;
 
-		const types = ["slap","splash","rewind","acid","burn","clone","poison","cement","cloud","campfire"];
+		const types = ["rewind","rewind","rewind","rewind","slap","splash","rewind","acid","burn","clone","poison","cement","cloud","campfire"];
 		
 		const adjectives = {
 			slap: ["Bouncy","Thick","Meaty","Hefty","Swole","Terrifying","Normal","Rusty","Old","New"],
@@ -241,7 +241,7 @@ button {
 				return a.index - b.index;
 			});
 
-			
+			const clones = [];	
 			const numbers = [];
 			const poison = deck.filter((card) => card.type == "poison").length;
 			const campfire = deck.filter((card) => card.type == "ash").length;
@@ -251,12 +251,12 @@ button {
 			const playCard = (index) => {
 				card = deck[index];
 				// Calculate damage
-                if (card.type == "rewind" && index>0 && deck[index-1].type !== "rewind") playCard(index-1);
+                if (card.type == "rewind" && index>0) playCard(index-1);
                 if (card.type == "slap" || card.type == "cement" || card.type == "cloud") numbers.push(card.value);
                 if (card.type == "splash" && index>0) numbers.push(numbers.at(-1)*card.value);
                 if (card.type == "acid") deck.splice(-1,1);
                 if (card.type == "burn") {numbers.push(card.value*3); deck[index].value=0; deck[index].type="ash";}
-                if (card.type == "clone" && index>0) deck.push({...deck[index-1]});
+                if (card.type == "clone" && index>0) clones.push({...deck[index-1]});
                 if (card.type == "poison") numbers.push(poison);
                 if (card.type == "campfire") numbers.push(campfire*card.value);
 			}
@@ -269,6 +269,8 @@ button {
 				playCard(i);
 				i++;
 			}
+
+			deck.push(...clones);
 			
 			const damage = numbers.reduce((total, current) => total+current,0);
 	
