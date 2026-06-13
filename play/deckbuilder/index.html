@@ -325,7 +325,7 @@ button {
 					type,
 					value: type == "rewind" || type == "clone" || type == "poison" ? 1 : Math.round(Math.random()*4)+1
 				};
-				if (type == "splash") newCard.value == Math.min(2,newCard.value);
+				if (type == "splash") newCard.value = Math.max(2,newCard.value);
 				const newCardElem = document.createElement("div");
 				newCardElem.classList.add("card");
 				let svgShapes='';
