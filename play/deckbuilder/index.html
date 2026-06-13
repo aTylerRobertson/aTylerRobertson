@@ -2,8 +2,11 @@
 <head>
 <title>Roguelike Deckbuilder: Good Parts Edition</title>
 <style>
+body {
+	background: floralwhite;
+}
 main {
-	margin: 10px auto;
+	margin: 30px auto;
 	width: 666px;
 	max-width: 90vw;
 	display: flex;
@@ -12,6 +15,23 @@ main {
 	font-size: 15px;
 	font-family: monospace;
 	text-align: center;	
+}
+h1 {
+	color: rebeccapurple;
+	font-family: serif;
+	font-weight: 900;
+	margin: 0;
+	font-size: 4rem;
+	line-height: 2rem;
+	letter-spacing: -4px;
+}
+h2 {
+	color: plum;
+	font-family: cursive;
+	font-weight: 400;
+	margin: 0;
+	font-size: 2rem;
+	line-height: 2rem;
 }
 #cards {
 	display: flex;
@@ -69,6 +89,9 @@ button {
 </style>
 <body>
 	<main>
+	<h1>Roguelike Deckbuilder</h1>
+	<h2>Just the good parts</h2>
+	
 	<span id="goal"></span>
 	<div id="shuffle" class="hidden">
 		<span id="damage"></span>
@@ -77,18 +100,6 @@ button {
 	</div>
 	<div id="draw">	
 		<div id="cards">
-			<div class="card">
-				<svg><rect width="100%" height="100%" fill="black"/></svg>
-				<h4>Wand of Justice</h4><b>Poison</b><b>1</b><p>Justice is mine!</p>
-			</div>
-			<div class="card">
-				<svg><rect width="100%" height="100%" fill="black"/></svg>            
-				<h4>Wand of Justice</h4><b>Poison</b><b>1</b><p>Justice is mine!</p>
-			</div>
-			<div class="card">
-				<svg><rect width="100%" height="100%" fill="black"/></svg>
-				<h4>Wand of Justice</h4><b>Poison</b><b>1</b><p>Justice is mine!</p>
-			</div>
 		</div>
 		<b><span id="deckTotal">5</span> cards in deck:</b><select id="deck"></select>
 	</div>	
@@ -138,7 +149,7 @@ button {
                 if (card.type == "burn") {damage += card.value*3; deck[index].value=0; deck[index].type="ash";}
                 if (card.type == "clone" && index>0) deck.push({...deck[index-1]});
                 if (card.type == "poison") damage += poison;
-                if (card.type == "campfire") damage += campfire;
+                if (card.type == "campfire") damage += campfire*card.value;
 			}
 
 			while (i < deck.length) {
