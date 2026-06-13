@@ -110,6 +110,7 @@ ol {
 text-align: left;
 }
 button {
+	margin: 1rem;
 	font-family: monospace;
 	font-size: 2rem;
 	cursor: pointer;
@@ -129,8 +130,9 @@ button {
 	<div id="draw">	
 		<div id="cards">
 		</div>
-		<b><span id="deckTotal">5</span> cards in deck:</b><select id="deck"></select>
 	</div>
+	<b><span id="deckTotal">5</span> cards in deck:</b><select id="deck"></select><br/>
+	<b>Best:</b> <span id="best">0</span>
 	</section>
 	<section id="manifesto">
 		<ol>
@@ -205,18 +207,35 @@ button {
 			value: 1,
 		};
 
+		let best = 0;
+
 		const deck = [];
+
+
+        const updateUI = () => {
+            const left = 5-round;
+            document.querySelector("#goal").innerText = `Goal: ${goal} ${left > 0 ? `in ${left} round${left==1?'':'s'}` : 'now!'}`; 
+            document.querySelector("#deckTotal").innerText = deck.length;
+            document.querySelector("#deckTotal").innerText = deck.length;
+            const deckList = document.querySelector("#deck");
+            deckList.innerHTML="";
+            deck.forEach((card) => {
+                const opt = document.createElement("option");
+                opt.innerText = `${card.name} - ${card.type} - ${card.value}`;
+                deckList.prepend(opt);
+            });
+			document.querySelector("#best").innerText = best;
+        }
 		
 		const shuffle = () => {
 			round+=1;
 			deck.sort((a,b) => {
 				if (a.type == "cement") return false;
 				if (a.type == "cloud") return true;
-				return Math.random() > 0.5;		
 			});
 
-			let damage = 0;
-			let acid = 0;
+			
+			const numbers = [];
 			const poison = deck.filter((card) => card.type == "poison").length;
 			const campfire = deck.filter((card) => card.type == "ash").length;
 			
@@ -226,13 +245,13 @@ button {
 				card = deck[index];
 				// Calculate damage
                 if (card.type == "rewind" && index>0) playCard(index-1);
-                if (card.type == "slap" || card.type == "cement" || card.type == "cloud") damage += card.value;
-                if (card.type == "splash" && index>0) damage += deck[index-1].value*card.value;
+                if (card.type == "slap" || card.type == "cement" || card.type == "cloud") numbers.push(card.value);
+                if (card.type == "splash" && index>0) numbers.push(numbers.at(-1)*card.value);
                 if (card.type == "acid") deck.splice(-1,1);
-                if (card.type == "burn") {damage += card.value*3; deck[index].value=0; deck[index].type="ash";}
+                if (card.type == "burn") {numbers.push(card.value*3); deck[index].value=0; deck[index].type="ash";}
                 if (card.type == "clone" && index>0) deck.push({...deck[index-1]});
-                if (card.type == "poison") damage += poison;
-                if (card.type == "campfire") damage += campfire*card.value;
+                if (card.type == "poison") numbers.push(poison);
+                if (card.type == "campfire") numbers.push(campfire*card.value);
 			}
 
 			while (i < deck.length) {
@@ -242,42 +261,38 @@ button {
 
 				playCard(i);
 				i++;
+			}
+			
+			const damage = numbers.reduce((total, current) => total+current,0);
+	
+			// Show damage
+			document.querySelector("#damage").innerText = `${damage}!`;
+			
+			if (round==5 && damage < goal) {
+				document.querySelector("#continue").classList.add("hidden");
+				document.querySelector("#restart").classList.remove("hidden");
+			} else {
+				document.querySelector("#continue").classList.remove("hidden");
+                document.querySelector("#restart").classList.add("hidden");
+			}
 				
-				// Show damage
-				document.querySelector("#damage").innerText = `${damage}!`;
-				
-				if (round==5 && damage < goal) {
-					document.querySelector("#continue").classList.add("hidden");
-					document.querySelector("#restart").classList.remove("hidden");
-				} else {
-					document.querySelector("#continue").classList.remove("hidden");
-                    document.querySelector("#restart").classList.add("hidden");
-				}
-				
-				if (round == 5 && damage >= goal) {
-					goal = goal * 3;
-					round = 0;
-				}
-			};
-			const left = 5-round;
-			document.querySelector("#goal").innerText = `Goal: ${goal} ${left > 0 ? `in ${left} round${left==1?'':'s'}` : 'now!'}`; 
-		}
+			if (round == 5 && damage >= goal) {
+				goal = Math.round((damage*3)/100)*100;
+				round = 0;
+			}
 
+			if (damage > best) best = damage;
+
+			updateUI();		
+		}
+		
 		const addCard = (card) => {
 			deck.push({...card});
+			updateUI();
 			shuffle();
-			document.querySelector("#deckTotal").innerText = deck.length;
 		}
 
 		const draw = () => {
-			// Update deck list UI
-			const deckList = document.querySelector("#deck");
-			deckList.innerHTML="";
-			deck.forEach((card) => {
-				const opt = document.createElement("option");
-				opt.innerText = `${card.name} - ${card.type} - ${card.value}`;
-				deckList.prepend(opt);
-			});
 			const cardOptions = document.querySelector("#cards");
 			cardOptions.innerHTML = "";
 			// Make new cards!
@@ -320,8 +335,7 @@ button {
             deck.push(...defaultCards);
             goal=25;
             round=0;
-			document.querySelector("#goal").innerText = `Goal: ${goal} in 5 rounds!`; 
-            document.querySelector("#deckTotal").innerText = deck.length;
+			updateUI();
 			draw(); 
         }
 
